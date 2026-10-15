@@ -43,8 +43,8 @@
     "env": {
         "APP_ENV": "production",
         "APP_DEBUG": "false",
-        "APP_URL": "https://adoprint.vercel.app",
-        "ASSET_URL": "https://adoprint.vercel.app",
+        "APP_URL": "https://adoprint-site.vercel.app",
+        "ASSET_URL": "https://adoprint-site.vercel.app",
         "SESSION_DRIVER": "cookie",
         "SESSION_SECURE_COOKIE": "true",
         "CACHE_STORE": "array",
