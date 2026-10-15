@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  app:
+    build: ./docker/php
+    image: ado-print-app
+    container_name: ado_print_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - ado_print_network
+    depends_on:
+      - db
+      - redis
+
+  web:
+    image: nginx:stable-alpine
+    container_name: ado_print_web
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - ado_print_network
+    depends_on:
+      - app
+
+  db:
+    image: mysql:8.0
+    container_name: ado_print_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ado_print
+      MYSQL_USER: ado_user
+      MYSQL_PASSWORD: secret
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - ado_print_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: ado_print_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - ado_print_network
+
+  node:
+    image: node:18-alpine
+    container_name: ado_print_node
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    command: ['sh', '-c', 'npm install && npm run dev']
+    networks:
+      - ado_print_network
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: ado_print_mailhog
+    ports:
+      - "8025:8025"
+    networks:
+      - ado_print_network
+
+volumes:
+  db_data:
+
+networks:
+  ado_print_network:
+    driver: bridge

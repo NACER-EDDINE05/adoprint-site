@@ -1,0 +1,10 @@
+vendor
+node_modules
+docker
+.env
+.git
+.gitignore
+README.md
+npm-debug.log
+.DS_Store
+storage/*.key

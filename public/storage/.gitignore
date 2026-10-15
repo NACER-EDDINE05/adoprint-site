@@ -1,0 +1,5 @@
+# Démo Vercel : les images uploadées sont versionnées pour être visibles en ligne.
+# (En local, ce dossier reste un lien symbolique vers storage/app/public.)
+!*
+!.gitignore
+

@@ -1,0 +1,48 @@
+/* Basic RTL overrides for Filament admin UI
+   - This file applies when the document <html> has dir="rtl" or body has dir="rtl".
+   - It uses logical properties where possible and targets common Filament selectors.
+   - After installing Filament, refine selectors to match exact DOM structure.
+*/
+
+[dir="rtl"] .filament,
+[dir="rtl"] .filament-app,
+[dir="rtl"] body {
+    direction: rtl;
+    unicode-bidi: embed;
+}
+
+/* Prefer logical properties to avoid many left/right flips */
+[dir="rtl"] .filament * {
+    text-align: start; /* start = right in RTL */
+}
+
+/* Tables, pagination and actions */
+[dir="rtl"] .filament .filament-tables-table {
+    direction: rtl;
+}
+
+/* Buttons and icons: if icons use transform for LTR, reset or flip */
+[dir="rtl"] .filament .icon {
+    transform: scaleX(-1);
+}
+
+/* Utility: flip float/align if explicit classes were used */
+[dir="rtl"] .filament .float-right { float: left; }
+[dir="rtl"] .filament .float-left { float: right; }
+
+/* Form inputs: keep logical padding/margins when possible */
+[dir="rtl"] .filament form input,
+[dir="rtl"] .filament form textarea,
+[dir="rtl"] .filament form select {
+    text-align: start;
+}
+
+/* Breadcrumbs and header spacing */
+[dir="rtl"] .filament-header,
+[dir="rtl"] .filament-breadcrumbs {
+    direction: rtl;
+}
+
+/* If you rely on Tailwind, consider enabling the `dir` variant or add these classes under [dir="rtl"] */
+
+/* End of RTL overrides - refine after Filament install */

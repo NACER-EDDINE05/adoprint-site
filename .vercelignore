@@ -1,0 +1,27 @@
+# Fichiers inutiles sur Vercel (allègent le bundle serverless)
+
+# Dépendances locales — réinstallées au build
+/vendor
+/node_modules
+
+# Caches / logs locaux
+/storage/logs/*.log
+/storage/framework/cache/**
+/storage/framework/sessions/**
+/storage/framework/views/**
+/bootstrap/cache/*.php
+
+# Fichiers de dev / OS
+/.idea
+/.vscode
+*.log
+npm-debug.log*
+
+# Le dossier admin « ADO PRINT » (autre projet) n'a rien à faire ici
+../ADO PRINT/
+
+# Sauvegardes & fichiers temporaires
+*.bak
+*.bak.php
+_promo_fragment*.blade.php
+home.blade.bak.php

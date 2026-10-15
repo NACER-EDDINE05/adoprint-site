@@ -1,0 +1,98 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* ==========================================================================
+       Identité ADO PRINT — couleurs CMJN de la marque (cf. ADO PRINT Manager)
+       ========================================================================== */
+    --color-brand-cyan: #00aeef;
+    --color-brand-cyan-dark: #0089c1;
+    --color-brand-cyan-light: #d9f4ff;
+    --color-brand-magenta: #ec1e79;
+    --color-brand-magenta-dark: #c4125f;
+    --color-brand-magenta-light: #fce4f0;
+    --color-brand-yellow: #ffc20e;
+    --color-brand-yellow-dark: #e0a800;
+    --color-brand-yellow-light: #fff6da;
+    --color-brand-black: #0a0a0a;
+}
+
+/* Filament RTL overrides - imported to support Arabic admin UI when html dir="rtl" */
+@import './filament-rtl.css';
+
+/* ==========================================================================
+   Boutique publique ADO PRINT
+   ========================================================================== */
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* ==========================================================================
+   Logo ADO PRINT — carré noir à bandes diagonales CMJN (identique au Manager)
+   ========================================================================== */
+.brand-mark {
+    background-color: var(--color-brand-black);
+    background-image: linear-gradient(
+        115deg,
+        var(--color-brand-black) 0%, var(--color-brand-black) 32%,
+        var(--color-brand-cyan) 32%, var(--color-brand-cyan) 48%,
+        var(--color-brand-magenta) 48%, var(--color-brand-magenta) 64%,
+        var(--color-brand-yellow) 64%, var(--color-brand-yellow) 80%,
+        var(--color-brand-black) 80%, var(--color-brand-black) 100%
+    );
+}
+
+.brand-mark-text {
+    color: #fff;
+    font-weight: 800;
+    letter-spacing: -1px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, .45);
+}
+
+/* Bande CMJN décorative (haut de page / séparateurs) */
+.brand-stripes {
+    background-image: linear-gradient(
+        90deg,
+        var(--color-brand-cyan) 0 25%,
+        var(--color-brand-magenta) 25% 50%,
+        var(--color-brand-yellow) 50% 75%,
+        var(--color-brand-black) 75% 100%
+    );
+}
+
+/* Bande de catégories : défilement tactile sans barre de défilement visible
+   (les flèches natives de Windows sont inutiles — on glisse avec le doigt) */
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Champ de saisie homogène (devis / contact) */
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+}
+
+/* Masquer les flèches du champ quantité (le configurateur a ses propres boutons) */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
