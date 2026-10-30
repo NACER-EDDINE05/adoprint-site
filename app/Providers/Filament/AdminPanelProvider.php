@@ -10,6 +10,7 @@ use App\Models\Setting;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
+use Filament\View\PanelsRenderHook;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -62,7 +63,9 @@ class AdminPanelProvider extends PanelProvider
                 'Paramètres',
             ])
             ->renderHook(
-                'panels::head',
+                // v3.3.54 : le hook historique « panels::head » n'est plus rendu ;
+                // c'est HEAD_START (juste après <head>) qui le remplace.
+                PanelsRenderHook::HEAD_START,
                 fn (): string => implode("\n", [
                     '<link rel="icon" type="image/x-icon" href="/favicon.ico?v=2">',
                     '<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png?v=2">',
