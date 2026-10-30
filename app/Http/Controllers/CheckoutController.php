@@ -94,7 +94,9 @@ class CheckoutController extends Controller
     /** Formulaire de commande (coordonnées + livraison + fichiers). */
     public function show(CartService $cart)
     {
-        abort_if($cart->count() === 0, 302, '/panier');
+        if ($cart->count() === 0) {
+            return redirect()->route('cart');
+        }
 
         return view('checkout', [
             'items'   => $cart->items(),
@@ -109,7 +111,9 @@ class CheckoutController extends Controller
      */
     public function store(Request $request, CartService $cart)
     {
-        abort_if($cart->count() === 0, 302, '/panier');
+        if ($cart->count() === 0) {
+            return redirect()->route('cart');
+        }
 
         $validated = $request->validate([
             'nom'        => 'required|string|max:120',

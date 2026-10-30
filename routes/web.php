@@ -21,7 +21,7 @@ Route::get('/produit/{slug}', [StorefrontController::class, 'product'])->name('p
 Route::get('/aide', [StorefrontController::class, 'aide'])->name('aide');
 
 // À propos — présentation de l'imprimerie ADO PRINT
-Route::get('/a-propos', [StorefrontController::class, 'apropos'])->name('apropos');
+Route::get('/a-propos', [StorefrontController::class, 'apropos'])->name('a-propos');
 
 // Ressources & conseils (guides d'impression)
 Route::get('/guides', [GuidesController::class, 'index'])->name('guides.index');

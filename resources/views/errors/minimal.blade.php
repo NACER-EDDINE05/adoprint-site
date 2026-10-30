@@ -45,7 +45,7 @@
             font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
             color: #0f172a;
         }
-        .stripes { position: fixed; inset-inline: 0; height: 6px; background: linear-gradient(90deg, #00aeef 0 25%, #ec1e79 25% 50%, #ffc20e 50% 75%, #0a0a0a 75% 100%); }
+        .stripes { position: fixed; inset-inline: 0; height: 6px; background: linear-gradient(90deg, #00aeef 0 25%, #1263e0 25% 50%, #ffc20e 50% 75%, #0a0a0a 75% 100%); }
         .stripes.top { top: 0; } .stripes.bottom { bottom: 0; }
         .card { text-align: center; padding: 48px 24px; max-width: 34rem; }
         .logo { height: 56px; margin-inline: auto; display: block; }

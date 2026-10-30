@@ -3,105 +3,140 @@
 @section('title', 'Votre panier — ADO PRINT')
 
 @section('content')
-    <div class="mx-auto max-w-7xl px-4 py-12">
-        <nav class="mb-6 flex items-center gap-2 text-sm text-slate-500">
-            <a href="{{ route('home') }}" class="hover:text-brand-cyan-dark">Accueil</a>
-            <span>/</span>
-            <span class="font-semibold text-slate-900">Panier</span>
-        </nav>
+    @php
+        $money = fn ($v): string => number_format((float) $v, 2, ',', ' ');
+    @endphp
 
-        <h1 class="text-3xl font-extrabold text-slate-900">Votre panier</h1>
+    <div class="ap24-wrap">
+        @include('partials.crumbs', ['items' => [['label' => 'Panier']]])
+
+        @include('partials.page-head', [
+            'kicker' => 'Votre sélection',
+            'title' => 'Votre panier',
+            'desc' => 'Vérifiez vos quantités, ajoutez vos fichiers d\'impression puis passez commande. Sans paiement en ligne.',
+            'iconSvg' => '<circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>',
+            'meta' => count($items) > 0 ? [count($items).' article'.(count($items) > 1 ? 's' : ''), $money($total).' DH HT'] : [],
+        ])
 
         @if (session('success'))
-            <div class="mt-6 rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-800">{{ session('success') }}</div>
+            <div class="ap24-alert ap24-alert--ok mb-6">{{ session('success') }}</div>
         @endif
 
         @if (count($items) === 0)
-            <div class="mt-10 rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center">
-                <p class="text-lg font-semibold text-slate-900">Votre panier est vide.</p>
-                <p class="mt-2 text-slate-500">Parcourez le catalogue et configurez votre premier produit.</p>
-                <a href="{{ route('products.index') }}" class="mt-6 inline-flex rounded-xl bg-brand-cyan px-6 py-3 font-bold text-white transition hover:bg-brand-cyan-dark">Découvrir nos produits</a>
+            <div class="ap24-empty">
+                <span class="ap24-empty__icon" aria-hidden="true">
+                    @include('partials.category-icon', ['slug' => 'impression-papier-bureautique'])
+                </span>
+                <h2>Votre panier est vide</h2>
+                <p>Parcourez le catalogue et configurez votre premier produit : le prix se calcule instantanément.</p>
+                <a href="{{ route('products.index') }}" class="ap24-btn ap24-btn--yellow">Découvrir nos produits</a>
             </div>
         @else
-            <div class="mt-8 grid gap-8 lg:grid-cols-[1.6fr_1fr]">
+            <div class="ap24-cart">
                 {{-- Lignes du panier --}}
                 <div class="space-y-4">
                     @foreach ($items as $item)
-                        <div class="rounded-2xl border border-slate-200 bg-white p-5">
-                            <div class="flex flex-wrap items-start justify-between gap-4">
-                                <div class="flex items-start gap-4">
-                                    <span class="grid h-14 w-14 shrink-0 place-items-center rounded-xl bg-brand-cyan-light text-brand-cyan-dark">
-                                        <span class="h-7 w-7">@include('partials.category-icon', ['slug' => $item['product']->category?->slug ?? 'default'])</span>
-                                    </span>
-                                    <div>
-                                        <a href="{{ route('product.show', $item['product']->slug) }}" class="font-bold text-slate-900 hover:text-brand-cyan-dark">{{ $item['product']->name }}</a>
-                                        @if ($item['options'])
-                                            <p class="mt-0.5 text-xs text-slate-500">{{ collect($item['options'])->map(fn ($v, $k) => $k.' : '.$v)->implode(' · ') }}</p>
-                                        @endif
-                                        <p class="mt-1 text-sm text-slate-500">{{ number_format($item['unit'], 2, ',', ' ') }} dhs / ex.</p>
-                                    </div>
-                                </div>
+                        <article class="ap24-cartline">
+                            <span class="ap24-cartline__thumb">
+                                @if ($item['product']->photoUrl())
+                                    <img src="{{ $item['product']->photoUrl() }}" alt="">
+                                @else
+                                    @include('partials.category-icon', ['slug' => $item['product']->category?->slug ?? 'default'])
+                                @endif
+                            </span>
 
-                                <div class="text-right">
-                                    <p class="text-lg font-extrabold text-brand-cyan-dark">{{ number_format($item['total'], 2, ',', ' ') }} dhs</p>
-                                </div>
+                            <div class="ap24-cartline__main">
+                                <a href="{{ route('product.show', $item['product']->slug) }}" class="ap24-cartline__name">
+                                    {{ $item['product']->name }}
+                                </a>
+
+                                @if ($item['options'])
+                                    <p class="ap24-cartline__opts">
+                                        {{ collect($item['options'])->map(fn ($v, $k) => $k.' : '.$v)->implode(' · ') }}
+                                    </p>
+                                @endif
+
+                                <p class="ap24-cartline__unit">
+                                    {{ $money($item['unit']) }} DH / ex. · {{ number_format((int) $item['qty'], 0, ',', ' ') }} exemplaires
+                                </p>
+
+                                @if (session("cart_files.{$item['row_id']}"))
+                                    <p class="mt-2 flex items-center gap-1.5 text-xs font-bold text-green-700">
+                                        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                                        {{ count(session("cart_files.{$item['row_id']}")) }} fichier(s) joint(s)
+                                    </p>
+                                @endif
                             </div>
 
-                            <div class="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-4">
-                                <form action="{{ route('cart.update') }}" method="POST" class="flex items-center gap-2">
+                            <span class="ap24-cartline__total">{{ $money($item['total']) }} DH</span>
+
+                            <div class="ap24-cartline__tools">
+                                <form action="{{ route('cart.update') }}" method="POST" class="flex flex-wrap items-center gap-2">
                                     @csrf
                                     <input type="hidden" name="row_id" value="{{ $item['row_id'] }}">
-                                    <label class="text-sm text-slate-500" for="qty-{{ $item['row_id'] }}">Quantité</label>
+                                    <label class="ap24-label" for="qty-{{ $item['row_id'] }}">Quantité</label>
                                     <input id="qty-{{ $item['row_id'] }}" type="number" name="qty" value="{{ $item['qty'] }}" min="1" max="1000000"
-                                           class="w-24 rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-bold text-slate-900 outline-none transition focus:border-brand-cyan">
-                                    <button type="submit" class="rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-semibold text-slate-600 transition hover:border-brand-cyan hover:text-brand-cyan-dark">Mettre à jour</button>
+                                           class="ap24-input ap24-input--sm">
+                                    <button type="submit" class="ap24-btn ap24-btn--ghost ap24-btn--sm ap24-btn--flat">Mettre à jour</button>
                                 </form>
 
                                 <form action="{{ route('cart.remove') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="row_id" value="{{ $item['row_id'] }}">
-                                    <button type="submit" class="inline-flex items-center gap-1 text-sm font-semibold text-slate-400 transition hover:text-red-600">
-                                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                    <button type="submit" class="ap24-link-danger">
+                                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                                         Retirer
                                     </button>
                                 </form>
                             </div>
-
-                            @if (session("cart_files.{$item['row_id']}"))
-                                <p class="mt-3 flex items-center gap-2 text-xs font-semibold text-green-700">
-                                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                                    {{ count(session("cart_files.{$item['row_id']}")) }} fichier(s) joint(s) à cette ligne
-                                </p>
-                            @endif
-                        </div>
+                        </article>
                     @endforeach
 
-                    <a href="{{ route('products.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-brand-cyan-dark hover:text-brand-cyan">
-                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                    <a href="{{ route('products.index') }}" class="ap24-subhead__link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
                         Continuer mes achats
                     </a>
                 </div>
 
                 {{-- Récapitulatif --}}
-                <aside class="h-fit rounded-2xl border border-slate-200 bg-slate-50 p-6">
-                    <h2 class="font-bold text-slate-900">Récapitulatif</h2>
-                    <dl class="mt-4 space-y-3 text-sm">
-                        <div class="flex justify-between">
-                            <dt class="text-slate-500">Articles</dt>
-                            <dd class="font-bold text-slate-900">{{ count($items) }}</dd>
+                <aside class="ap24-panel ap24-panel--soft">
+                    <h2>Récapitulatif</h2>
+
+                    <dl class="mt-2">
+                        <div class="ap24-line">
+                            <dt>Articles</dt>
+                            <dd>{{ count($items) }}</dd>
                         </div>
-                        <div class="flex justify-between border-t border-slate-200 pt-3">
-                            <dt class="font-bold text-slate-900">Total estimé</dt>
-                            <dd class="text-xl font-extrabold text-brand-cyan-dark">{{ number_format($total, 2, ',', ' ') }} dhs</dd>
+                        <div class="ap24-line">
+                            <dt>Livraison</dt>
+                            <dd>Sur devis</dd>
+                        </div>
+                        <div class="ap24-line ap24-line--total">
+                            <dt>Total estimé HT</dt>
+                            <dd>{{ $money($total) }} DH</dd>
                         </div>
                     </dl>
-                    <a href="{{ route('checkout.show') }}" class="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-brand-cyan px-6 py-3.5 font-bold text-white transition hover:bg-brand-cyan-dark">
+
+                    <a href="{{ route('checkout.show') }}" class="ap24-btn ap24-btn--yellow ap24-btn--block ap24-btn--flat mt-4">
                         Passer la commande
-                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                     </a>
+
                     <p class="mt-3 text-center text-xs text-slate-500">Paiement à la livraison · Devis confirmé avant impression</p>
                 </aside>
             </div>
         @endif
     </div>
 @endsection
+
+@push('scripts')
+    {{-- Parcours panier : contenu consulté avant la commande --}}
+    <script type="module">
+        window.adoAnalytics?.capture('cart_viewed', {
+            items: {{ count($items) }},
+            quantity: {{ (int) collect($items)->sum('qty') }},
+            total: {{ (float) $total }},
+            products: @json(collect($items)->pluck('product.name')->values()),
+        });
+    </script>
+@endpush

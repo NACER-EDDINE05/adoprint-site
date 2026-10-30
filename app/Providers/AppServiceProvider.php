@@ -29,9 +29,13 @@ class AppServiceProvider extends ServiceProvider
             ['layouts.storefront', 'home', 'products', 'category', 'product', 'devis', 'contact', 'aide', 'a-propos', 'cart', 'checkout', 'order-confirmation'],
             function ($view) {
                 $view->with('siteSettings', \App\Models\Setting::query()->pluck('value', 'key'));
+                // Arborescence du catalogue : les 9 familles et leurs sous-catégories
+                // (utilisées par l'en-tête, le méga-menu et le pied de page).
                 $view->with('navCategories', \App\Models\Category::where('active', true)
-                    ->with(['products' => fn ($q) => $q->where('active', true)->orderBy('name'), 'products.priceGrids'])
-                    ->orderBy('name')->get());
+                    ->whereNull('parent_id')
+                    ->with(['children' => fn ($q) => $q->where('active', true)
+                        ->with(['products' => fn ($products) => $products->whereNotNull('photo')->orderBy('name')])])
+                    ->orderBy('position')->get());
                 $view->with('cartCount', app(\App\Services\CartService::class)->count());
             }
         );

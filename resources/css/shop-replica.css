@@ -1,0 +1,3504 @@
+/* ==========================================================================
+   ADO PRINT — Boutique publique (réplique)
+   Système : « The Fresh Ink Press » — encre cyan sur papier blanc,
+   aplats ardoise, filets fins, ombres de retour uniquement.
+   Référence : DESIGN.md
+   ========================================================================== */
+
+:root {
+    --ap-accent: #00aeef;          /* Press Cyan — seule couleur d'action */
+    --ap-accent-dark: #0089c1;
+    --ap-accent-light: #d9f4ff;
+    --ap-magenta: #1263e0;         /* signature de marque uniquement */
+    --ap-yellow: #ffc20e;          /* signature + CTA principaux boutique */
+    --ap-yellow-dark: #e0a800;
+    --ap-yellow-light: #fff6da;
+    --ap-black: #0a0a0a;
+    --ap-ink: #0f172a;             /* slate-900 — bandes sombres */
+    --ap-ink-2: #475569;           /* slate-600 — texte courant */
+    --ap-ink-3: #64748b;           /* slate-500 — texte secondaire */
+    --ap-line: #e2e8f0;           /* slate-200 — filets */
+    --ap-line-strong: #cbd5e1;     /* slate-300 */
+    --ap-sheet: #f8fafc;           /* slate-50 — fond de page */
+    --ap-paper: #ffffff;
+    --ap-radius-control: 12px;
+    --ap-radius-card: 16px;
+    --ap-radius-panel: 24px;
+    --ap-shadow-lift: 0 10px 15px -3px rgba(15, 23, 42, .10), 0 4px 6px -4px rgba(15, 23, 42, .10);
+    --ap-shadow-header: 0 1px 2px rgba(15, 23, 42, .06);
+    --ap-glow-cta: 0 10px 15px -3px rgba(255, 194, 14, .30), 0 4px 6px -4px rgba(255, 194, 14, .30);
+}
+
+/* ==========================================================================
+   Conteneurs de page
+   ========================================================================== */
+.ap24-wrap {
+    max-width: 1246px;
+    margin-inline: auto;
+    padding: 0 16px 72px;
+}
+
+.ap24-root {
+    min-width: 0;
+}
+
+.ap24-block {
+    margin-top: 40px;
+}
+
+/* ==========================================================================
+   Barre utilitaire (top bar)
+   ========================================================================== */
+.ap24-topbar {
+    position: sticky;
+    top: -4px;
+    z-index: 45;
+    background: var(--ap-black);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+
+.ap24-topbar__inner {
+    max-width: 1246px;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 5px 16px;
+}
+
+.ap24-topbar__left,
+.ap24-topbar__center,
+.ap24-topbar__right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.ap24-topbar__left {
+    gap: 20px;
+}
+
+.ap24-topbar__right {
+    margin-left: auto;
+    gap: 16px;
+}
+
+.ap24-topbar__tel,
+.ap24-topbar__email,
+.ap24-topbar__devis,
+.ap24-topbar__aide,
+.ap24-topbar__account,
+.ap24-topbar__whatsapp {
+    color: #fff;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color .15s ease, gap .15s ease;
+    white-space: nowrap;
+}
+
+.ap24-topbar__tel:hover,
+.ap24-topbar__email:hover,
+.ap24-topbar__devis:hover,
+.ap24-topbar__aide:hover,
+.ap24-topbar__account:hover,
+.ap24-topbar__whatsapp:hover {
+    color: var(--ap-accent);
+    gap: 9px;
+}
+
+.ap24-topbar__icon {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+}
+
+.ap24-topbar__divider {
+    width: 1px;
+    height: 14px;
+    background: rgba(255, 255, 255, .25);
+    margin: 0 4px;
+}
+
+.ap24-topbar__cart-link {
+    color: #fff;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color .15s ease;
+    white-space: nowrap;
+}
+
+.ap24-topbar__cart-link:hover {
+    color: var(--ap-accent);
+}
+
+.ap24-topbar__cart-count {
+    display: inline-grid;
+    place-items: center;
+    min-width: 20px;
+    height: 20px;
+    margin-left: 4px;
+    background: var(--ap-accent);
+    color: var(--ap-black);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+/* ==========================================================================
+   En-tête — barre + navigation + méga-menu
+   ========================================================================== */
+.ap24-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: var(--ap-paper);
+    box-shadow: var(--ap-shadow-header);
+}
+
+/* Bande CMJN signature (4 plis) en haut de chaque page */
+.ap24-header::before {
+    content: "";
+    display: block;
+    height: 4px;
+    background-image: linear-gradient(
+        90deg,
+        var(--ap-accent) 0 30%,
+        #0b1f5c 30% 52%,
+        var(--ap-yellow) 52% 80%,
+        var(--ap-accent-light) 80% 100%
+    );
+}
+
+.ap24-header__inner {
+    max-width: 1246px;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 16px;
+    flex-wrap: wrap;
+}
+
+.ap24-header__logo {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    flex-shrink: 0;
+    gap: 8px;
+}
+
+.ap24-header__logo:hover .ap24-header__wordmark {
+    color: var(--ap-accent-dark);
+}
+
+/* Champ de recherche intégré */
+.ap24-header__search {
+    flex: 1;
+    min-width: 200px;
+    max-width: 420px;
+}
+
+.ap24-search-form {
+    display: flex;
+    width: 100%;
+}
+
+.ap24-search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border: 1px solid var(--ap-line);
+    border-radius: var(--ap-radius-control);
+    background: var(--ap-paper);
+    transition: border-color .14s ease, box-shadow .14s ease;
+}
+
+.ap24-search-wrapper:focus-within {
+    border-color: var(--ap-accent);
+    box-shadow: 0 0 0 3px rgba(0, 174, 239, .10);
+}
+
+.ap24-search-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--ap-ink-3);
+    margin-left: 12px;
+    flex-shrink: 0;
+}
+
+.ap24-search-input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ap-ink);
+    padding: 9px 12px 9px 8px;
+}
+
+.ap24-search-input::placeholder {
+    color: var(--ap-ink-3);
+}
+
+.ap24-search-submit {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    color: var(--ap-accent-dark);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: background-color .14s ease, color .14s ease;
+    white-space: nowrap;
+}
+
+.ap24-search-submit:hover {
+    background: var(--ap-accent-light);
+    color: var(--ap-accent-dark);
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Marque : carré noir à bandes diagonales CMJN + wordmark */
+.ap24-header__brand-mark {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 9px;
+    background-color: var(--ap-black);
+    background-image: linear-gradient(
+        115deg,
+        var(--ap-black) 0%, var(--ap-black) 32%,
+        var(--ap-accent) 32%, var(--ap-accent) 48%,
+        var(--ap-magenta) 48%, var(--ap-magenta) 64%,
+        var(--ap-yellow) 64%, var(--ap-yellow) 80%,
+        var(--ap-black) 80%, var(--ap-black) 100%
+    );
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .12), 0 2px 4px rgba(0, 0, 0, .2);
+}
+
+.ap24-header__wordmark {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--ap-black);
+    white-space: nowrap;
+    margin-left: 10px;
+}
+
+/* --- Barre de navigation des 9 familles --------------------------------- */
+.ap24-nav {
+    display: none;
+    flex: 1;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 2px;
+    padding: 5px 10px;
+    border-top: 1px solid var(--ap-line);
+    background: var(--ap-paper);
+}
+
+.ap24-nav__item {
+    position: relative;
+}
+
+.ap24-nav__link {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 11px;
+    border-radius: 10px;
+    font-size: 12.5px;
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--ap-ink-2);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color .14s ease, background-color .14s ease;
+}
+
+.ap24-nav__link:hover,
+.ap24-nav__link.is-active {
+    color: var(--ap-accent-dark);
+    background: var(--ap-accent-light);
+}
+
+.ap24-nav__icon {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    color: var(--ap-accent);
+}
+
+.ap24-nav__icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.ap24-nav__lines {
+    text-align: left;
+}
+
+.ap24-nav__caret {
+    display: inline-flex;
+    opacity: .5;
+    transition: transform .16s ease;
+}
+
+.ap24-nav__caret svg {
+    width: 11px;
+    height: 11px;
+}
+
+.ap24-nav__item:hover .ap24-nav__caret {
+    transform: rotate(180deg);
+    opacity: 1;
+}
+
+/* --- Méga-menu déroulant ------------------------------------------------ */
+.ap24-menu {
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    transform: translate(-50%, 6px);
+    width: min(1100px, calc(100vw - 48px));
+    margin-top: 6px;
+    padding: 14px 14px 12px;
+    background: var(--ap-paper);
+    border: 1px solid var(--ap-line);
+    border-radius: 0 0 var(--ap-radius-card) var(--ap-radius-card);
+    box-shadow: 0 24px 48px -12px rgba(15, 23, 42, .22);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .16s ease, transform .16s ease, visibility .16s ease;
+    z-index: 50;
+}
+
+.ap24-nav__item:hover .ap24-menu,
+.ap24-nav__item:focus-within .ap24-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
+}
+
+.ap24-menu__panel-inner {
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.ap24-menu__head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 4px 6px 13px;
+    border-bottom: 1px solid var(--ap-line);
+}
+
+.ap24-menu__head-icon {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: var(--ap-radius-control);
+    background: var(--ap-accent-light);
+    color: var(--ap-accent-dark);
+}
+
+.ap24-menu__head-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.ap24-menu__head-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.ap24-menu__eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--ap-accent-dark);
+}
+
+.ap24-menu__title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--ap-ink);
+    line-height: 1.2;
+}
+
+.ap24-menu__meta {
+    font-size: 12.5px;
+    color: var(--ap-ink-3);
+}
+
+.ap24-menu__all {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    flex-shrink: 0;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ap-accent-dark);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: gap .15s ease;
+}
+
+.ap24-menu__all svg {
+    width: 15px;
+    height: 15px;
+}
+
+.ap24-menu__all:hover {
+    gap: 11px;
+    text-decoration: underline;
+}
+
+/* Grille des sous-catégories */
+.ap24-menu__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+    gap: 2px;
+    padding: 10px 4px 4px;
+}
+
+.ap24-menu__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 10px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ap-ink-2);
+    text-decoration: none;
+    transition: background-color .14s ease, color .14s ease;
+}
+
+.ap24-menu__item:hover,
+.ap24-menu__item:focus-visible {
+    background: rgba(0, 174, 239, .08);
+    color: var(--ap-accent-dark);
+}
+
+.ap24-menu__item__label {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Chevron final (repère visuel discret) */
+.ap24-menu__item > svg {
+    order: 3;
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    opacity: .4;
+    transition: opacity .14s ease, transform .14s ease;
+}
+
+.ap24-menu__item:hover > svg {
+    opacity: 1;
+    color: var(--ap-accent-dark);
+    transform: translateX(2px);
+}
+
+/* Vignette produit au repos + aperçu flottant au survol */
+.ap24-menu__item__thumb {
+    position: relative;
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: 9px;
+    background: var(--ap-sheet);
+    overflow: visible;
+}
+
+.ap24-menu__item__thumb .ap24-fallback {
+    border-radius: 9px;
+}
+
+.ap24-menu__item__thumb .ap24-fallback span {
+    width: 19px;
+    max-width: none;
+}
+
+.ap24-menu__item__thumb-img {
+    display: block;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    object-fit: cover;
+    background: var(--ap-sheet);
+}
+
+/* L'aperçu du produit apparaît au-dessus de la ligne survolée */
+.ap24-menu__item:hover .ap24-menu__item__thumb-img,
+.ap24-menu__item:focus-visible .ap24-menu__item__thumb-img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 128px;
+    height: 128px;
+    border-radius: 12px;
+    transform: translate(-50%, -50%);
+    outline: 3px solid #fff;
+    box-shadow: 0 16px 32px -8px rgba(15, 23, 42, .35);
+    z-index: 60;
+    animation: ap24-preview-in .15s ease;
+}
+
+@keyframes ap24-preview-in {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -42%) scale(.92);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* --- Actions en-tête (panier + burger) ---------------------------------- */
+.ap24-header__actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.ap24-header__cart {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--ap-radius-control);
+    border: 1px solid var(--ap-line);
+    color: var(--ap-ink);
+    transition: border-color .14s ease, color .14s ease, background-color .14s ease;
+}
+
+.ap24-header__cart-link {
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--ap-radius-control);
+    border: 1px solid var(--ap-line);
+    color: var(--ap-ink);
+    transition: border-color .14s ease, color .14s ease, background-color .14s ease;
+    text-decoration: none;
+}
+
+.ap24-header__cart-link svg {
+    width: 18px;
+    height: 18px;
+}
+
+.ap24-header__cart-link:hover {
+    border-color: var(--ap-accent);
+    color: var(--ap-accent-dark);
+    background: var(--ap-accent-light);
+}
+
+.ap24-header__cart-count {
+    position: absolute;
+    top: 8px;
+    right: 4px;
+    display: inline-grid;
+    place-items: center;
+    min-width: 18px;
+    height: 18px;
+    background: var(--ap-accent);
+    color: var(--ap-black);
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.ap24-header__btn-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.ap24-header__menu-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--ap-radius-control);
+    border: 1px solid var(--ap-line);
+    background: var(--ap-paper);
+    color: var(--ap-ink);
+    cursor: pointer;
+    transition: border-color .14s ease, color .14s ease;
+}
+
+.ap24-header__menu-btn:hover {
+    border-color: var(--ap-accent);
+    color: var(--ap-accent-dark);
+}
+
+.ap24-header__menu-icon {
+    display: grid;
+    place-items: center;
+}
+
+.ap24-header__menu-icon svg {
+    width: 19px;
+    height: 19px;
+}
+
+@media (min-width: 768px) {
+    .ap24-nav {
+        display: flex;
+    }
+
+    .ap24-header__menu-btn {
+        display: none;
+    }
+}
+
+/* --- Panneau latéral mobile (burger) ------------------------------------ */
+.ap24-menu-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    background: rgba(15, 23, 42, .55);
+    animation: ap24-fade-in .18s ease;
+}
+
+@keyframes ap24-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.ap24-menu-overlay__panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(370px, 92vw);
+    display: flex;
+    flex-direction: column;
+    background: var(--ap-paper);
+    box-shadow: -18px 0 40px -12px rgba(15, 23, 42, .35);
+    animation: ap24-slide-in .22s ease;
+}
+
+@keyframes ap24-slide-in {
+    from { transform: translateX(24px); opacity: .6; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.ap24-menu-overlay__header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 13px 14px;
+    border-bottom: 1px solid var(--ap-line);
+}
+
+.ap24-menu-overlay__close {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--ap-line);
+    border-radius: 999px;
+    background: var(--ap-paper);
+    color: var(--ap-ink);
+    cursor: pointer;
+    transition: border-color .14s ease, color .14s ease;
+}
+
+.ap24-menu-overlay__close svg {
+    width: 17px;
+    height: 17px;
+}
+
+.ap24-menu-overlay__close:hover {
+    border-color: var(--ap-accent);
+    color: var(--ap-accent-dark);
+}
+
+.ap24-menu-overlay__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+}
+
+/* Navigation clonée : liste verticale, méga-menus masqués */
+.ap24-menu-overlay__body .ap24-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    padding: 0;
+    border: none;
+}
+
+.ap24-menu-overlay__body .ap24-nav__item {
+    width: 100%;
+}
+
+.ap24-menu-overlay__body .ap24-nav__link {
+    justify-content: flex-start;
+    gap: 11px;
+    padding: 13px 12px;
+    font-size: 14.5px;
+    border-radius: var(--ap-radius-control);
+}
+
+.ap24-menu-overlay__body .ap24-nav__lines br {
+    display: none;
+}
+
+.ap24-menu-overlay__body .ap24-nav__lines::after {
+    content: "\00a0";
+}
+
+.ap24-menu-overlay__body .ap24-nav__caret {
+    margin-left: auto;
+}
+
+.ap24-menu-overlay__body .ap24-menu {
+    display: none;
+}
+
+/* ==========================================================================
+   Boutons
+   ========================================================================== */
+.ap24-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 12px 22px;
+    border: none;
+    border-radius: var(--ap-radius-control);
+    background: var(--ap-accent);
+    color: #fff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color .15s ease, transform .15s ease, box-shadow .15s ease, border-color .15s ease, color .15s ease;
+}
+
+.ap24-btn svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+.ap24-btn:hover {
+    background: var(--ap-accent-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 15px -3px rgba(0, 137, 193, .30), 0 4px 6px -4px rgba(0, 137, 193, .30);
+}
+
+/* CTA principal boutique : jaune signature, texte press-noir */
+.ap24-btn--yellow {
+    background: var(--ap-yellow);
+    color: var(--ap-black);
+    font-weight: 800;
+    box-shadow: var(--ap-glow-cta);
+}
+
+.ap24-btn--yellow:hover {
+    background: var(--ap-yellow-dark);
+    box-shadow: 0 12px 18px -3px rgba(224, 168, 0, .38), 0 4px 6px -4px rgba(224, 168, 0, .38);
+}
+
+.ap24-btn--ghost {
+    background: transparent;
+    border: 1.5px solid var(--ap-line-strong);
+    color: var(--ap-ink-2);
+    box-shadow: none;
+}
+
+.ap24-btn--ghost:hover {
+    background: var(--ap-paper);
+    border-color: var(--ap-accent);
+    color: var(--ap-accent-dark);
+    box-shadow: none;
+}
+
+/* Sans ombre (formulaires, panneaux) */
+.ap24-btn--flat,
+.ap24-btn--flat:hover {
+    box-shadow: none;
+}
+
+.ap24-btn--sm {
+    padding: 8px 15px;
+    font-size: 13px;
+}
+
+.ap24-btn--primary {
+    background: var(--ap-accent);
+    color: #fff;
+    font-weight: 700;
+}
+
+.ap24-btn--primary:hover {
+    background: var(--ap-accent-dark);
+    color: #fff;
+    box-shadow: 0 10px 15px -3px rgba(0, 137, 193, .30), 0 4px 6px -4px rgba(0, 137, 193, .30);
+}
+
+.ap24-btn--green {
+    background: #25D366;
+    color: #fff;
+    font-weight: 700;
+}
+
+.ap24-btn--green:hover {
+    background: #1ebe5d;
+    color: #fff;
+    box-shadow: 0 10px 15px -3px rgba(37, 211, 102, .30), 0 4px 6px -4px rgba(37, 211, 102, .30);
+}
+
+.ap24-btn--block {
+    width: 100%;
+}
+
+.ap24-link-danger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0;
+    border: none;
+    background: none;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #dc2626;
+    cursor: pointer;
+}
+
+.ap24-link-danger svg {
+    width: 15px;
+    height: 15px;
+}
+
+.ap24-link-danger:hover {
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   Titres de section
+   ========================================================================== */
+.ap24-sh {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 14px;
+    margin: 34px 0 18px;
+}
+
+.ap24-sh-left {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.ap24-sh h2 {
+    font-size: clamp(22px, 2.6vw, 27px);
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    color: var(--ap-ink);
+    line-height: 1.2;
+}
+
+.ap24-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--ap-accent-dark);
+}
+
+.ap24-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    border: 1px solid var(--ap-line);
+    border-radius: 999px;
+    background: var(--ap-paper);
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ap-ink-2);
+    white-space: nowrap;
+}
+
+.ap24-stars {
+    color: var(--ap-yellow);
+    letter-spacing: 1.5px;
+    font-size: 13px;
+    line-height: 1;
+}
+
+.ap24-subhead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding-bottom: 13px;
+    border-bottom: 1px solid var(--ap-line);
+}
+
+.ap24-subhead h2 {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--ap-ink);
+    line-height: 1.25;
+}
+
+.ap24-subhead p {
+    margin-top: 4px;
+    font-size: 13.5px;
+    color: var(--ap-ink-3);
+}
+
+.ap24-subhead__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ap-accent-dark);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: gap .15s ease;
+}
+
+.ap24-subhead__link svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.ap24-subhead__link:hover {
+    gap: 11px;
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   Grilles de cartes
+   ========================================================================== */
+.ap24-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
+    gap: 18px;
+}
+
+.ap24-grid--tight {
+    grid-template-columns: repeat(auto-fill, minmax(218px, 1fr));
+    gap: 14px;
+}
+
+.ap24-promos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+/* --- Carte produit ------------------------------------------------------ */
+.ap24-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--ap-paper);
+    border: 1px solid var(--ap-line);
+    border-radius: var(--ap-radius-card);
+    overflow: hidden;
+    color: inherit;
+    text-decoration: none;
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.ap24-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--ap-shadow-lift);
+    border-color: #d7e2ee;
+}
+
+.ap24-img {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    background: var(--ap-sheet);
+    overflow: hidden;
+}
+
+.ap24-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .35s ease;
+}
+
+.ap24-card:hover .ap24-img > img {
+    transform: scale(1.045);
+}
+
+.ap24-img__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 14px;
+    background: linear-gradient(to top, rgba(15, 23, 42, .55) 0%, rgba(15, 23, 42, 0) 52%);
+    opacity: 0;
+    transition: opacity .18s ease;
+}
+
+.ap24-card:hover .ap24-img__overlay {
+    opacity: 1;
+}
+
+.ap24-img__overlay img {
+    width: auto;
+    height: 44%;
+    max-width: 70%;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 2px solid #fff;
+    background: #fff;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, .30);
+}
+
+.ap24-tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    padding: 4px 10px;
+    border: 1px solid var(--ap-line);
+    border-radius: 999px;
+    background: var(--ap-paper);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ap-ink-2);
+    box-shadow: 0 2px 6px rgba(15, 23, 42, .10);
+}
+
+.ap24-tag--yellow {
+    background: var(--ap-yellow);
+    border-color: transparent;
+    color: var(--ap-black);
+    font-weight: 800;
+}
+
+.ap24-fallback {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(140deg, #eaf7ff 0%, #dcf1fc 100%);
+    color: var(--ap-accent);
+}
+
+.ap24-fallback span {
+    display: grid;
+    place-items: center;
+    width: 42%;
+    max-width: 74px;
+}
+
+.ap24-fallback svg {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+}
+
+.ap24-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    padding: 15px 16px 17px;
+}
+
+.ap24-body h3 {
+    font-size: 15.5px;
+    font-weight: 800;
+    line-height: 1.3;
+    color: var(--ap-ink);
+}
+
+.ap24-body p {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ap-ink-3);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.ap24-price-row {
+    margin-top: auto;
+    padding-top: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.ap24-price {
+    font-size: 13.5px;
+    font-weight: 800;
+    color: var(--ap-accent-dark);
+    line-height: 1.3;
+}
+
+.ap24-price small {
+    display: block;
+    margin-top: 2px;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--ap-ink-3);
+}
+
+.ap24-arrow {
+    display: grid;
+    place-items: center;
+    width: 29px;
+    height: 29px;
+    flex-shrink: 0;
+    border-radius: 999px;
+    background: var(--ap-accent-light);
+    color: var(--ap-accent-dark);
+    transition: background-color .18s ease, color .18s ease;
+}
+
+.ap24-arrow svg {
+    width: 14px;
+    height: 14px;
+}
+
+.ap24-card:hover .ap24-arrow {
+    background: var(--ap-accent);
+    color: #fff;
+}
+
+.ap24-chiplist {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 2px;
+}
+
+.ap24-chiplist li {
+    padding: 3px 9px;
+    border: 1px solid var(--ap-line);
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--ap-ink-2);
+}
+
+/* ==========================================================================
+   Tuiles de catégorie (liste horizontale)
+   ========================================================================== */
+.ap24-ctiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 12px;
+}
+
+.ap24-ctile {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 14px;
+    background: var(--ap-paper);
+    border: 1px solid var(--ap-line);
+    border-radius: 14px;
+    color: inherit;
+    text-decoration: none;
+    transition: border-color .16s ease, box-shadow .16s ease, transform .16s ease;
+}
+
+.ap24-ctile:hover {
+    border-color: var(--ap-accent);
+    box-shadow: var(--ap-shadow-lift);
+    transform: translateY(-2px);
+}
+
+.ap24-ctile__imgwrap {
+    position: relative;
+    width: 62px;
+    height: 62px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--ap-sheet);
+}
+
+.ap24-ctile__thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Voile cyan + aperçu produit au survol */
+.ap24-ctile__overlay {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgba(0, 137, 193, .90);
+    opacity: 0;
+    transition: opacity .16s ease;
+}
+
+.ap24-ctile__overlay img {
+    width: 74%;
+    height: 74%;
+    object-fit: contain;
+    border-radius: 6px;
+    background: #fff;
+}
+
+.ap24-ctile:hover .ap24-ctile__overlay {
+    opacity: 1;
+}
+
+.ap24-ctile__icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: var(--ap-accent-light);
+    color: var(--ap-accent-dark);
+}
+
+.ap24-ctile__icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.ap24-ctile__txt {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+    min-width: 0;
+}
+
+.ap24-ctile__name {
+    font-size: 14.5px;
+    font-weight: 800;
+    color: var(--ap-ink);
+    line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ap24-ctile__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    font-size: 12px;
+    color: var(--ap-ink-3);
+}
+
+.ap24-ctile__meta b {
+    font-weight: 700;
+    color: var(--ap-accent-dark);
+}
+
+.ap24-ctile__arrow {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    margin-left: auto;
+    color: var(--ap-line-strong);
+    transition: color .16s ease;
+}
+
+.ap24-ctile:hover .ap24-ctile__arrow {
+    color: var(--ap-accent-dark);
+}
+
+.ap24-ctile__voir {
+    display: none;
+    margin-left: auto;
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ap-accent-dark);
+    opacity: 0;
+    transform: translateY(3px);
+    transition: opacity .16s ease, transform .16s ease;
+}
+
+.ap24-ctile:hover .ap24-ctile__voir {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (min-width: 640px) {
+    .ap24-ctile__voir {
+        display: inline;
+    }
+
+    .ap24-ctile__arrow {
+        display: none;
+    }
+}
+
+/* ==========================================================================
+   Puces de navigation (filtres / sous-catégories)
+   ========================================================================== */
+.ap24-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.ap24-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    border: 1px solid var(--ap-line);
+    border-radius: 999px;
+    background: var(--ap-paper);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ap-ink-2);
+    text-decoration: none;
+    transition: border-color .14s ease, color .14s ease, background-color .14s ease;
+}
+
+.ap24-chip:hover {
+    border-color: var(--ap-accent);
+    color: var(--ap-accent-dark);
+}
+
+.ap24-chip.is-active {
+    background: var(--ap-accent);
+    border-color: var(--ap-accent);
+    color: #fff;
+}
+
+/* ==========================================================================
+   Fil d'Ariane + en-tête de page
+   ========================================================================== */
+.ap24-crumbs {
+    padding: 16px 0 2px;
+    font-size: 12.5px;
+    color: var(--ap-ink-3);
+}
+
+.ap24-crumbs__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+}
+
+.ap24-crumbs__list a {
+    color: var(--ap-ink-3);
+    text-decoration: none;
+}
+
+.ap24-crumbs__list a:hover {
+    color: var(--ap-accent-dark);
+    text-decoration: underline;
+}
+
+.ap24-crumbs__list [aria-current="page"] {
+    font-weight: 600;
+    color: var(--ap-ink);
+}
+
+.ap24-crumbs__sep {
+    opacity: .45;
+}
+
+.ap24-pagehead {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    margin: 16px 0 4px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--ap-line);
+}
+
+.ap24-pagehead__icon {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+    border-radius: var(--ap-radius-card);
+    background: var(--ap-accent-light);
+    color: var(--ap-accent-dark);
+}
+
+.ap24-pagehead__icon svg {
+    width: 27px;
+    height: 27px;
+}
+
+.ap24-pagehead h1 {
+    font-size: clamp(25px, 3.4vw, 33px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.18;
+    color: var(--ap-ink);
+}
+
+.ap24-kicker {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--ap-accent-dark);
+    margin-bottom: 5px;
+}
+
+.ap24-pagehead__desc {
+    margin-top: 7px;
+    max-width: 72ch;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--ap-ink-2);
+}
+
+.ap24-pagehead__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 11px;
+}
+
+.ap24-pagehead__meta span {
+    padding: 4px 11px;
+    border: 1px solid var(--ap-line);
+    border-radius: 999px;
+    background: var(--ap-paper);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ap-ink-2);
+}
+
+/* ==========================================================================
+   Recherche
+   ========================================================================== */
+.ap24-searchbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 18px 0 4px;
+}
+
+.ap24-searchbar__input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+    padding: 11px 16px;
+}
+
+.ap24-searchbar__input svg {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+    color: var(--ap-ink-3);
+}
+
+.ap24-searchbar__input input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14.5px;
+    color: var(--ap-ink);
+}
+
+/* ==========================================================================
+   Panneaux, formulaires
+   ========================================================================== */
+.ap24-panel {
+    background: var(--ap-paper);
+    border: 1px solid var(--ap-line);
+    border-radius: var(--ap-radius-card);
+    padding: 22px 24px;
+}
+
+.ap24-panel h2 {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--ap-ink);
+    line-height: 1.3;
+}
+
+.ap24-panel--soft {
+    background: var(--ap-sheet);
+}
+
+.ap24-panel__hint {
+    margin-top: 5px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ap-ink-3);
+}
+
+.ap24-formgrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px 18px;
+}
+
+@media (min-width: 640px) {
+    .ap24-formgrid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.ap24-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.ap24-label {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--ap-ink-2);
+}
+
+.ap24-input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--ap-line);
+    border-radius: var(--ap-radius-control);
+    background: var(--ap-paper);
+    font-family: inherit;
+    font-size: 14.5px;
+    color: var(--ap-ink);
+    transition: border-color .14s ease, box-shadow .14s ease;
+}
+
+.ap24-input::placeholder {
+    color: var(--ap-ink-3);
+    opacity: .75;
+}
+
+.ap24-input:focus {
+    outline: none;
+    border-color: var(--ap-accent);
+    box-shadow: 0 0 0 3px rgba(0, 174, 239, .14);
+}
+
+select.ap24-input {
+    appearance: none;
+    padding-right: 38px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 13px center;
+    cursor: pointer;
+}
+
+textarea.ap24-input {
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.55;
+}
+
+.ap24-input--sm {
+    width: auto;
+    padding: 7px 10px;
+    font-size: 13.5px;
+    border-radius: 10px;
+}
+
+.ap24-error {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #dc2626;
+}
+
+.ap24-alert {
+    padding: 13px 16px;
+    border-radius: var(--ap-radius-control);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.ap24-alert--ok {
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #047857;
+}
+
+/* ==========================================================================
+   Page produit (PDP)
+   ========================================================================== */
+.ap24-pdp {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-top: 24px;
+}
+
+@media (min-width: 1024px) {
+    .ap24-pdp {
+        grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr);
+        gap: 38px;
+    }
+}
+
+.ap24-pdp__media {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+}
+
+.ap24-pdp__frame {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border: 1px solid var(--ap-line);
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--ap-sheet);
+}
+
+.ap24-pdp__frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ap24-pdp__badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 2;
+    padding: 6px 13px;
+    border-radius: 999px;
+    background: var(--ap-yellow);
+    color: var(--ap-black);
+    font-size: 12px;
+    font-weight: 800;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, .18);
+}
+
+.ap24-pdp__note {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--ap-ink-3);
+}
+
+.ap24-pdp__note svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.ap24-pdp__right {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.ap24-pdp__cat {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+    margin-bottom: 13px;
+    padding: 6px 13px 6px 8px;
+    border: 1px solid var(--ap-line);
+    border-radius: 999px;
+    background: var(--ap-paper);
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--ap-accent-dark);
+    text-decoration: none;
+    transition: border-color .14s ease, background-color .14s ease;
+}
+
+.ap24-pdp__cat svg {
+    width: 16px;
+    height: 16px;
+}
+
+.ap24-pdp__cat:hover {
+    border-color: var(--ap-accent);
+    background: var(--ap-accent-light);
+}
+
+.ap24-pdp__title {
+    font-size: clamp(24px, 3vw, 29px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--ap-ink);
+}
+
+.ap24-pdp__desc {
+    margin: 9px 0 18px;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--ap-ink-2);
+}
+
+/* --- Configurateur d'achat ---------------------------------------------- */
+.ap24-buy {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    border: 1px solid var(--ap-line);
+    border-radius: 18px;
+    background: var(--ap-paper);
+}
+
+.ap24-buy__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 13px;
+    border-bottom: 1px solid var(--ap-line);
+}
+
+.ap24-buy__from {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--ap-ink-3);
+}
+
+.ap24-buy__amount {
+    display: block;
+    margin-top: 3px;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    color: var(--ap-accent-dark);
+}
+
+.ap24-buy__save {
+    flex-shrink: 0;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--ap-yellow);
+    color: var(--ap-black);
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.ap24-buy__row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ap24-buy__label {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--ap-ink-2);
+}
+
+/* Quantité */
+.ap24-qty {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.ap24-qty__ctrl {
+    display: inline-flex;
+    align-items: stretch;
+    border: 1px solid var(--ap-line);
+    border-radius: var(--ap-radius-control);
+    overflow: hidden;
+    background: var(--ap-paper);
+}
+
+.ap24-qty__btn {
+    width: 40px;
+    display: grid;
+    place-items: center;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ap-ink-2);
+    cursor: pointer;
+    transition: background-color .13s ease, color .13s ease;
+}
+
+.ap24-qty__btn:hover {
+    background: var(--ap-accent-light);
+    color: var(--ap-accent-dark);
+}
+
+.ap24-qty__input {
+    width: 86px;
+    border: none;
+    border-left: 1px solid var(--ap-line);
+    border-right: 1px solid var(--ap-line);
+    background: transparent;
+    text-align: center;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ap-ink);
+    padding: 9px 4px;
+}
+
+.ap24-qty__input:focus {
+    outline: none;
+    background: var(--ap-sheet);
+}
+
+.ap24-qty__presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.ap24-preset {
+    padding: 7px 13px;
+    border: 1px solid var(--ap-line);
+    border-radius: 999px;
+    background: var(--ap-paper);
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--ap-ink-2);
+    cursor: pointer;
+    transition: border-color .13s ease, background-color .13s ease, color .13s ease;
+}
+
+.ap24-preset:hover {
+    border-color: var(--ap-accent);
+    color: var(--ap-accent-dark);
+}
+
+.ap24-preset.is-active {
+    background: var(--ap-accent);
+    border-color: var(--ap-accent);
+    color: #fff;
+}
+
+/* Total estimé */
+.ap24-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px 16px;
+    border-radius: var(--ap-radius-control);
+    background: var(--ap-sheet);
+    border: 1px solid var(--ap-line);
+}
+
+.ap24-total__label {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--ap-ink-2);
+    line-height: 1.35;
+}
+
+.ap24-total__label small {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--ap-ink-3);
+}
+
+.ap24-total__value {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--ap-accent-dark);
+    white-space: nowrap;
+}
+
+/* Dépôt de fichier */
+.ap24-file {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 14px 16px;
+    border: 1.5px dashed var(--ap-line-strong);
+    border-radius: var(--ap-radius-control);
+    background: var(--ap-paper);
+    cursor: pointer;
+    transition: border-color .15s ease, background-color .15s ease;
+}
+
+.ap24-file:hover {
+    border-color: var(--ap-accent);
+    background: rgba(0, 174, 239, .04);
+}
+
+.ap24-file__icon {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: var(--ap-accent-light);
+    color: var(--ap-accent-dark);
+}
+
+.ap24-file__icon svg {
+    width: 19px;
+    height: 19px;
+}
+
+.ap24-file strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ap-ink);
+}
+
+.ap24-file small {
+    display: block;
+    margin-top: 2px;
+    font-size: 12px;
+    color: var(--ap-ink-3);
+}
+
+.ap24-file__name {
+    display: block;
+    margin-top: 3px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--ap-accent-dark);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 34ch;
+}
+
+/* Réassurance */
+.ap24-reassure {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 6px;
+    padding-top: 14px;
+    border-top: 1px solid var(--ap-line);
+}
+
+.ap24-reassure li {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 13px;
+    color: var(--ap-ink-2);
+}
+
+.ap24-reassure svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    color: var(--ap-accent-dark);
+}
+
+/* ==========================================================================
+   Tableau tarifaire + prose
+   ========================================================================== */
+.ap24-tablewrap {
+    border: 1px solid var(--ap-line);
+    border-radius: 14px;
+    overflow-x: auto;
+    background: var(--ap-paper);
+}
+
+.ap24-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+}
+
+.ap24-table th {
+    padding: 11px 16px;
+    background: var(--ap-sheet);
+    border-bottom: 1px solid var(--ap-line);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--ap-ink-3);
+    text-align: left;
+    white-space: nowrap;
+}
+
+.ap24-table td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--ap-line);
+    color: var(--ap-ink-2);
+}
+
+.ap24-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.ap24-table tbody tr:hover {
+    background: var(--ap-sheet);
+}
+
+.ap24-table td strong {
+    font-weight: 700;
+    color: var(--ap-ink);
+}
+
+.ap24-prose {
+    max-width: 75ch;
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--ap-ink-2);
+}
+
+.ap24-prose p {
+    margin-bottom: 10px;
+}
+
+/* ==========================================================================
+   Panier + commande
+   ========================================================================== */
+.ap24-cart {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-top: 22px;
+    align-items: start;
+}
+
+@media (min-width: 960px) {
+    .ap24-cart {
+        grid-template-columns: minmax(0, 1fr) 340px;
+    }
+
+    .ap24-cart > aside {
+        position: sticky;
+        top: 118px;
+    }
+}
+
+.ap24-cartline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid var(--ap-line);
+    border-radius: 14px;
+    background: var(--ap-paper);
+}
+
+.ap24-cartline__thumb {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 62px;
+    height: 62px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--ap-sheet);
+    color: var(--ap-accent);
+}
+
+.ap24-cartline__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ap24-cartline__thumb svg {
+    width: 26px;
+    height: 26px;
+}
+
+.ap24-cartline__main {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+    min-width: 200px;
+}
+
+.ap24-cartline__name {
+    font-size: 14.5px;
+    font-weight: 800;
+    color: var(--ap-ink);
+    text-decoration: none;
+}
+
+.ap24-cartline__name:hover {
+    color: var(--ap-accent-dark);
+}
+
+.ap24-cartline__opts {
+    font-size: 12.5px;
+    color: var(--ap-ink-3);
+}
+
+.ap24-cartline__unit {
+    font-size: 12.5px;
+    color: var(--ap-ink-2);
+}
+
+.ap24-cartline__total {
+    margin-left: auto;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--ap-ink);
+    white-space: nowrap;
+}
+
+.ap24-cartline__tools {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.ap24-line {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--ap-line);
+}
+
+.ap24-line dt {
+    font-size: 13.5px;
+    color: var(--ap-ink-2);
+}
+
+.ap24-line dd {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--ap-ink);
+    text-align: right;
+    white-space: nowrap;
+}
+
+.ap24-line--total {
+    border-bottom: none;
+    border-top: 1.5px solid var(--ap-ink);
+    padding-top: 12px;
+    margin-top: 3px;
+}
+
+.ap24-line--total dt {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--ap-ink);
+}
+
+.ap24-line--total dd {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--ap-accent-dark);
+}
+
+/* État vide */
+.ap24-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 9px;
+    padding: 52px 24px;
+    border: 1.5px dashed var(--ap-line-strong);
+    border-radius: 18px;
+    background: var(--ap-sheet);
+}
+
+.ap24-empty h2 {
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--ap-ink);
+}
+
+.ap24-empty p {
+    max-width: 48ch;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ap-ink-3);
+}
+
+.ap24-empty .ap24-btn {
+    margin-top: 11px;
+}
+
+.ap24-empty__icon {
+    display: grid;
+    place-items: center;
+    width: 62px;
+    height: 62px;
+    border-radius: var(--ap-radius-card);
+    background: var(--ap-accent-light);
+    color: var(--ap-accent-dark);
+}
+
+.ap24-empty__icon svg {
+    width: 30px;
+    height: 30px;
+}
+
+/* ==========================================================================
+   Bandeau carrousel
+   ========================================================================== */
+.ap24-banner {
+    position: relative;
+    overflow: hidden;
+    background: var(--ap-ink);
+}
+
+.ap24-banner__track {
+    display: flex;
+    transition: transform .6s cubic-bezier(.4, 0, .2, 1);
+}
+
+.ap24-banner__slide {
+    position: relative;
+    flex: 0 0 100%;
+    width: 100%;
+    min-height: 420px;
+}
+
+@media (min-width: 768px) {
+    .ap24-banner__slide {
+        min-height: 470px;
+    }
+}
+
+.ap24-banner__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ap24-banner__shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(95deg, rgba(11, 31, 92, .90) 0%, rgba(11, 31, 92, .58) 48%, rgba(11, 31, 92, .18) 100%);
+}
+
+.ap24-banner__caption {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    padding: 40px 0;
+}
+
+@media (min-width: 768px) {
+    .ap24-banner__caption {
+        padding: 56px 0;
+    }
+}
+
+.ap24-banner__indicators {
+    position: absolute;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    gap: 8px;
+}
+
+.ap24-banner__indicators button {
+    width: 9px;
+    height: 9px;
+    padding: 0;
+    border: none;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .45);
+    cursor: pointer;
+    transition: background-color .2s ease, width .2s ease;
+}
+
+.ap24-banner__indicators button:hover {
+    background: #fff;
+}
+
+.ap24-banner__indicators button.is-active {
+    width: 26px;
+    background: var(--ap-yellow);
+}
+
+/* ==========================================================================
+   Accueil —À propos / Services / Studio
+   ========================================================================== */
+.ap24-about {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    align-items: center;
+    margin: 46px 0;
+}
+
+@media (min-width: 900px) {
+    .ap24-about {
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 38px;
+    }
+}
+
+.ap24-about-txt h2 {
+    margin: 7px 0 13px;
+    font-size: clamp(23px, 2.8vw, 28px);
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+    color: var(--ap-ink);
+}
+
+.ap24-about-txt p {
+    max-width: 58ch;
+    margin-bottom: 11px;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--ap-ink-2);
+}
+
+.ap24-about-img {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border: 1px solid var(--ap-line);
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--ap-sheet);
+}
+
+.ap24-about-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ap24-services {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin: 46px 0;
+}
+
+@media (min-width: 640px) {
+    .ap24-services {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.ap24-svc {
+    padding: 22px;
+    border: 1px solid var(--ap-line);
+    border-radius: var(--ap-radius-card);
+    background: var(--ap-paper);
+}
+
+.ap24-svc-icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin-bottom: 13px;
+    border-radius: var(--ap-radius-control);
+    background: var(--ap-accent-light);
+    color: var(--ap-accent-dark);
+}
+
+.ap24-svc h3 {
+    margin-bottom: 6px;
+    font-size: 15.5px;
+    font-weight: 800;
+    color: var(--ap-ink);
+}
+
+.ap24-svc p {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--ap-ink-3);
+}
+
+.ap24-studio {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin: 46px 0 6px;
+    padding: 28px 32px;
+    border-radius: 20px;
+    background: var(--ap-ink);
+    color: #fff;
+}
+
+.ap24-studio h3 {
+    font-size: 19px;
+    font-weight: 800;
+    color: #fff;
+}
+
+.ap24-studio p {
+    max-width: 62ch;
+    margin-top: 7px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: #cbd5e1;
+}
+
+/* ==========================================================================
+   Comment ça marche — bande sombre
+   ========================================================================== */
+.ap24-how {
+    margin-top: 56px;
+    padding: 52px 16px;
+    background: var(--ap-ink);
+}
+
+.ap24-how__inner {
+    max-width: 1246px;
+    margin-inline: auto;
+}
+
+.ap24-how__title {
+    margin-bottom: 34px;
+    text-align: center;
+    font-size: clamp(24px, 3vw, 29px);
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    color: #fff;
+}
+
+.ap24-how__steps {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+}
+
+@media (min-width: 768px) {
+    .ap24-how__steps {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+    }
+}
+
+.ap24-how__step {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.ap24-how__number {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 999px;
+    background: var(--ap-yellow);
+    color: var(--ap-black);
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.ap24-how__step h3 {
+    margin: 9px 0 6px;
+    font-size: 15.5px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: #fff;
+}
+
+.ap24-how__step p {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: #cbd5e1;
+}
+
+.ap24-how__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 36px;
+}
+
+.ap24-how__primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 13px 26px;
+    border-radius: var(--ap-radius-control);
+    background: var(--ap-yellow);
+    color: var(--ap-black);
+    font-size: 14px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: background-color .15s ease, transform .15s ease;
+}
+
+.ap24-how__primary:hover {
+    background: var(--ap-yellow-dark);
+    transform: translateY(-1px);
+}
+
+.ap24-how__primary svg {
+    width: 16px;
+    height: 16px;
+}
+
+.ap24-how__video {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 13px 26px;
+    border: 1.5px solid rgba(255, 255, 255, .38);
+    border-radius: var(--ap-radius-control);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: border-color .15s ease, background-color .15s ease;
+}
+
+.ap24-how__video:hover {
+    border-color: #fff;
+    background: rgba(255, 255, 255, .08);
+}
+
+.ap24-how__video svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* ==========================================================================
+   Chiffres clés
+   ========================================================================== */
+.ap24-stats {
+    padding: 44px 16px;
+    background: var(--ap-sheet);
+    border-top: 1px solid var(--ap-line);
+    border-bottom: 1px solid var(--ap-line);
+}
+
+.ap24-stats__row {
+    max-width: 1246px;
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 26px 18px;
+    text-align: center;
+}
+
+@media (min-width: 640px) {
+    .ap24-stats__row {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .ap24-stats__row {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+.ap24-stat h2 {
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--ap-accent-dark);
+}
+
+.ap24-stat h3 {
+    margin-top: 5px;
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--ap-ink-3);
+}
+
+.ap24-statbox {
+    padding: 18px;
+    border: 1px solid var(--ap-line);
+    border-radius: 14px;
+    background: var(--ap-paper);
+    text-align: center;
+}
+
+.ap24-statbox strong {
+    display: block;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--ap-accent-dark);
+}
+
+.ap24-statbox span {
+    display: block;
+    margin-top: 4px;
+    font-size: 12.5px;
+    color: var(--ap-ink-3);
+}
+
+/* ==========================================================================
+   Bande CTA + FAQ
+   ========================================================================== */
+.ap24-ctaband {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin: 42px 0;
+    padding: 26px 30px;
+    border-radius: 20px;
+    background: var(--ap-yellow);
+}
+
+.ap24-ctaband h2 {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--ap-black);
+}
+
+.ap24-ctaband p {
+    margin-top: 5px;
+    font-size: 13.5px;
+    color: rgba(10, 10, 10, .72);
+}
+
+/* Bouton blanc sur bande jaune */
+.ap24-ctaband .ap24-btn {
+    background: #fff;
+    color: var(--ap-ink);
+    box-shadow: none;
+}
+
+.ap24-ctaband .ap24-btn:hover {
+    background: var(--ap-sheet);
+    box-shadow: none;
+}
+
+.ap24-faq {
+    margin-bottom: 10px;
+    border: 1px solid var(--ap-line);
+    border-radius: var(--ap-radius-control);
+    background: var(--ap-paper);
+    overflow: hidden;
+}
+
+.ap24-faq summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--ap-ink);
+    cursor: pointer;
+    list-style: none;
+    transition: background-color .13s ease;
+}
+
+.ap24-faq summary::-webkit-details-marker {
+    display: none;
+}
+
+.ap24-faq summary::after {
+    content: "+";
+    flex-shrink: 0;
+    font-size: 19px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--ap-ink-3);
+    transition: transform .16s ease;
+}
+
+.ap24-faq[open] summary::after {
+    content: "\2212";
+}
+
+.ap24-faq summary:hover {
+    background: var(--ap-sheet);
+}
+
+.ap24-faq p {
+    padding: 0 16px 15px;
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--ap-ink-2);
+}
+
+/* ==========================================================================
+   Pied de page — newsletter / réseaux / colonnes
+   ========================================================================== */
+.ap24-subscribe {
+    padding: 40px 16px;
+    background: var(--ap-ink);
+}
+
+.ap24-subscribe__inner {
+    max-width: 1246px;
+    margin-inline: auto;
+    text-align: center;
+}
+
+.ap24-subscribe__inner h3 {
+    margin-bottom: 17px;
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+}
+
+.ap24-subscribe__form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.ap24-subscribe__form input {
+    width: min(430px, 100%);
+    padding: 15px 22px;
+    border: 2px solid rgba(255, 255, 255, .38);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .06);
+    font-family: inherit;
+    font-size: 15px;
+    color: #fff;
+    transition: border-color .15s ease;
+}
+
+.ap24-subscribe__form input::placeholder {
+    color: #94a3b8;
+}
+
+.ap24-subscribe__form input:focus {
+    outline: none;
+    border-color: #fff;
+}
+
+.ap24-sub-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 55px;
+    padding: 8px 28px;
+    border: 2.7px solid #fff;
+    border-radius: 30px;
+    background: var(--ap-yellow);
+    color: #0b0b0b;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color .15s ease, transform .15s ease;
+}
+
+.ap24-sub-btn:hover {
+    background: var(--ap-yellow-dark);
+    transform: translateY(-1px);
+}
+
+.ap24-subscribe__note {
+    max-width: 52ch;
+    margin: 14px auto 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #94a3b8;
+}
+
+.ap24-follow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 17px 16px;
+    background: #0b1424;
+    border-top: 1px solid rgba(255, 255, 255, .07);
+}
+
+.ap24-follow h3 {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: #94a3b8;
+}
+
+.ap24-follow a {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .09);
+    color: #fff;
+    transition: background-color .15s ease, color .15s ease;
+}
+
+.ap24-follow a:hover {
+    background: var(--ap-accent);
+    color: #fff;
+}
+
+.ap24-footer {
+    padding: 42px 16px 48px;
+    background: var(--ap-ink);
+}
+
+.ap24-footer__grid {
+    max-width: 1246px;
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+}
+
+@media (min-width: 640px) {
+    .ap24-footer__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1100px) {
+    .ap24-footer__grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+.ap24-footer__grid h3 {
+    margin-bottom: 13px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+.ap24-footer__grid h4 {
+    margin: 13px 0 7px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--ap-yellow);
+}
+
+.ap24-footer__grid ul {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.ap24-footer__grid li,
+.ap24-footer__grid li a {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #cbd5e1;
+    text-decoration: none;
+    word-break: break-word;
+}
+
+.ap24-footer__grid li a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.ap24-copyright {
+    padding: 16px;
+    border-top: 1px solid rgba(255, 255, 255, .07);
+    background: #0b1424;
+    text-align: center;
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+/* ==========================================================================
+   En-tête — nouvelles classes (réplique 24hprint.ma)
+   ========================================================================== */
+.ap24-header-top {
+    display: block;
+    height: 4px;
+    background-image: linear-gradient(
+        90deg,
+        var(--ap-accent) 0 30%,
+        #0b1f5c 30% 52%,
+        var(--ap-yellow) 52% 80%,
+        var(--ap-accent-light) 80% 100%
+    );
+}
+.ap24-header__container {
+    max-width: 1246px;
+    margin-inline: auto;
+    padding: 0 16px;
+}
+.ap24-header__main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 0;
+    flex-wrap: wrap;
+}
+.ap24-logo-img {
+    display: block;
+    height: 40px;
+    width: auto;
+}
+.ap24-topbar__item {
+    color: #fff;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: color .15s ease, gap .15s ease;
+    white-space: nowrap;
+}
+.ap24-topbar__item:hover {
+    color: var(--ap-accent);
+    gap: 9px;
+}
+.ap24-header__search {
+    flex: 1;
+    min-width: 220px;
+    max-width: 480px;
+}
+.ap24-search-form {
+    display: flex;
+    width: 100%;
+}
+.ap24-search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border: 1px solid var(--ap-line);
+    border-radius: var(--ap-radius-control);
+    background: var(--ap-paper);
+    transition: border-color .14s ease, box-shadow .14s ease;
+}
+.ap24-search-wrapper:focus-within {
+    border-color: var(--ap-accent);
+    box-shadow: 0 0 0 3px rgba(0, 174, 239, .10);
+}
+.ap24-search-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--ap-ink-3);
+    margin-left: 12px;
+    flex-shrink: 0;
+}
+.ap24-search-input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ap-ink);
+    padding: 9px 12px 9px 8px;
+}
+.ap24-search-input::placeholder {
+    color: var(--ap-ink-3);
+}
+.ap24-search-submit {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    color: var(--ap-accent-dark);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: background-color .14s ease, color .14s ease;
+    white-space: nowrap;
+}
+.ap24-search-submit:hover {
+    background: var(--ap-accent-light);
+    color: var(--ap-accent-dark);
+}
+
+/* ==========================================================================
+   Accessibilité + mouvement réduit
+   ========================================================================== */
+.ap24-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+.ap24-header__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: var(--ap-radius-control);
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all .15s ease;
+}
+.ap24-header__btn.ap24-btn--devis {
+    background: var(--ap-accent);
+    color: #fff;
+}
+.ap24-header__btn.ap24-btn--devis:hover {
+    background: var(--ap-accent-dark);
+    color: #fff;
+    box-shadow: 0 10px 15px -3px rgba(0, 137, 193, .30), 0 4px 6px -4px rgba(0, 137, 193, .30);
+}
+.ap24-header__btn.ap24-btn--whatsapp {
+    background: #25D366;
+    color: #fff;
+}
+.ap24-header__btn.ap24-btn--whatsapp:hover {
+    background: #1ebe5d;
+    color: #fff;
+    box-shadow: 0 10px 15px -3px rgba(37, 211, 102, .30), 0 4px 6px -4px rgba(37, 211, 102, .30);
+}
+.ap24-header__btn-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+.ap24-header__menu-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--ap-radius-control);
+    border: 1px solid var(--ap-line);
+    background: var(--ap-paper);
+    color: var(--ap-ink);
+    cursor: pointer;
+    transition: border-color .14s ease, color .14s ease, background-color .14s ease;
+}
+.ap24-header__menu-btn:hover {
+    border-color: var(--ap-accent);
+    color: var(--ap-accent-dark);
+    background: var(--ap-accent-light);
+}
+.ap24-nav__container {
+    max-width: 1246px;
+    margin-inline: auto;
+    padding: 0 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.ap24-nav__container::-webkit-scrollbar {
+    display: none;
+}
+.ap24-nav__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.ap24-nav__link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    color: var(--ap-ink);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: color .14s ease, background-color .14s ease;
+}
+.ap24-nav__link:hover,
+.ap24-nav__link.is-active {
+    color: var(--ap-accent);
+    background: var(--ap-accent-light);
+}
+.ap24-nav__icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+.ap24-nav__text {
+    display: block;
+    line-height: 1.3;
+}
+.ap24-menu__panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    display: none;
+    background: var(--ap-paper);
+    border: 1px solid var(--ap-line);
+    border-top: none;
+    box-shadow: var(--ap-shadow-lift);
+}
+.ap24-nav__item:hover .ap24-menu__panel {
+    display: block;
+}
+.ap24-menu__head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border-bottom: 1px solid var(--ap-line);
+}
+.ap24-menu__head-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+}
+.ap24-menu__head-text {
+    flex: 1;
+}
+.ap24-menu__eyebrow {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--ap-ink-3);
+    margin-bottom: 2px;
+}
+.ap24-menu__title {
+    display: block;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--ap-ink);
+}
+.ap24-menu__meta {
+    display: block;
+    font-size: 12px;
+    color: var(--ap-ink-3);
+    margin-top: 2px;
+}
+.ap24-menu__all-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ap-accent);
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background-color .14s ease;
+}
+.ap24-menu__all-link:hover {
+    background: var(--ap-accent-light);
+}
+.ap24-menu__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    padding: 14px;
+}
+.ap24-menu__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    color: var(--ap-ink);
+    text-decoration: none;
+    border-radius: var(--ap-radius-control);
+    transition: background-color .14s ease, color .14s ease;
+}
+.ap24-menu__item:hover {
+    background: var(--ap-accent-light);
+    color: var(--ap-accent-dark);
+}
+.ap24-menu__item__thumb {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    border: 1px solid var(--ap-line);
+    background: var(--ap-sheet);
+    flex-shrink: 0;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+}
+.ap24-menu__item__thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.ap24-menu__item__label {
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.ap24-fallback {
+    width: 24px;
+    height: 24px;
+    color: var(--ap-ink-3);
+}
+.ap24-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    display: flex;
+    align-items: flex-start;
+}
+.ap24-menu-overlay__panel {
+    width: 320px;
+    max-width: 100vw;
+    background: var(--ap-paper);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--ap-shadow-lift);
+    transform: translateX(-100%);
+    transition: transform .25s ease;
+}
+.ap24-menu-overlay[aria-hidden="false"] .ap24-menu-overlay__panel {
+    transform: translateX(0);
+}
+.ap24-menu-overlay__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid var(--ap-line);
+}
+.ap24-menu-overlay__close {
+    display: inline-grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: transparent;
+    color: var(--ap-ink);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color .14s ease;
+}
+.ap24-menu-overlay__close:hover {
+    background: var(--ap-sheet);
+}
+.ap24-menu-overlay__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+}
+.ap24-btn:focus-visible,
+.ap24-chip:focus-visible,
+.ap24-nav__link:focus-visible,
+.ap24-menu__item:focus-visible,
+.ap24-ctile:focus-visible,
+.ap24-card:focus-visible,
+.ap24-sub-btn:focus-visible,
+.ap24-preset:focus-visible {
+    outline: 2px solid var(--ap-accent-dark);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ap24-menu,
+    .ap24-card,
+    .ap24-ctile,
+    .ap24-btn,
+    .ap24-banner__track,
+    .ap24-img img,
+    .ap24-menu__item__thumb-img,
+    .ap24-menu-overlay,
+    .ap24-menu-overlay__panel {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* ==========================================================================
+   Responsive — top bar & header sur mobile
+   ========================================================================== */
+@media (max-width: 767px) {
+    .ap24-topbar__inner {
+        flex-wrap: wrap;
+        padding: 6px 12px;
+    }
+
+    .ap24-topbar__left,
+    .ap24-topbar__center,
+    .ap24-topbar__right {
+        width: 100%;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .ap24-topbar__left { order: 1; }
+    .ap24-topbar__center { order: 2; justify-content: center; }
+    .ap24-topbar__right { order: 3; margin-left: 0; justify-content: center; }
+
+    .ap24-topbar__divider { display: none; }
+
+    .ap24-topbar__tel,
+    .ap24-topbar__email,
+    .ap24-topbar__devis,
+    .ap24-topbar__aide,
+    .ap24-topbar__account,
+    .ap24-topbar__whatsapp {
+        font-size: 12px;
+        gap: 5px;
+    }
+
+    .ap24-topbar__icon {
+        width: 14px;
+        height: 14px;
+    }
+
+    .ap24-header__inner {
+        padding: 8px 12px;
+        gap: 12px;
+    }
+
+    .ap24-header__brand-mark {
+        width: 34px;
+        height: 34px;
+    }
+
+    .ap24-header__wordmark {
+        font-size: 17px;
+        margin-left: 6px;
+    }
+
+    .ap24-header__search {
+        order: 4;
+        width: 100%;
+        max-width: none;
+    }
+
+    .ap24-header__actions {
+        gap: 6px;
+    }
+
+    .ap24-header__devis,
+    .ap24-header__whatsapp {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+
+    .ap24-header__btn-icon {
+        width: 13px;
+        height: 13px;
+    }
+
+    .ap24-header__cart-link {
+        width: 36px;
+        height: 36px;
+    }
+
+    .ap24-header__cart-count {
+        top: 6px;
+        right: 2px;
+        min-width: 16px;
+        height: 16px;
+        font-size: 9px;
+    }
+}
+
+@media (min-width: 768px) {
+    .ap24-topbar__center {
+        display: flex !important;
+    }
+}

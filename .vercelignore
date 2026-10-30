@@ -25,3 +25,9 @@ npm-debug.log*
 *.bak.php
 _promo_fragment*.blade.php
 home.blade.bak.php
+
+# Référence de travail — pas besoin sur Vercel
+/.reference/
+/vite.err
+/vite.log
+database/*.sqlite.bak-*

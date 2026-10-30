@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             DemoClientsSeeder::class,
             DemoOrdersSeeder::class,
             StorefrontSeeder::class,
+            TaxonomySeeder::class,
         ]);
     }
 }

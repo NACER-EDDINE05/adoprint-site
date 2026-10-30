@@ -1,376 +1,347 @@
 @extends('layouts.storefront')
 
-@section('title', 'ADO PRINT — Imprimerie en ligne au Maroc | Cartes de visite, flyers, brochures')
+@section('title', 'ADO PRINT — Imprimerie Casablanca | Imprimerie en ligne')
+@section('meta_description', 'Impression en ligne : cartes de visite, flyers, brochures, affiches, objets publicitaires. Prix dégressifs, impression express et livraison rapide partout au Maroc.')
 
 @section('content')
-    {{-- ================================================================ --}}
-    {{-- HÉRO — promesse claire, fond blanc, produits en avant --}}
-    {{-- ================================================================ --}}
-    <section class="relative overflow-hidden bg-white">
-        {{-- Couche photo : téléversée depuis l'admin (Apparence du site) --}}
-        @php $heroImage = $siteSettings->get('home.hero_image'); $onPhoto = (bool) $heroImage; @endphp
-        @if ($heroImage)
-            <div class="absolute inset-0" aria-hidden="true">
-                <img src="/storage/{{ $heroImage }}" alt="" class="h-full w-full object-cover">
-                {{-- Voile sombre : lisibilité du texte blanc sur la photo --}}
-                <div class="absolute inset-0 bg-slate-900/55"></div>
-                <div class="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-slate-900/45 to-slate-900/15"></div>
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/65 via-transparent to-slate-900/25"></div>
-                <div class="brand-stripes absolute inset-x-0 top-0 h-1.5"></div>
-                <div class="brand-stripes absolute inset-x-0 bottom-0 h-1.5"></div>
-            </div>
-        @else
-            {{-- Visuel de substitution : trame presse discrète aux encres de la marque --}}
-            <div class="absolute inset-0" aria-hidden="true">
-                <div class="brand-stripes absolute inset-x-0 top-0 h-1.5"></div>
-                <div class="brand-stripes absolute inset-x-0 bottom-0 h-1.5"></div>
-                <div class="absolute -right-40 top-0 h-[130%] w-[42rem] rotate-12 bg-brand-cyan-light/25"></div>
-                <div class="absolute -right-24 top-0 h-[130%] w-10 rotate-12 bg-brand-magenta/10"></div>
-                <div class="absolute -right-16 top-0 h-[130%] w-6 rotate-12 bg-brand-yellow/20"></div>
-            </div>
-        @endif
-        <div class="relative mx-auto max-w-7xl px-4 py-14 lg:py-20">
-            <div>
-                <span class="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-bold {{ $onPhoto ? 'bg-white/10 text-white ring-1 ring-white/30 backdrop-blur-sm' : 'bg-brand-cyan-light text-brand-cyan-dark' }}">
-                    Impression en 24 h · Livraison partout au Maroc
-                </span>
 
-                <h1 class="mt-6 text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl {{ $onPhoto ? 'text-white' : 'text-slate-900' }}">
-                    Impression professionnelle,
-                    <span class="text-brand-cyan">simple et rapide.</span>
-                </h1>
-
-                <p class="mt-5 text-lg leading-relaxed {{ $onPhoto ? 'text-slate-100/90' : 'text-slate-600' }}">
-                    Tous vos supports de communication, imprimés avec soin et livrés partout au Maroc.
-                    Configurez en ligne, téléchargez vos fichiers et recevez une qualité professionnelle sous 24 h.
-                </p>
-
-                <div class="mt-12 flex flex-wrap items-center justify-end gap-4">
-                    <a href="{{ route('products.index') }}" class="inline-flex items-center gap-2 rounded-xl bg-brand-cyan px-7 py-3.5 font-bold text-white transition hover:bg-brand-cyan-dark">
-                        Commander maintenant
-                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                    </a>
-                    <a href="{{ route('devis') }}" class="inline-flex items-center gap-2 rounded-xl border px-7 py-3.5 font-semibold transition {{ $onPhoto ? 'border-white/40 text-white hover:bg-white/10' : 'border-slate-300 text-slate-700 hover:border-brand-cyan hover:text-brand-cyan-dark' }}">
-                        Obtenir un devis
-                    </a>
-                </div>
-
-                <div class="mt-10 grid grid-cols-3 gap-6 border-t pt-8 {{ $onPhoto ? 'border-white/25' : 'border-slate-100' }}">
-                    <div>
-                        <p class="text-2xl font-extrabold {{ $onPhoto ? 'text-white' : 'text-slate-900' }}">24 h</p>
-                        <p class="mt-0.5 text-xs font-semibold {{ $onPhoto ? 'text-slate-300' : 'text-slate-500' }}">Délai d'impression</p>
+<div id="top-banner" class="carousel slide d-md-block hp24-banner" data-interval="8000" data-ride="carousel" role="region" aria-label="Carousel">
+    <ul class="carousel-indicators" role="tablist">
+        @foreach ($bannerSlides as $slide)
+            <li data-target="#top-banner" data-slide-to="{{ $loop->index }}" role="tab" tabindex="0" aria-label="glisser {{ $loop->iteration }}"></li>
+        @endforeach
+    </ul>
+    <div class="carousel-inner">
+        @foreach ($bannerSlides as $slide)
+            @php($hue = ['#ffe22c', '#0b0b0b', '#1263e0'][$loop->index % 3])
+            <div class="carousel-item {{ $loop->first ? 'active' : '' }} text-center">
+                <div class="hp24-slide" style="--slide-bg: {{ $hue }}; --slide-ink: {{ $hue === '#0b0b0b' ? '#fff' : '#0b0b0b' }};">
+                    <div class="hp24-slide__text">
+                        <span class="hp24-slide__eyebrow">{{ $slide['eyebrow'] }}</span>
+                        <h2 class="hp24-slide__title">{{ $slide['title'] }}</h2>
+                        <p class="hp24-slide__text">{{ $slide['text'] }}</p>
+                        <a href="{{ $slide['href'] }}" class="btn btn-info font-weight-bold">{{ $slide['cta'] }}</a>
                     </div>
-                    <div>
-                        <p class="text-2xl font-extrabold {{ $onPhoto ? 'text-white' : 'text-slate-900' }}">9</p>
-                        <p class="mt-0.5 text-xs font-semibold {{ $onPhoto ? 'text-slate-300' : 'text-slate-500' }}">Familles de produits</p>
-                    </div>
-                    <div>
-                        <p class="text-2xl font-extrabold {{ $onPhoto ? 'text-white' : 'text-slate-900' }}">100%</p>
-                        <p class="mt-0.5 text-xs font-semibold {{ $onPhoto ? 'text-slate-300' : 'text-slate-500' }}">Livré au Maroc</p>
+                    <div class="hp24-slide__img">
+                        <img src="{{ $slide['image'] }}" alt="{{ $slide['title'] }}" loading="lazy">
                     </div>
                 </div>
             </div>
+        @endforeach
+    </div>
+    <a href="#top-banner" class="carousel-control-prev" data-slide="prev" aria-label="Previous"><span class="carousel-control-prev-icon"></span></a>
+    <a href="#top-banner" class="carousel-control-next" data-slide="next" aria-label="Next"><span class="carousel-control-next-icon"></span></a>
+</div>
+
+<main>
+<div class="container body-container py-3 py-md-5">
+
+
+<style>
+.hp24-root, .hp24-root *, .hp24-root *::before, .hp24-root *::after {
+  box-sizing: border-box; margin: 0; padding: 0;
+}
+.hp24-root a { text-decoration: none; color: inherit; }
+.hp24-root img { display: block; max-width: 100%; }
+.hp24-root {
+  --blue:#1263e0; --blue-dk:#0b4bb0; --blue-lt:#eef4fd;
+  --gold:#f5a623; --dark:#111118; --mid:#555566; --soft:#888899;
+  --bg:#f6f6fa; --card-bg:#ffffff; --border:#ebebf0; --border-hv:rgba(18,99,224,0.4);
+  font-family:'Outfit',sans-serif; color:var(--dark); line-height:1.6; background:transparent;
+}
+.hp24-wrap { max-width:1340px; margin:0 auto; padding:0 28px 100px; }
+.hp24-sh { display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-bottom:36px; flex-wrap:wrap; }
+.hp24-sh-left { display:flex; flex-direction:column; gap:6px; }
+.hp24-sh-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.18em; color:var(--blue); }
+.hp24-sh h2 { font-size:clamp(24px,3vw,36px); font-weight:800; color:var(--dark); line-height:1.05; letter-spacing:-.025em; }
+.hp24-sh h2 em { font-style:normal; color:var(--blue); }
+.hp24-badge { display:inline-flex; align-items:center; gap:8px; background:var(--white); border:1.5px solid var(--border); padding:8px 18px; border-radius:999px; font-size:13px; font-weight:600; color:var(--mid); white-space:nowrap; box-shadow:0 2px 8px rgba(0,0,0,.04); background:#fff; }
+.hp24-stars { color:var(--gold); letter-spacing:1px; }
+.hp24-promos, .hp24-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:22px; margin-bottom:72px; }
+.hp24-card { min-width:0; background:var(--card-bg); border-radius:20px; overflow:hidden; border:1.5px solid var(--border); display:flex; flex-direction:column; box-shadow:0 2px 12px rgba(0,0,0,.05); transition:transform .28s cubic-bezier(.22,1,.36,1),box-shadow .28s ease,border-color .28s ease; position:relative; }
+.hp24-card:hover { transform:translateY(-8px); box-shadow:0 20px 50px rgba(18,99,224,.12),0 4px 16px rgba(0,0,0,.06); border-color:var(--border-hv); }
+.hp24-img { contain:layout paint; position:relative; width:100%; aspect-ratio:1/1; overflow:hidden; background:var(--bg); flex-shrink:0; }
+.hp24-img img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .5s cubic-bezier(.22,1,.36,1); }
+.hp24-card:hover .hp24-img img { transform:scale(1.07); }
+.hp24-img::after { content:''; position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,.18) 0%,transparent 45%); pointer-events:none; z-index:1; }
+.hp24-img-ph { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#f4f4f8 0%,#e9e9f2 100%); }
+.hp24-img-ph i { font-size:64px; color:#d1d1de; }
+.hp24-tag { position:absolute; top:14px; left:14px; z-index:10; background:var(--blue); color:#fff; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.1em; padding:4px 12px; border-radius:999px; box-shadow:0 4px 14px rgba(18,99,224,.4); pointer-events:none; }
+.hp24-tag.gold { background:var(--gold); color:#3a2000; box-shadow:0 4px 14px rgba(245,166,35,.35); }
+.hp24-body { padding:20px 20px 22px; display:flex; flex-direction:column; flex:1; gap:6px; }
+.hp24-body h3 { font-size:15px; font-weight:700; color:var(--dark); line-height:1.3; letter-spacing:-.01em; }
+.hp24-body p { font-size:13px; color:var(--soft); line-height:1.55; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.hp24-price-row { margin-top:14px; padding-top:14px; border-top:1.5px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.hp24-price { font-size:13px; font-weight:700; color:var(--blue); }
+.hp24-arrow { width:30px; height:30px; border-radius:50%; background:var(--blue-lt); border:1.5px solid rgba(18,99,224,.2); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background .2s,transform .2s; }
+.hp24-card:hover .hp24-arrow { background:var(--blue); transform:translateX(2px); }
+.hp24-arrow svg { stroke:var(--blue); transition:stroke .2s; }
+.hp24-card:hover .hp24-arrow svg { stroke:#fff; }
+.hp24-div { height:1.5px; background:var(--border); margin:0 0 72px; }
+.hp24-about { display:grid; grid-template-columns:1fr 1fr; border-radius:24px; overflow:hidden; border:1.5px solid var(--border); margin-bottom:72px; min-height:440px; box-shadow:0 8px 40px rgba(18,99,224,.08); }
+.hp24-about-txt { background:#fff; padding:60px 52px; display:flex; flex-direction:column; justify-content:center; gap:18px; }
+.hp24-eyebrow { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.18em; color:var(--blue); }
+.hp24-about-txt h2 { font-size:clamp(26px,3vw,40px); font-weight:800; color:var(--dark); line-height:1.1; letter-spacing:-.025em; }
+.hp24-about-txt p { font-size:15px; color:var(--mid); line-height:1.75; }
+.hp24-btn { display:inline-flex; align-items:center; gap:10px; background:var(--blue); color:#fff; padding:14px 28px; border-radius:999px; font-size:14px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; align-self:flex-start; transition:background .2s,transform .18s,box-shadow .18s; box-shadow:0 8px 24px rgba(18,99,224,.3); }
+.hp24-btn:hover { background:var(--blue-dk); transform:translateY(-2px); box-shadow:0 14px 32px rgba(18,99,224,.38); }
+.hp24-about-img { position:relative; overflow:hidden; min-height:440px; background:var(--bg); }
+.hp24-about-img img { width:100%; height:100%; object-fit:cover; transition:transform .6s ease; }
+.hp24-about:hover .hp24-about-img img { transform:scale(1.04); }
+.hp24-services { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+.hp24-svc { background:#fff; border:1.5px solid var(--border); border-radius:20px; padding:36px 30px; display:flex; flex-direction:column; gap:16px; transition:transform .25s ease,border-color .25s,box-shadow .25s; }
+.hp24-svc:hover { transform:translateY(-5px); border-color:var(--border-hv); box-shadow:0 16px 40px rgba(18,99,224,.1); }
+.hp24-svc-icon { width:54px; height:54px; border-radius:14px; background:var(--blue-lt); border:1.5px solid rgba(18,99,224,.18); display:flex; align-items:center; justify-content:center; }
+.hp24-svc-icon svg { width:26px; height:26px; stroke:var(--blue); stroke-width:1.8; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+.hp24-svc h3 { font-size:17px; font-weight:700; color:var(--dark); letter-spacing:-.01em; }
+.hp24-svc p { font-size:14px; color:var(--mid); line-height:1.65; }
+
+/* --- Carrousel d'ouverture --- */
+.hp24-banner { background: #eee; }
+.hp24-slide { --slide-bg:#ffe22c; --slide-ink:#0b0b0b; display:flex; align-items:center; justify-content:center; gap:40px; min-height:340px; padding:34px 6vw; background:var(--slide-bg); color:var(--slide-ink); }
+.hp24-slide__text { max-width:560px; text-align:left; }
+.hp24-slide__eyebrow { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.18em; opacity:.75; }
+.hp24-slide__title { font-family:'Outfit',sans-serif; font-size:clamp(28px,4vw,54px); font-weight:900; line-height:1.05; letter-spacing:-.02em; margin:10px 0 14px; color:var(--slide-ink); }
+.hp24-slide__text { font-size:15px; line-height:1.6; margin-bottom:22px; color:var(--slide-ink); opacity:.85; }
+.hp24-slide .btn-info { background:transparent; border:2px solid var(--slide-ink); color:var(--slide-ink); font-weight:800; text-transform:uppercase; letter-spacing:.06em; font-size:14px; padding:12px 26px; transition:background .2s,color .2s; }
+.hp24-slide .btn-info:hover, .hp24-slide .btn-info:focus { background:var(--slide-ink); color:var(--slide-bg); border-color:var(--slide-ink); }
+.hp24-slide__img img { max-height:300px; max-width:min(46vw,460px); object-fit:contain; border-radius:16px; box-shadow:0 18px 44px rgba(0,0,0,.22); }
+@media (max-width:820px) {
+  .hp24-slide { flex-direction:column; text-align:center; padding:28px 18px; min-height:0; }
+  .hp24-slide__text { max-width:none; }
+  .hp24-slide__img img { max-width:78vw; max-height:230px; }
+}
+@media (max-width:1100px) { .hp24-promos, .hp24-grid { grid-template-columns:repeat(3,1fr); } }
+@media (max-width:820px) {
+  .hp24-promos, .hp24-grid { grid-template-columns:repeat(2,1fr); }
+  .hp24-about { grid-template-columns:1fr; }
+  .hp24-about-img { min-height:280px; order:-1; }
+  .hp24-about-txt { padding:36px 28px; }
+  .hp24-services { grid-template-columns:1fr 1fr; }
+}
+@media (max-width:540px) {
+  .hp24-promos, .hp24-grid { grid-template-columns:repeat(2,1fr); gap:14px; }
+  .hp24-services { grid-template-columns:1fr; }
+  .hp24-sh { flex-direction:column; align-items:flex-start; }
+  .hp24-wrap { padding:40px 16px 80px; }
+  .hp24-body { padding:16px 14px 18px; }
+}
+</style>
+
+<div class="hp24-root"><div class="hp24-wrap">
+
+    {{-- Promotions --}}
+    <div class="hp24-sh">
+        <div class="hp24-sh-left">
+            <span class="hp24-sh-label">Offres exclusives</span>
+            <h2>Nos supers <em>promos</em></h2>
         </div>
-    </section>
-
-    {{-- ================================================================ --}}
-    {{-- BANDE PROMOTIONS — remises réelles issues des grilles tarifaires --}}
-    {{-- ================================================================ --}}
-    @if ($offers->isNotEmpty())
-    @php $topDiscount = $offers->max('discount'); @endphp
-    <section class="relative overflow-hidden bg-slate-900">
-        {{-- bandes décoratives CMJN --}}
-        <div class="brand-stripes absolute inset-x-0 top-0 h-1.5"></div>
-        <div class="brand-stripes absolute inset-x-0 bottom-0 h-1.5"></div>
-
-        <div class="mx-auto max-w-7xl px-4 py-12">
-            <div class="flex flex-wrap items-end justify-between gap-4">
-                <div>
-                    <span class="inline-flex items-center gap-2 rounded-full bg-brand-yellow px-3 py-1 text-xs font-extrabold uppercase tracking-wide text-slate-900">
-                        <span class="h-2 w-2 rounded-full bg-brand-magenta"></span>
-                        Offres limitées
-                    </span>
-                    <h2 class="mt-3 text-2xl font-extrabold text-white sm:text-3xl">Nos promotions {{ date('Y') }}</h2>
-                    <p class="mt-1 max-w-xl text-slate-300">Prix dégressifs : plus la quantité augmente, plus le prix unitaire baisse. Économisez jusqu'à <span class="font-extrabold text-brand-yellow">-{{ $topDiscount }}%</span> sur vos grands tirages.</p>
+        <div class="hp24-badge"><span class="hp24-stars">★★★★★</span><strong>&nbsp;Clients satisfaits</strong></div>
+    </div>
+    <div class="hp24-promos">
+        @forelse ($promos as $promo)
+            @php($p = $promo['product'])
+            <a href="{{ route('product.show', $p->slug) }}" class="hp24-card">
+                <div class="hp24-img">
+                    <span class="hp24-tag gold">Top vente</span>
+                    @if ($p->photoUrl())
+                        <img src="{{ $p->photoUrl() }}" alt="{{ $p->name }}" loading="lazy">
+                    @endif
                 </div>
-                <a href="{{ route('products.index') }}" class="inline-flex items-center gap-2 rounded-xl bg-brand-magenta px-6 py-3 font-bold text-white transition hover:bg-brand-magenta-dark">
-                    Profiter des offres
-                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                </a>
-            </div>
-
-            <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                @foreach ($offers as $offer)
-                    <a href="{{ route('product.show', $offer['product']->slug) }}" class="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white">
-                        <div class="relative aspect-[4/3] overflow-hidden bg-slate-100">
-                            @if ($offer['product']->photoUrl())
-                                <img src="{{ $offer['product']->photoUrl() }}" alt="{{ $offer['product']->name }}" loading="lazy" class="absolute inset-0 h-full w-full object-cover">
-                            @else
-                                <span class="grid h-full place-items-center text-slate-300"><span class="h-14 w-14">@include('partials.category-icon', ['slug' => $offer['product']->category?->slug ?? 'default'])</span></span>
-                            @endif
-                            <span class="absolute -right-2 top-3 grid h-14 w-14 place-items-center rounded-full bg-brand-magenta text-white ring-4 ring-white">
-                                <span class="text-center leading-none">
-                                    <span class="block text-lg font-extrabold">-{{ $offer['discount'] }}%</span>
-                                    <span class="block text-[9px] font-bold uppercase tracking-wide">max</span>
-                                </span>
-                            </span>
-                        </div>
-                        <div class="flex flex-1 flex-col p-5">
-                            <span class="text-[11px] font-bold uppercase tracking-wide text-brand-cyan-dark">{{ $offer['product']->category?->name ?? 'Produit' }}</span>
-                            <h3 class="mt-1 font-bold text-slate-900">{{ $offer['product']->name }}</h3>
-                            <p class="mt-1 flex-1 text-sm leading-relaxed text-slate-500">{{ \Illuminate\Support\Str::limit(strip_tags($offer['product']->description ?? ''), 70) }}</p>
-                            <div class="mt-4 flex items-end justify-between gap-2">
-                                <div>
-                                    <div class="flex items-baseline gap-2">
-                                        <span class="text-xl font-extrabold text-brand-cyan-dark">{{ $money($offer['fromPrice']) }} dhs</span>
-                                        @if ($offer['beforePrice'] > $offer['fromPrice'])
-                                            <span class="text-xs font-medium text-slate-400 line-through">{{ $money($offer['beforePrice']) }} dhs</span>
-                                        @endif
-                                    </div>
-                                    <p class="text-xs font-semibold text-slate-500">Dès {{ $offer['minQty'] }} ex. · <span class="text-brand-magenta">économisez {{ $money($offer['beforePrice'] - $offer['fromPrice']) }} dhs</span></p>
-                                </div>
-                                <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-slate-100 text-slate-500">
-                                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-                                </span>
-                            </div>
-                        </div>
-                    </a>
-                @endforeach
-            </div>
-        </div>
-    </section>
-    @endif
-
-    {{-- ================================================================ --}}
-    {{-- CATÉGORIES DE PRODUITS --}}
-    {{-- ================================================================ --}}
-    <section class="mx-auto max-w-7xl px-4 py-16">
-        <div class="flex items-end justify-between gap-4">
-            <div>
-                <h2 class="text-2xl font-extrabold text-slate-900 sm:text-3xl">Nos catégories</h2>
-                <p class="mt-1 text-slate-500">Tout ce qu'il faut pour votre communication visuelle.</p>
-            </div>
-            <a href="{{ route('products.index') }}" class="hidden shrink-0 items-center gap-1.5 font-semibold text-brand-cyan-dark hover:text-brand-cyan sm:inline-flex">
-                Tout voir
-                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                <div class="hp24-body">
+                    <h3>{{ $p->name }}</h3>
+                    <p>{{ \Illuminate\Support\Str::limit(strip_tags((string) $p->description), 70) }}</p>
+                    <div class="hp24-price-row">
+                        <span class="hp24-price">Dès {{ number_format($promo['fromPrice'], 2, ',', ' ') }} dh · {{ $promo['minQty'] }} ex.</span>
+                        <span class="hp24-arrow"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M3 8h10M9 4l4 4-4 4"></path></svg></span>
+                    </div>
+                </div>
             </a>
-        </div>
+        @empty
+            <p class="col-12">Aucune promotion active pour le moment.</p>
+        @endforelse
+    </div>
 
-        <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            @foreach ($univers as $u)
-                <a href="{{ route('category.show', $u['model']->slug) }}" class="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white">
-                    {{-- Bandeau photo : produit le moins cher de la catégorie --}}
-                    <div class="relative aspect-[16/10] overflow-hidden bg-slate-100">
-                        @if ($u['cheapest'] && $u['cheapest']->photoUrl())
-                            <img src="{{ $u['cheapest']->photoUrl() }}" alt="{{ $u['model']->name }}" loading="lazy" class="absolute inset-0 h-full w-full object-cover">
-                        @else
-                            <div class="grid h-full place-items-center bg-brand-cyan-light text-brand-cyan-dark">
-                                <span class="h-12 w-12">@include('partials.category-icon', ['slug' => $u['model']->slug])</span>
-                            </div>
-                        @endif
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/10 to-transparent"></div>
-                        @if ($u['fromPrice'])
-                            <span class="absolute bottom-3 left-3 rounded-full bg-white/95 px-3 py-1 text-xs font-extrabold text-brand-cyan-dark shadow-sm backdrop-blur-sm">Dès {{ $money($u['fromPrice']) }} dhs</span>
-                        @endif
-                        @if ($u['items']->isNotEmpty())
-                            <span class="absolute right-3 top-3 rounded-full bg-slate-900/65 px-2.5 py-1 text-[11px] font-bold text-white backdrop-blur-sm">{{ $u['items']->count() }} produit{{ $u['items']->count() > 1 ? 's' : '' }}</span>
-                        @endif
+    <div class="hp24-div"><br></div>
+
+    {{-- Familles --}}
+    <?php $familyIcons = [
+        'impression-papier-bureautique'       => 'fas fa-book',
+        'impression-grand-format'             => 'fas fa-image',
+        'impression-textile-personnalisation' => 'fas fa-magic',
+        'packaging-emballage'                 => 'fas fa-box-open',
+        'signaletique-enseignes'              => 'fas fa-flag',
+        'objets-publicitaires-cadeaux'        => 'fas fa-gift',
+        'impression-evenementielle'           => 'fas fa-ticket-alt',
+        'conception-graphique-design'         => 'fas fa-palette',
+        'gravure-decoupe-cnc-laser'           => 'fas fa-layer-group',
+    ]; ?>
+    <div class="hp24-sh">
+        <div class="hp24-sh-left">
+            <span class="hp24-sh-label">Notre catalogue</span>
+            <h2>Tous nos <em>produits</em></h2>
+        </div>
+        <div class="hp24-badge"><span class="hp24-stars">★★★★★</span> Qualité certifiée</div>
+    </div>
+        <div class="hp24-grid">
+        @foreach ($families as $family)
+            @php($f = $family['model'])
+            <a href="{{ route('category.show', $f->slug) }}" class="hp24-card">
+                <div class="hp24-img">
+                    @if ($family['cheapest'] && $family['cheapest']->photoUrl())
+                        <img src="{{ $family['cheapest']->photoUrl() }}" alt="{{ $f->name }}" loading="lazy">
+                    @else
+                        <div class="hp24-img-ph"><i class="{{ $familyIcons[$f->slug] ?? 'fas fa-print' }}"></i></div>
+                    @endif
+                </div>
+                <div class="hp24-body">
+                    <h3>{{ $f->name }}</h3>
+                    <p>{{ \Illuminate\Support\Str::limit(strip_tags((string) $f->description), 70) ?: 'Découvrez notre gamme — livraison rapide partout au Maroc.' }}</p>
+                    <div class="hp24-price-row">
+                        <span class="hp24-price">{{ $family['fromPrice'] ? 'Dès '.($family['fromPrice'] < 10 ? number_format($family['fromPrice'], 2, ',', ' ') : number_format($family['fromPrice'], 0, ',', ' ')).' dh' : 'Découvrir la gamme' }}</span>
+                        <span class="hp24-arrow"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M3 8h10M9 4l4 4-4 4"></path></svg></span>
                     </div>
-                    <div class="flex flex-1 flex-col p-5">
-                        <div class="flex items-center gap-2.5">
-                            <span class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-brand-cyan-light text-brand-cyan-dark">
-                                <span class="h-5 w-5">@include('partials.category-icon', ['slug' => $u['model']->slug])</span>
-                            </span>
-                            <h3 class="font-bold text-slate-900">{{ $u['model']->name }}</h3>
-                        </div>
-                        <p class="mt-2 line-clamp-2 text-sm leading-relaxed text-slate-500">{{ $u['model']->description }}</p>
-                        <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-brand-cyan-dark">
-                            Voir les produits
-                            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                        </span>
-                    </div>
-                </a>
-            @endforeach
+                </div>
+            </a>
+        @endforeach
+    </div>
+
+    {{-- Histoire --}}
+    <div class="hp24-about">
+        <div class="hp24-about-txt">
+            <p class="hp24-eyebrow">Notre histoire</p>
+            <h2>Une imprimerie née à Casablanca</h2>
+            <p>Chez ADO PRINT, nous offrons des impressions de qualité supérieure directement depuis Casablanca. Avec un engagement envers l'excellence, nous livrons vos projets partout au Maroc, rapidement et efficacement.</p>
+            <a href="{{ route('a-propos') }}" class="hp24-btn">En savoir plus <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"></path></svg></a>
         </div>
-    </section>
-
-    {{-- ================================================================ --}}
-    {{-- PRODUITS PHARES --}}
-    {{-- ================================================================ --}}
-    <section class="bg-slate-50 py-16">
-        <div class="mx-auto max-w-7xl px-4">
-            <div class="flex items-end justify-between gap-4">
-                <div>
-                    <h2 class="text-2xl font-extrabold text-slate-900 sm:text-3xl">Produits phares</h2>
-                    <p class="mt-1 text-slate-500">Les plus commandés par nos clients.</p>
-                </div>
-                <a href="{{ route('products.index') }}" class="hidden shrink-0 items-center gap-1.5 font-semibold text-brand-cyan-dark hover:text-brand-cyan sm:inline-flex">
-                    Tout le catalogue
-                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                </a>
-            </div>
-
-            <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                @foreach ($featured as $product)
-                    @include('partials.product-card', ['product' => $product])
-                @endforeach
-            </div>
+        <div class="hp24-about-img">
+            @if ($families->first() && $families->first()['cheapest'] && $families->first()['cheapest']->photoUrl())
+                <img src="{{ $families->first()['cheapest']->photoUrl() }}" alt="ADO PRINT Casablanca" loading="lazy">
+            @endif
         </div>
-    </section>
+    </div>
 
-    {{-- ================================================================ --}}
-    {{-- AVANTAGES --}}
-    {{-- ================================================================ --}}
-    <section class="mx-auto max-w-7xl px-4 py-16">
-        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            @foreach ([
-                ['icon' => '<path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/>', 'title' => 'Livraison rapide', 'text' => 'Expédition 24–48 h partout au Maroc.'],
-                ['icon' => '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>', 'title' => 'Qualité garantie', 'text' => 'Contrôle qualité sur chaque commande avant expédition.'],
-                ['icon' => '<path d="M13 2a9 9 0 0 1 9 9"/><path d="M13 6a5 5 0 0 1 5 5"/><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>', 'title' => 'Support dédié', 'text' => 'Par téléphone, email et WhatsApp aux heures d\'ouverture.'],
-                ['icon' => '<rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>', 'title' => 'Prix transparents', 'text' => 'Grilles dégressives publiées, calcul instantané en ligne.'],
-            ] as $benefit)
-                <div class="rounded-2xl border border-slate-200 bg-white p-6">
-                    <span class="grid h-11 w-11 place-items-center rounded-xl bg-brand-cyan-light text-brand-cyan-dark">
-                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{!! $benefit['icon'] !!}</svg>
-                    </span>
-                    <h3 class="mt-4 font-bold text-slate-900">{{ $benefit['title'] }}</h3>
-                    <p class="mt-1.5 text-sm leading-relaxed text-slate-500">{{ $benefit['text'] }}</p>
-                </div>
-            @endforeach
+    {{-- Services --}}
+    <div class="hp24-services">
+        <div class="hp24-svc">
+            <div class="hp24-svc-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"></rect><path d="M8 21h8M12 17v4"></path></svg></div>
+            <h3>Commande 100% en ligne</h3>
+            <p>Calculez automatiquement le prix et passez commande directement en ligne, 24h/24, 7j/7.</p>
         </div>
-    </section>
-
-    {{-- ================================================================ --}}
-    {{-- PROCESSUS DE COMMANDE --}}
-    {{-- ================================================================ --}}
-    <section class="bg-slate-50 py-16">
-        <div class="mx-auto max-w-7xl px-4">
-            <div class="mx-auto max-w-2xl text-center">
-                <h2 class="text-2xl font-extrabold text-slate-900 sm:text-3xl">Commander en 4 étapes</h2>
-                <p class="mt-2 text-slate-500">Simple, rapide et sans engagement.</p>
-            </div>
-
-            <div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-                @foreach ([
-                    ['n' => '1', 'title' => 'Choisissez votre produit', 'text' => 'Parcourez le catalogue et sélectionnez votre produit.'],
-                    ['n' => '2', 'title' => 'Configurez et uploadez', 'text' => 'Quantité, finition, puis déposez vos fichiers PDF, PNG ou JPG.'],
-                    ['n' => '3', 'title' => 'Nous imprimons', 'text' => 'Contrôle qualité et impression sous 24 h après validation.'],
-                    ['n' => '4', 'title' => 'Recevez votre commande', 'text' => 'Livraison suivie partout au Maroc, paiement à la réception.'],
-                ] as $step)
-                    <div class="relative text-center">
-                        <span class="mx-auto grid h-12 w-12 place-items-center rounded-full bg-brand-cyan font-extrabold text-white">{{ $step['n'] }}</span>
-                        <h3 class="mt-4 font-bold text-slate-900">{{ $step['title'] }}</h3>
-                        <p class="mx-auto mt-1.5 max-w-[16rem] text-sm leading-relaxed text-slate-500">{{ $step['text'] }}</p>
-                    </div>
-                @endforeach
-            </div>
-
-            <div class="mt-12 text-center">
-                <a href="{{ route('products.index') }}" class="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-7 py-3.5 font-bold text-white transition hover:bg-slate-700">
-                    Commencer ma commande
-                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                </a>
-            </div>
+        <div class="hp24-svc">
+            <div class="hp24-svc-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"></path></svg></div>
+            <h3>Support à l'écoute</h3>
+            <p>Disponible du lundi au samedi par WhatsApp, Email et Téléphone.</p>
         </div>
-    </section>
-
-    {{-- ================================================================ --}}
-    {{-- INFORMATION SOCIÉTÉ --}}
-    {{-- ================================================================ --}}
-    <section class="mx-auto max-w-7xl px-4 py-16">
-        <div class="grid items-center gap-10 rounded-3xl border border-slate-200 bg-white p-8 sm:p-12 lg:grid-cols-2">
-            <div>
-                <h2 class="text-2xl font-extrabold text-slate-900 sm:text-3xl">ADO PRINT, imprimerie à Casablanca</h2>
-                <p class="mt-4 leading-relaxed text-slate-600">
-                    De la carte de visite au grand format, chaque commande passe entre les mains de notre
-                    équipe production — avec la même exigence, que vous commandiez 100 ou 50 000 exemplaires.
-                    Nos tarifs sont publics, dégressifs, et votre devis sur mesure est gratuit.
-                </p>
-                <div class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-slate-600">
-                    <span class="flex items-center gap-2">
-                        <span class="h-2.5 w-2.5 rounded-sm bg-brand-cyan"></span><span class="h-2.5 w-2.5 rounded-sm bg-brand-magenta"></span><span class="h-2.5 w-2.5 rounded-sm bg-brand-yellow"></span><span class="h-2.5 w-2.5 rounded-sm bg-slate-900"></span>
-                        Quadri CMJN en interne
-                    </span>
-                    <span class="font-semibold text-slate-900">SARL au capital de Casablanca</span>
-                </div>
-                <a href="{{ route('contact') }}" class="mt-6 inline-flex items-center gap-2 font-bold text-brand-cyan-dark hover:text-brand-cyan">
-                    Nous contacter
-                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                </a>
-            </div>
-
-            <div class="grid gap-4 sm:grid-cols-2">
-                <div class="rounded-2xl bg-slate-50 p-5">
-                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Adresse</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-900">{{ $siteSettings->get('company.address', 'Casablanca, Maroc') }}</p>
-                </div>
-                <div class="rounded-2xl bg-slate-50 p-5">
-                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Horaires</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-900">{{ $siteSettings->get('company.hours', 'Lun–Ven : 9h–18h') }}</p>
-                </div>
-                <div class="rounded-2xl bg-slate-50 p-5">
-                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Téléphone</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-900">{{ $siteSettings->get('company.phone', '') }}</p>
-                </div>
-                <div class="rounded-2xl bg-slate-50 p-5">
-                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Email</p>
-                    <p class="mt-2 break-all text-sm font-semibold text-slate-900">{{ $siteSettings->get('company.email', '') }}</p>
-                </div>
-            </div>
+        <div class="hp24-svc">
+            <div class="hp24-svc-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0110 0v4"></path></svg></div>
+            <h3>100% Sécurisé</h3>
+            <p>Confidentialité garantie de vos données et fichiers à chaque étape de la commande.</p>
         </div>
-    </section>
+    </div>
 
-    {{-- ================================================================ --}}
-    {{-- RESSOURCES & CONSEILS --}}
-    {{-- ================================================================ --}}
-    <section class="bg-slate-50 py-16">
-        <div class="mx-auto max-w-7xl px-4">
-            <div class="flex items-end justify-between gap-4">
-                <div>
-                    <h2 class="text-2xl font-extrabold text-slate-900 sm:text-3xl">Ressources & conseils</h2>
-                    <p class="mt-1 text-slate-500">Préparez vos fichiers et choisissez le bon support.</p>
-                </div>
-            </div>
+</div></div>
 
-            <div class="mt-8 grid gap-5 sm:grid-cols-3">
-                @foreach ([
-                    ['slug' => 'preparer-fichier', 'icon' => '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>', 'title' => 'Préparer votre fichier d\'impression', 'text' => 'PDF 300 dpi, CMJN, fonds perdus 3 mm : le checklist complet.'],
-                    ['slug' => 'choisir-papier', 'icon' => '<path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/>', 'title' => 'Bien choisir son papier', 'text' => 'Couché, offset, recyclé : grammages et usages recommandés.'],
-                    ['slug' => 'cmjn-rvb', 'icon' => '<circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>', 'title' => 'CMJN ou RVB ?', 'text' => 'Pourquoi vos couleurs changent à l\'impression et comment l\'éviter.'],
-                ] as $guide)
-                    <a href="{{ route('guides.show', $guide['slug']) }}" class="rounded-2xl border border-slate-200 bg-white p-6">
-                        <span class="grid h-11 w-11 place-items-center rounded-xl bg-brand-cyan-light text-brand-cyan-dark">
-                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{!! $guide['icon'] !!}</svg>
-                        </span>
-                        <h3 class="mt-4 font-bold text-slate-900">{{ $guide['title'] }}</h3>
-                        <p class="mt-1.5 text-sm leading-relaxed text-slate-500">{{ $guide['text'] }}</p>
-                        <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-brand-cyan-dark">
-                            Lire le guide
-                            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                        </span>
-                    </a>
-                @endforeach
-            </div>
+<section class="hp24-how" aria-labelledby="hp24-how-title">
+  <style>
+.hp24-how, .hp24-how *, .hp24-how *::before, .hp24-how *::after { box-sizing: border-box; }
+.hp24-how {
+  --how-blue: #1263e0; --how-yellow: #ffe22c; --how-dark: #15151d;
+  --how-text: #62626d; --how-border: #dedee4; --how-bg: #f7f7f8;
+  width: 100%; padding: 72px 24px; background: var(--how-bg); color: var(--how-dark);
+  font-family: 'Outfit',sans-serif;
+}
+.hp24-how__inner { width: 100%; max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: minmax(0,1fr) minmax(360px,.9fr); gap: 64px; align-items: center; }
+.hp24-how__title { margin: 0 0 38px; font-size: clamp(32px,4vw,54px); line-height: 1.08; font-weight: 800; color: var(--how-dark); }
+.hp24-how__steps { list-style: none; margin: 0; padding: 0; }
+.hp24-how__step { position: relative; display: grid; grid-template-columns: 64px minmax(0,1fr); gap: 22px; padding-bottom: 34px; }
+.hp24-how__step:not(:last-child)::after { content: ""; position: absolute; top: 64px; bottom: 8px; left: 31px; width: 1px; background: var(--how-border); }
+.hp24-how__number { position: relative; z-index: 1; width: 64px; height: 64px; display: grid; place-items: center; border: 1px solid var(--how-border); border-radius: 50%; background: #fff; color: var(--how-dark); font-size: 20px; font-weight: 800; }
+.hp24-how__step:first-child .hp24-how__number { border-color: var(--how-yellow); background: var(--how-yellow); }
+.hp24-how__content { padding-top: 3px; }
+.hp24-how__content h3 { margin: 0 0 10px; color: var(--how-dark); font-size: clamp(20px,2vw,27px); line-height: 1.3; font-weight: 750; }
+.hp24-how__content p { max-width: 600px; margin: 0; color: var(--how-text); font-size: 16px; line-height: 1.75; }
+.hp24-how__actions { display: flex; align-items: center; flex-wrap: wrap; gap: 16px 26px; margin: 10px 0 0 86px; }
+.hp24-how__primary, .hp24-how__video { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; font-weight: 700; transition: background-color 180ms ease,color 180ms ease,transform 180ms ease; }
+.hp24-how__primary { padding: 12px 22px; border: 2px solid var(--how-dark); border-radius: 8px; background: var(--how-dark); color: #fff; }
+.hp24-how__primary:hover, .hp24-how__primary:focus-visible { background: var(--how-blue); border-color: var(--how-blue); color: #fff; transform: translateY(-2px); }
+.hp24-how__video { color: var(--how-dark); }
+.hp24-how__video-icon { width: 42px; height: 42px; display: grid; place-items: center; border: 2px solid var(--how-dark); border-radius: 50%; }
+.hp24-how__video:hover, .hp24-how__video:focus-visible { color: var(--how-blue); }
+.hp24-how__visual { position: relative; min-width: 0; }
+.hp24-how__visual img { display: block; width: 100%; height: auto; aspect-ratio: 4/5; object-fit: contain; }
+@media (max-width: 900px) {
+  .hp24-how { padding: 52px 18px; }
+  .hp24-how__inner { grid-template-columns: 1fr; gap: 42px; }
+  .hp24-how__visual { order: -1; max-width: 480px; margin: 0 auto; }
+  .hp24-how__visual img { max-height: 420px; }
+  .hp24-how__title { margin-bottom: 30px; }
+}
+@media (max-width: 540px) {
+  .hp24-how { padding: 42px 16px; }
+  .hp24-how__step { grid-template-columns: 48px minmax(0,1fr); gap: 16px; padding-bottom: 28px; }
+  .hp24-how__number { width: 48px; height: 48px; font-size: 17px; }
+  .hp24-how__step:not(:last-child)::after { top: 48px; left: 23px; }
+  .hp24-how__actions { margin-left: 0; align-items: stretch; flex-direction: column; }
+  .hp24-how__primary { width: 100%; }
+}
+</style>
+  <div class="hp24-how__inner">
+    <div class="hp24-how__main">
+      <h2 class="hp24-how__title" id="hp24-how-title">Comment ça marche&nbsp;?</h2>
+      <ol class="hp24-how__steps">
+        <li class="hp24-how__step">
+          <span class="hp24-how__number" aria-hidden="true">1</span>
+          <div class="hp24-how__content">
+            <h3>Choisissez vos produits et options en ligne</h3>
+            <p>Sélectionnez votre produit, configurez ses dimensions, finitions et quantités, puis obtenez immédiatement votre tarif.</p>
+          </div>
+        </li>
+        <li class="hp24-how__step">
+          <span class="hp24-how__number" aria-hidden="true">2</span>
+          <div class="hp24-how__content">
+            <h3>Transférez ou créez votre design</h3>
+            <p>Importez votre fichier prêt à imprimer, ou confiez la création à notre équipe graphique.</p>
+          </div>
+        </li>
+        <li class="hp24-how__step">
+          <span class="hp24-how__number" aria-hidden="true">3</span>
+          <div class="hp24-how__content">
+            <h3>Commandez et recevez vos impressions</h3>
+            <p>Validez votre commande en toute sécurité. Nous produisons vos supports et les livrons partout au Maroc.</p>
+          </div>
+        </li>
+      </ol>
+      <div class="hp24-how__actions">
+        <a class="hp24-how__primary" href="{{ route('products.index') }}">Découvrir les produits</a>
+        <a class="hp24-how__video" href="{{ route('aide') }}">
+          &nbsp;&nbsp;Comment commander&nbsp;&nbsp;
+          <span class="hp24-how__video-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></span>
+        </a>
+      </div>
+    </div>
+    <div class="hp24-how__visual">
+      @if ($bannerSlides->first())
+        <img src="{{ $bannerSlides->first()['image'] }}" alt="Impression ADO PRINT" loading="lazy">
+      @endif
+    </div>
+  </div>
+</section>
+
+<div class="info-section py-5 text-center">
+    <div class="container py-lg-3">
+        <div class="row">
+            <div class="col-6 col-md-4 py-4 py-md-5"><h2 class="display-3">{{ $productCount }}</h2><h3>Produits en ligne</h3></div>
+            <div class="col-6 col-md-4 py-4 py-md-5"><h2 class="display-3">-{{ $bestDiscount }}%</h2><h3>Meilleure remise</h3></div>
+            <div class="col-6 col-md-4 py-4 py-md-5"><h2 class="display-3">24h</h2><h3>Impression express</h3></div>
+            <div class="col-6 col-md-4 py-4 py-md-5"><h2 class="display-3">+98%</h2><h3>Clients satisfaits</h3></div>
+            <div class="col-6 col-md-4 py-4 py-md-5"><h2 class="display-3">100%</h2><h3>Prix dégressifs</h3></div>
+            <div class="col-6 col-md-4 py-4 py-md-5"><h2 class="display-3">Maroc</h2><h3>Livraison partout</h3></div>
         </div>
-    </section>
+    </div>
+</div>
 
-    {{-- ================================================================ --}}
-    {{-- CTA FINAL --}}
-    {{-- ================================================================ --}}
-    <section class="mx-auto max-w-7xl px-4 py-16">
-        <div class="rounded-3xl border border-slate-200 bg-white p-10 text-center sm:p-14">
-            <h2 class="text-2xl font-extrabold text-slate-900 sm:text-3xl">Vous ne trouvez pas votre produit ?</h2>
-            <p class="mx-auto mt-3 max-w-xl text-slate-600">Nos équipes étudient gratuitement votre projet sur mesure et vous répondent sous 24 h ouvrées.</p>
-            <div class="mt-8 flex flex-wrap justify-center gap-4">
-                <a href="{{ route('devis') }}" class="inline-flex items-center gap-2 rounded-xl bg-brand-cyan px-8 py-4 text-lg font-bold text-white transition hover:bg-brand-cyan-dark">
-                    Envoyer une demande de devis
-                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                </a>
-                <a href="{{ route('contact') }}" class="inline-flex items-center rounded-xl border border-slate-300 px-8 py-4 text-lg font-semibold text-slate-700 transition hover:border-brand-cyan hover:text-brand-cyan-dark">
-                    Nous appeler
-                </a>
-            </div>
-        </div>
-    </section>
+</div><!--/container-->
+</main>
+
 @endsection
-

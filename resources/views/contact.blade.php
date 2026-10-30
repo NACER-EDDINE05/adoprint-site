@@ -3,17 +3,17 @@
 @section('title', 'Contact — ADO PRINT')
 
 @section('content')
-    <div class="mx-auto max-w-7xl px-4 py-12">
-        <nav class="mb-6 flex items-center gap-2 text-sm text-slate-500">
-            <a href="{{ route('home') }}" class="hover:text-brand-cyan-dark">Accueil</a>
-            <span>/</span>
-            <span class="font-semibold text-slate-900">Contact</span>
-        </nav>
+    <div class="ap24-wrap">
+        @include('partials.crumbs', ['items' => [['label' => 'Contact']]])
 
-        <h1 class="text-3xl font-extrabold text-slate-900">Contactez-nous</h1>
-        <p class="mt-2 text-slate-500">Une question, un projet ? Notre équipe est à votre écoute.</p>
+        @include('partials.page-head', [
+            'kicker' => 'Nous joindre',
+            'title' => 'Contactez-nous',
+            'desc' => 'Une question, un projet ? Notre équipe est à votre écoute par téléphone, email et WhatsApp.',
+            'icon' => 'objets-publicitaires-cadeaux',
+        ])
 
-        <div class="mt-10 grid gap-8 lg:grid-cols-5">
+        <div class="grid gap-6 lg:grid-cols-5">
             {{-- Coordonnées --}}
             <div class="space-y-4 lg:col-span-2">
                 @foreach ([
@@ -22,9 +22,9 @@
                     ['icon' => '<path d="M15 22a1 1 0 0 1-1-1v-4a1 1 0 0 1 .445-.832l3-2a1 1 0 0 1 1.11 0l3 2A1 1 0 0 1 22 17v4a1 1 0 0 1-1 1z"/><path d="M18 10a8 8 0 0 0-16 0c0 4.993 5.539 10.193 7.399 11.799a1 1 0 0 0 .601.2"/><path d="M18 22v-3"/><circle cx="10" cy="10" r="3"/>', 'title' => 'Adresse', 'text' => $siteSettings->get('company.address', '')],
                     ['icon' => '<circle cx="12" cy="13" r="8"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/><path d="m9 13 2 2 4-4"/>', 'title' => 'Horaires', 'text' => $siteSettings->get('company.hours', '')],
                 ] as $card)
-                    <div class="flex items-start gap-4 rounded-2xl border border-slate-200 bg-white p-5">
-                        <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-brand-cyan-light text-brand-cyan-dark">
-                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{!! $card['icon'] !!}</svg>
+                    <div class="ap24-panel flex items-start gap-4">
+                        <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-brand-blue-light text-brand-blue-dark">
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{!! $card['icon'] !!}</svg>
                         </span>
                         <div>
                             <h3 class="font-bold text-slate-900">{{ $card['title'] }}</h3>
@@ -35,38 +35,39 @@
             </div>
 
             {{-- Formulaire --}}
-            <form method="POST" action="{{ route('contact.send') }}" class="space-y-5 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm lg:col-span-3">
+            <form method="POST" action="{{ route('contact.send') }}" class="ap24-panel lg:col-span-3">
                 @csrf
+
                 @if (session('success'))
-                    <div class="rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-800">{{ session('success') }}</div>
+                    <div class="ap24-alert ap24-alert--ok mb-5">{{ session('success') }}</div>
                 @endif
-                <div class="grid gap-5 sm:grid-cols-2">
-                    <div>
-                        <label for="nom" class="mb-1 block text-sm font-semibold text-slate-700">Nom complet *</label>
-                        <input id="nom" name="nom" type="text" required value="{{ old('nom') }}"
-                               class="w-full rounded-xl border border-slate-200 px-4 py-2.5 outline-none transition focus:border-brand-cyan">
-                        @error('nom')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
+
+                <div class="ap24-formgrid">
+                    <div class="ap24-field">
+                        <label for="nom" class="ap24-label">Nom complet *</label>
+                        <input id="nom" name="nom" type="text" required value="{{ old('nom') }}" class="ap24-input">
+                        @error('nom')<p class="ap24-error">{{ $message }}</p>@enderror
                     </div>
-                    <div>
-                        <label for="email" class="mb-1 block text-sm font-semibold text-slate-700">Email *</label>
-                        <input id="email" name="email" type="email" required value="{{ old('email') }}"
-                               class="w-full rounded-xl border border-slate-200 px-4 py-2.5 outline-none transition focus:border-brand-cyan">
-                        @error('email')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
+                    <div class="ap24-field">
+                        <label for="email" class="ap24-label">Email *</label>
+                        <input id="email" name="email" type="email" required value="{{ old('email') }}" class="ap24-input">
+                        @error('email')<p class="ap24-error">{{ $message }}</p>@enderror
                     </div>
                 </div>
-                <div>
-                    <label for="sujet" class="mb-1 block text-sm font-semibold text-slate-700">Sujet *</label>
-                    <input id="sujet" name="sujet" type="text" required value="{{ old('sujet') }}"
-                           class="w-full rounded-xl border border-slate-200 px-4 py-2.5 outline-none transition focus:border-brand-cyan">
-                    @error('sujet')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
+
+                <div class="ap24-field mt-4">
+                    <label for="sujet" class="ap24-label">Sujet *</label>
+                    <input id="sujet" name="sujet" type="text" required value="{{ old('sujet') }}" class="ap24-input">
+                    @error('sujet')<p class="ap24-error">{{ $message }}</p>@enderror
                 </div>
-                <div>
-                    <label for="message" class="mb-1 block text-sm font-semibold text-slate-700">Message *</label>
-                    <textarea id="message" name="message" rows="5" required
-                              class="w-full rounded-xl border border-slate-200 px-4 py-2.5 outline-none transition focus:border-brand-cyan">{{ old('message') }}</textarea>
-                    @error('message')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
+
+                <div class="ap24-field mt-4">
+                    <label for="message" class="ap24-label">Message *</label>
+                    <textarea id="message" name="message" rows="5" required class="ap24-input">{{ old('message') }}</textarea>
+                    @error('message')<p class="ap24-error">{{ $message }}</p>@enderror
                 </div>
-                <button type="submit" class="w-full rounded-xl bg-brand-cyan px-6 py-3.5 font-bold text-white transition hover:bg-brand-cyan-dark">
+
+                <button type="submit" class="ap24-btn ap24-btn--yellow ap24-btn--block ap24-btn--flat mt-5">
                     Envoyer le message
                 </button>
             </form>

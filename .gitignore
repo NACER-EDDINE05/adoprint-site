@@ -27,3 +27,12 @@ yarn-debug.log*
 yarn-error.log*
 .vercel
 .env*
+
+# Travail de référence (captures du site 24hprint.ma) — jamais versionné
+/.reference/
+
+# Logs / fichiers temporaires locaux
+/vite.err
+/vite.log
+/storage/ado-serve.log
+database/*.sqlite.bak-*

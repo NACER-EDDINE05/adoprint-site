@@ -11,7 +11,13 @@ class Product extends Model
 
     protected $fillable = ['category_id','name','slug','description','photo','base_price','active'];
 
-    /** URL de la photo du produit (stockée sur le disque public), sinon null. */
+    /** Chemin du fichier photo (null si aucun produit dépendant / aucune image fournie). */
+    public function photo(): ?string
+    {
+        return $this->photo;
+    }
+
+    /** URL relative de la photo du produit (stockée sur le disque public), sinon null. */
     public function photoUrl(): ?string
     {
         // Racine-relative : fonctionne sur n'importe quel hôte (127.0.0.1, adoprint.test, prod).

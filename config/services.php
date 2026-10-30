@@ -28,6 +28,14 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    // Mesure d'audience produit du storefront (resources/js/analytics.js).
+    // La clé de projet PostHog est publique par nature ; elle reste pilotée
+    // par l'environnement pour ne rien mesurer sur un poste de développement.
+    'posthog' => [
+        'key' => env('POSTHOG_KEY'),
+        'host' => env('POSTHOG_HOST', 'https://eu.i.posthog.com'),
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),

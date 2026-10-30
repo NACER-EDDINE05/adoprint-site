@@ -1,43 +1,128 @@
 @extends('layouts.storefront')
 
-@section('title', 'Tous nos produits — ADO PRINT')
+@section('title', $search ? 'Recherche : '.$search.' — ADO PRINT' : 'Tous nos produits — ADO PRINT')
 
 @section('content')
-    <div class="mx-auto max-w-7xl px-4 py-10">
-        {{-- Fil d'ariane --}}
-        <nav class="mb-6 flex items-center gap-2 text-sm text-slate-500">
-            <a href="{{ route('home') }}" class="hover:text-brand-cyan-dark">Accueil</a>
-            <span>/</span>
-            <span class="font-semibold text-slate-900">Tous les produits</span>
+    @php
+        $money = fn ($v): string => number_format((float) $v, 2, ',', ' ');
+        $cheapest = $products->sortBy(fn ($p) => (float) ($p->priceGrids->min('price') ?: $p->base_price))->first();
+        $fromPrice = $cheapest ? (float) ($cheapest->priceGrids->min('price') ?: $cheapest->base_price) : null;
+    @endphp
+
+    <div class="ap24-wrap">
+        {{-- Fil d'Ariane --}}
+        <nav class="ap24-crumbs" aria-label="Fil d'Ariane">
+            <ol class="ap24-crumbs__list">
+                <li><a href="{{ route('home') }}">Accueil</a></li>
+                <li class="ap24-crumbs__sep" aria-hidden="true">/</li>
+                <li aria-current="page">{{ $search ? 'Recherche' : 'Catégories' }}</li>
+            </ol>
         </nav>
 
-        <h1 class="text-3xl font-extrabold text-slate-900">Tous nos produits</h1>
-        <p class="mt-2 text-slate-500">Configurez votre produit en ligne et obtenez votre prix instantanément.</p>
-
-        {{-- Filtres par catégorie --}}
-        <div class="mt-6 flex flex-wrap gap-2">
-            <a href="{{ route('products.index') }}" class="rounded-full px-4 py-2 text-sm font-semibold transition {{ request('categorie') ? 'border border-slate-200 bg-white text-slate-600 hover:border-brand-cyan' : 'bg-brand-cyan text-white' }}">Tous</a>
-            @foreach ($categories as $c)
-                @if (request('categorie') === $c->slug)
-                    <span class="rounded-full bg-brand-cyan px-4 py-2 text-sm font-semibold text-white">{{ $c->name }}</span>
-                @else
-                    <a href="{{ route('category.show', $c->slug) }}" class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 transition hover:border-brand-cyan">{{ $c->name }}</a>
-                @endif
-            @endforeach
-        </div>
-
-        @if ($products->isEmpty())
-            <div class="mt-12 rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center">
-                <p class="text-lg font-semibold text-slate-900">Aucun produit {{ request('q') ? 'ne correspond à « '.request('q').' »' : 'pour le moment' }}.</p>
-                <p class="mt-2 text-slate-500">Contactez-nous, nous pouvons le réaliser sur mesure.</p>
-                <a href="{{ route('devis') }}" class="mt-6 inline-flex rounded-xl bg-brand-cyan px-6 py-3 font-bold text-white transition hover:bg-brand-cyan-dark">Demander un devis</a>
+        {{-- En-tête --}}
+        <header class="ap24-pagehead">
+            <span class="ap24-pagehead__icon" aria-hidden="true">
+                @include('partials.category-icon', ['slug' => $search ? 'default' : 'impression-papier-bureautique'])
+            </span>
+            <div>
+                <p class="ap24-kicker">{{ $search ? 'Résultats de recherche' : 'Catalogue' }}</p>
+                <h1>{{ $search ? 'Résultats pour « '.$search.' »' : 'Tous nos produits' }}</h1>
+                <p class="ap24-pagehead__desc">
+                    @if ($search)
+                        {{ $products->count() }} produit{{ $products->count() > 1 ? 's' : '' }} correspond{{ $products->count() > 1 ? 'ent' : '' }} à votre recherche.
+                    @else
+                        Configurez votre produit en ligne et obtenez votre prix instantanément :
+                        9 familles, plus de 130 sous-catégories, livraison partout au Maroc.
+                    @endif
+                </p>
+                @unless ($search)
+                    <p class="ap24-pagehead__meta">
+                        <span>{{ $products->count() }} produits configurables</span>
+                        <span>{{ $families->count() }} familles</span>
+                        <span>Prix dégressifs</span>
+                    </p>
+                @endunless
             </div>
-        @else
-            <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                @foreach ($products as $product)
-                    @include('partials.product-card', ['product' => $product])
-                @endforeach
+        </header>
+
+        {{-- Recherche --}}
+        <form action="{{ route('products.index') }}" method="GET" class="ap24-searchbar" role="search">
+            <label class="ap24-input ap24-searchbar__input">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <input type="search" name="q" value="{{ $search }}" placeholder="Rechercher un produit (carte de visite, bâche, mug…)" aria-label="Rechercher un produit">
+            </label>
+            <button type="submit" class="ap24-btn ap24-btn--yellow ap24-btn--sm">Rechercher</button>
+        </form>
+
+        {{-- Familles --}}
+        @unless ($search)
+            <section class="ap24-block">
+                <div class="ap24-subhead">
+                    <div>
+                        <h2>Les 9 familles de produits</h2>
+                        <p>Choisissez une famille pour découvrir ses sous-catégories.</p>
+                    </div>
+                </div>
+
+                <div class="ap24-ctiles">
+                    @foreach ($families as $family)
+                        <a href="{{ route('category.show', $family['model']->slug) }}" class="ap24-ctile">
+                            @php $familyPhoto = $family['cheapest']?->photoUrl(); @endphp
+                            @if ($familyPhoto)
+                                <img class="ap24-ctile__thumb" src="{{ $familyPhoto }}" alt="" width="80" height="80" loading="lazy" decoding="async">
+                            @else
+                                <span class="ap24-ctile__icon" aria-hidden="true">
+                                    @include('partials.category-icon', ['slug' => $family['model']->slug])
+                                </span>
+                            @endif
+                            <span class="ap24-ctile__txt">
+                                <span class="ap24-ctile__name">{{ $family['model']->name }}</span>
+                                <span class="ap24-ctile__meta">
+                                    <span>{{ $family['children']->count() }} sous-catégories</span>
+                                    <span>{{ $family['count'] }} produit{{ $family['count'] > 1 ? 's' : '' }}</span>
+                                    @if ($family['fromPrice'])
+                                        <span>dès <b>{{ $money($family['fromPrice']) }} DH</b></span>
+                                    @endif
+                                </span>
+                            </span>
+                            <svg class="ap24-ctile__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+                        </a>
+                    @endforeach
+                </div>
+            </section>
+        @endunless
+
+        {{-- Produits --}}
+        <section class="ap24-block">
+            <div class="ap24-subhead">
+                <div>
+                    <h2>{{ $search ? 'Produits trouvés' : 'Tout le catalogue' }}</h2>
+                    <p>
+                        @if ($search)
+                            {{ $products->count() }} produit{{ $products->count() > 1 ? 's' : '' }}
+                        @else
+                            {{ $products->count() }} produit{{ $products->count() > 1 ? 's' : '' }} configurable{{ $products->count() > 1 ? 's' : '' }} en ligne
+                        @endif
+                    </p>
+                </div>
             </div>
-        @endif
+
+            @if ($products->isEmpty())
+                <div class="ap24-empty">
+                    <span class="ap24-empty__icon" aria-hidden="true">
+                        @include('partials.category-icon', ['slug' => 'default'])
+                    </span>
+                    <h2>Aucun produit {{ $search ? 'ne correspond à « '.$search.' »' : 'pour le moment' }}</h2>
+                    <p>Contactez-nous : nous pouvons le réaliser sur mesure.</p>
+                    <a href="{{ route('devis') }}" class="ap24-btn ap24-btn--yellow">Demander un devis</a>
+                </div>
+            @else
+                <div class="ap24-grid ap24-grid--tight">
+                    @foreach ($products as $product)
+                        @include('partials.product-card', ['product' => $product])
+                    @endforeach
+                </div>
+            @endif
+        </section>
     </div>
 @endsection

@@ -5,14 +5,14 @@
 @section('content')
     <article class="mx-auto max-w-3xl px-4 py-12">
         <nav class="mb-6 flex items-center gap-2 text-sm text-slate-500">
-            <a href="{{ route('home') }}" class="hover:text-brand-cyan-dark">Accueil</a>
+            <a href="{{ route('home') }}" class="hover:text-brand-blue-dark">Accueil</a>
             <span>/</span>
-            <a href="{{ route('guides.index') }}" class="hover:text-brand-cyan-dark">Ressources</a>
+            <a href="{{ route('guides.index') }}" class="hover:text-brand-blue-dark">Ressources</a>
             <span>/</span>
             <span class="font-semibold text-slate-900">{{ $guide['title'] }}</span>
         </nav>
 
-        <span class="grid h-12 w-12 place-items-center rounded-xl bg-brand-cyan-light text-brand-cyan-dark">
+        <span class="grid h-12 w-12 place-items-center rounded-xl bg-brand-blue-light text-brand-blue-dark">
             <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{!! $guide['icon'] !!}</svg>
         </span>
 
@@ -31,7 +31,7 @@
         <div class="mt-12 rounded-2xl bg-slate-50 p-8 text-center">
             <p class="font-bold text-slate-900">Un doute sur votre fichier ?</p>
             <p class="mx-auto mt-1 max-w-md text-sm text-slate-500">Envoyez-le nous avec votre demande : nous vérifions gratuitement la faisabilité avant impression.</p>
-            <a href="{{ route('devis') }}" class="mt-5 inline-flex items-center gap-2 rounded-xl bg-brand-cyan px-6 py-3 font-bold text-white transition hover:bg-brand-cyan-dark">
+            <a href="{{ route('devis') }}" class="mt-5 inline-flex items-center gap-2 rounded-xl bg-brand-blue px-6 py-3 font-bold text-white transition hover:bg-brand-blue-dark">
                 Vérifier mon fichier gratuitement
             </a>
         </div>
