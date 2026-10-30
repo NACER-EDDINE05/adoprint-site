@@ -20,19 +20,6 @@
 @endphp
 
 {{-- ==========================================================================
-     Barre supérieure : liens rapides + connexion
-     ========================================================================== --}}
-<div class="container-fluid d-none d-lg-flex">
-    <ul class="list-inline mb-0 top-links">
-        <li class="list-inline-item">
-            <a href="{{ route('products.index') }}" target="_self" class="">
-                <i class="fas fa-print" role="presentation"></i><span class="sr-only">Produits pour les pros</span><span> Tous nos produits </span>
-            </a>
-        </li>
-    </ul>
-</div>
-
-{{-- ==========================================================================
      En-tête principal : logo + recherche + boutons action + panier
      ========================================================================== --}}
 <div class="navbar py-1 top-header navbar-expand-lg navbar-light">
@@ -42,7 +29,7 @@
         </button>
 
         <a class="navbar-brand mr-0 mr-lg-3" href="{{ route('home') }}">
-            <img class="img-fluid" width="150" height="71" alt="ADO PRINT" src="/images/logo.png">
+            <img class="img-fluid" width="150" height="71" alt="ADO PRINT" src="{{ $siteSettings->get('brand.logo') ? '/storage/'.$siteSettings->get('brand.logo') : '/images/logo.png' }}">
         </a>
 
         <div class="mb-cart-search ml-auto col-lg w-auto">
@@ -127,7 +114,7 @@
 <nav class="navbar navbar-expand-lg border-bottom px-0 py-0">
     <div class="container-fluid position-relative px-2">
         <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav ml-lg-auto mr-auto mr-lg-0">
+            <ul class="navbar-nav w-100 justify-content-between">
                 @foreach ($navCategories as $family)
                     @php
                         $fModel = $family;

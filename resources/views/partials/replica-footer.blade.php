@@ -101,7 +101,7 @@
                     <h3>Showroom</h3>
                     <h4 class="text-white text-bold mb-0">Casablanca</h4>
                     <p>{{ $address }}<br><a href="{{ $mapsUrl }}" target="_blank" rel="noopener" class="text-white">Voir sur Google Maps</a></p>
-                    <h3 class="mt-3 mt-md-5" style="margin-bottom: 1.5rem; font-size: 1.11111rem; color: rgb(255, 226, 44); text-transform: uppercase; background-color: rgb(11, 11, 11);">AIDE</h3>
+                    <h3 class="mt-3 mt-md-5" style="margin-bottom: 1.5rem; font-size: 1.11111rem; color: #00aeef; text-transform: uppercase;">AIDE</h3>
                     <ul class="list-unstyled mb-3 mb-md-5" style="margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; color: rgb(255, 255, 255); background-color: rgb(11, 11, 11);">
                         <li style="margin: 0px; display: block;"><a href="{{ route('aide') }}" style="color: rgb(251, 251, 251); display: inline-block; padding: 0.2rem 0px;">Comment commander en ligne ?</a></li>
                         <li style="margin: 0px; display: block;"><a href="{{ route('guides.index') }}" style="color: rgb(251, 251, 251); display: inline-block; padding: 0.2rem 0px;">Guides d'impression</a></li>
@@ -122,8 +122,10 @@
 
 <footer class="py-2 text-center bg-primary">
     <div class="container">
-        <small class="text-white">
-            Copyright © {{ date('Y') }} ADO PRINT — adoprint.test. Tous droits réservés.
-        </small>
+        <small class="text-white">            Copyright © {{ date('Y') }} ADO PRINT — adoprint.test. Tous droits réservés.
+            </small>
+            {{-- Lien d'administration, volontairement discret --}}
+            <a href="{{ url('/admin') }}" title="Espace administrateur" aria-label="Espace administrateur"
+               style="opacity:.22;color:inherit;text-decoration:none;font-size:.72rem;margin-left:.75rem;vertical-align:middle;">Admin</a>
     </div>
 </footer>

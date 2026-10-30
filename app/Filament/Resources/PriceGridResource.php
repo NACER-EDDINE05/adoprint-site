@@ -47,7 +47,7 @@ class PriceGridResource extends Resource
             TextColumn::make('name'),
             TextColumn::make('min_qty')->label('Min qty'),
             TextColumn::make('max_qty')->label('Max qty'),
-            TextColumn::make('price')->money('MAD'),
+            TextColumn::make('price')->formatStateUsing(fn ($state) => number_format((float) $state, 2, ',', ' ') . ' MAD'),
         ]);
     }
 
@@ -62,6 +62,6 @@ class PriceGridResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return auth()->check() && auth()->user()->can('access-admin');
+        return auth()->check() && (auth()->user()->hasRole('super-admin') || auth()->user()->hasRole('admin'));
     }
 }

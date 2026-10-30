@@ -58,11 +58,20 @@ foreach ([
 ] as $k => $v) {
     $_ENV[$k] = $v;
     $_SERVER[$k] = $v;
-}
-
-// 3) Le debug est piloté par APP_DEBUG dans vercel.json (false en production).
+}// 3) Le debug est piloté par APP_DEBUG dans vercel.json (false en production).
 //    On ne le force pas ici pour ne pas exposer d'informations internes.
 
+// 4) vercel-php expose le script dans son propre dossier : la requête /api/price
+//    arrive avec SCRIPT_NAME=/api/index.php. Symfony déduit alors « baseUrl=/api »
+//    et le routeur chercherait la route «/price» au lieu de «/api/price».
+//    On fait pointer le script vers la racine pour que Laravel voie l'URI réelle.
+$_SERVER['SCRIPT_NAME'] = '/index.php';
+$_SERVER['PHP_SELF'] = '/index.php';
+unset($_SERVER['ORIG_SCRIPT_NAME'], $_SERVER['PATH_INFO']);
+
 require __DIR__ . '/../public/index.php';
+
+
+
 
 

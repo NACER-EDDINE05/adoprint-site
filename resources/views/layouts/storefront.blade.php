@@ -7,11 +7,15 @@
     <title>@yield('title', 'ADO PRINT — Imprimerie en ligne au Maroc')</title>
     <meta name="description" content="@yield('meta_description', 'Impression en ligne : cartes de visite, flyers, brochures, affiches, objets publicitaires. Qualité professionnelle, prix dégressifs et livraison rapide partout au Maroc.')">
 
-    {{-- Identité ADO PRINT --}}
-    <link rel="icon" type="image/x-icon" href="/favicon.ico?v=2">
-    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png?v=2">
-    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png?v=2">
-    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png?v=2">
+    @php $brandIcon = $siteSettings->get('brand.icon'); @endphp
+    @if ($brandIcon){{-- Identité ADO PRINT (icône administrable via /admin) --}}
+        <link rel="icon" type="image/png" href="/storage/{{ $brandIcon }}">
+        <link rel="apple-touch-icon" sizes="180x180" href="/storage/{{ $brandIcon }}">
+    @else
+        <link rel="icon" type="image/x-icon" href="/favicon.ico?v=2">
+        <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png?v=2">
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png?v=2">
+    @endif
     <meta name="theme-color" content="#0b0b0b">
     <meta name="route-contact" content="{{ route('contact') }}">
 
@@ -37,17 +41,21 @@
            .sr-only était donc visible. On le ré-implémente hors layer. */
         .sr-only { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0,0,0,0) !important; white-space: nowrap !important; border: 0 !important; }
         .top_cms_header { display: flex; justify-content: flex-start; gap: 9px; }
-        .btn-custom { background-color: white; border: 1.8px solid black; color: black; display: flex; align-items: center; padding: 9px; transition: background-color .3s, color .3s; flex: 1 1 auto; justify-content: center; min-width: 135px; }
-        .btn-custom:hover { background-color: yellow; color: black; }
-        .btn-icon { font-size: 20px; margin-right: 5px; }
-        .whatsapp-icon { color: #25D366; }
-        .btn-text { font-size: 14px; white-space: nowrap; margin-left: 5px; }
+        .btn-custom { background-color: #00aeef; border: 1.8px solid #00aeef; color: #fff; display: flex; align-items: center; padding: 9px; transition: background-color .3s, color .3s, border-color .3s; flex: 1 1 auto; justify-content: center; min-width: 125px; }
+        .btn-custom:hover { background-color: #0089c1; color: #fff; }
         .btn-custom-cta { display: block; text-align: center; padding: 9px; margin-top: 9px; background-color: transparent; border: 1.8px solid black; color: black; text-decoration: none; font-weight: bold; font-size: 14px; }
-        .btn-custom-cta:hover { background-color: blue; color: white; }
+        .btn-custom-cta:hover { background-color: #00aeef; color: white; border-color: #00aeef; }
         .dropdown-divider { border-top: .9px solid #e9ecef; margin: .45rem 0; }
         .dropdown-menu-gray { background-color: #f0f0f0; }
         .dropdown-menu-wide { min-width: 270px; }
+        .btn-custom .whatsapp-icon { color: #fff; }
+        .btn-icon { font-size: 20px; margin-right: 5px; }
+        .btn-text { font-size: 14px; white-space: nowrap; margin-left: 5px; }
         .btn-group { display: flex; flex-grow: 1; margin-right: 9px; }
+        {{-- Loupe du champ de recherche d'en-tête --}}
+        .search-icon .twitter-typeahead { position: relative; display: block; width: 100%; }
+        .search-icon .twitter-typeahead::before { content: "\f002"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; left: 1.35rem; top: 50%; transform: translateY(-50%); color: #0b0b0b; font-size: 20px; line-height: 1; z-index: 4; pointer-events: none; }
+        .search-icon .twitter-typeahead::after { content: none; }
     </style>
 </head>
 <body class="row-offcanvas-left">

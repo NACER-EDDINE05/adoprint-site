@@ -61,7 +61,7 @@ class ProductResource extends Resource
             TextColumn::make('id')->label('ID')->sortable(),
             TextColumn::make('name')->searchable(),
             TextColumn::make('category.name')->label('Category'),
-            TextColumn::make('base_price')->money('MAD'),
+            TextColumn::make('base_price')->formatStateUsing(fn ($state) => number_format((float) $state, 2, ',', ' ') . ' MAD'),
         ]);
     }
 
@@ -76,7 +76,7 @@ class ProductResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return auth()->check() && auth()->user()->can('access-admin');
+        return auth()->check() && (auth()->user()->hasRole('super-admin') || auth()->user()->hasRole('admin'));
     }
 
     public static function getNavigationGroup(): ?string

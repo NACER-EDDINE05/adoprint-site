@@ -31,7 +31,7 @@ class OrderResource extends Resource
             TextColumn::make('id'),
             TextColumn::make('user.email')->label('Client'),
             TextColumn::make('status'),
-            TextColumn::make('total')->money('MAD'),
+            TextColumn::make('total')->formatStateUsing(fn ($state) => number_format((float) $state, 2, ',', ' ') . ' MAD'),
         ]);
     }
 
@@ -45,6 +45,6 @@ class OrderResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return auth()->check() && auth()->user()->can('access-admin');
+        return auth()->check() && (auth()->user()->hasRole('super-admin') || auth()->user()->hasRole('admin'));
     }
 }
