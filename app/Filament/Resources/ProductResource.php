@@ -9,11 +9,16 @@ use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Placeholder;
 use Filament\Tables\Table;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Notifications\Notification;
 
 class ProductResource extends Resource
 {
@@ -54,6 +59,10 @@ class ProductResource extends Resource
                 ->maxSize(4096)
                 ->columnSpanFull(),
             TextInput::make('base_price')->label('Prix de base (MAD)')->numeric(),
+            Toggle::make('active')
+                ->label('Produit en ligne')
+                ->helperText('Désactivé : la fiche produit n\'est plus visible sur la boutique publique.')
+                ->default(true),
         ]);
     }
 
@@ -76,7 +85,33 @@ class ProductResource extends Resource
             TextColumn::make('base_price')
                 ->label('Prix de base')
                 ->formatStateUsing(fn ($state) => number_format((float) $state, 2, ',', ' ') . ' MAD'),
+            // Interrupteur en ligne / hors ligne directement dans la liste.
+            ToggleColumn::make('active')
+                ->label('En ligne')
+                ->afterStateUpdated(fn (Product $record, $state) => Notification::make()
+                    ->title($state ? 'Produit remis en ligne.' : 'Produit retiré de la boutique public.')
+                    ->success()
+                    ->send()),
         ])
+            ->defaultSort('created_at', 'desc')
+            ->filters([
+                SelectFilter::make('category')
+                    ->label('Catégorie')
+                    ->relationship('category', 'name')
+                    ->searchable()
+                    ->preload(),
+                SelectFilter::make('active')
+                    ->label('Visibilité')
+                    ->options(['1' => 'En ligne', '0' => 'Hors ligne']),
+            ])
+            ->actions([
+                // Voir le rendu réel de la fiche produit sur la boutique.
+                Action::make('voirSite')
+                    ->label('Voir sur le site')
+                    ->icon('heroicon-m-globe-alt')
+                    ->color('gray')
+                    ->url(fn (Product $record) => '/produit/' . $record->slug, shouldOpenInNewTab: true),
+            ])
             ->emptyStateHeading('Aucun produit pour le moment')
             ->emptyStateDescription('Cliquez sur « Nouveau produit » pour ajouter le premier article du catalogue.')
             ->emptyStateIcon('heroicon-o-cube');
