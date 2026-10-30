@@ -124,8 +124,12 @@
     <div class="container">
         <small class="text-white">            Copyright © {{ date('Y') }} ADO PRINT — adoprint.test. Tous droits réservés.
             </small>
-            {{-- Lien d'administration, volontairement discret --}}
+            {{-- Bouton d'accès à l'administration — volontairement discret --}}
             <a href="{{ url('/admin') }}" title="Espace administrateur" aria-label="Espace administrateur"
-               style="opacity:.22;color:inherit;text-decoration:none;font-size:.72rem;margin-left:.75rem;vertical-align:middle;">Admin</a>
+               style="display:inline-flex;align-items:center;gap:.4rem;margin-left:.75rem;padding:.3rem .75rem;border:1px solid rgba(255,255,255,.35);border-radius:999px;background:transparent;color:#fff;font-size:.72rem;font-weight:600;letter-spacing:.04em;vertical-align:middle;text-decoration:none;opacity:.35;transition:opacity .15s ease,border-color .15s ease;"
+               onmouseover="this.style.opacity='1';this.style.borderColor='#00aeef';"
+               onmouseout="this.style.opacity='.35';this.style.borderColor='rgba(255,255,255,.35)';">
+                <i class="fas fa-lock" style="font-size:.6rem;"></i> Admin
+            </a>
     </div>
 </footer>
