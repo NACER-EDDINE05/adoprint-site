@@ -22,6 +22,9 @@ class ProductResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-cube';
     protected static ?string $navigationGroup = 'Administration';
 
+    protected static ?string $modelLabel = 'produit';
+    protected static ?string $pluralModelLabel = 'produits';
+
     public static function form(Form $form): Form
     {
         return $form->schema([
@@ -35,10 +38,13 @@ class ProductResource extends Resource
                     )
                 )),
 
-            Select::make('category_id')->relationship('category','name'),
-            TextInput::make('name')->required(),
-            TextInput::make('slug')->required(),
-            Textarea::make('description'),
+            Select::make('category_id')->relationship('category','name')
+                ->label('Catégorie')
+                ->searchable()
+                ->preload(),
+            TextInput::make('name')->label('Nom')->required(),
+            TextInput::make('slug')->label('Slug (URL)')->required(),
+            Textarea::make('description')->label('Description')->rows(4),
             FileUpload::make('photo')
                 ->label('Photo du produit')
                 ->image()
@@ -47,7 +53,7 @@ class ProductResource extends Resource
             ->disk('public')
                 ->maxSize(4096)
                 ->columnSpanFull(),
-            TextInput::make('base_price')->numeric(),
+            TextInput::make('base_price')->label('Prix de base (MAD)')->numeric(),
         ]);
     }
 
@@ -57,12 +63,23 @@ class ProductResource extends Resource
             ImageColumn::make('photo')
                 ->label('Photo')
                 ->circular()
-                ->getStateUsing(fn ($record) => $record->photo ? '/storage/' . $record->photo : null),
+                ->getStateUsing(fn ($record) => $record->photo ? '/storage/' . $record->photo : null)
+                ->defaultImageUrl(fn () => 'data:image/svg+xml;base64,' . base64_encode(
+                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">'
+                    . '<rect width="48" height="48" rx="10" fill="#d9f4ff"/>'
+                    . '<circle cx="19" cy="19" r="5" fill="#00aeef"/>'
+                    . '<path d="M10 36l9-11 7 8 5-6 7 11z" fill="#0089c1"/></svg>'
+                )),
             TextColumn::make('id')->label('ID')->sortable(),
-            TextColumn::make('name')->searchable(),
-            TextColumn::make('category.name')->label('Category'),
-            TextColumn::make('base_price')->formatStateUsing(fn ($state) => number_format((float) $state, 2, ',', ' ') . ' MAD'),
-        ]);
+            TextColumn::make('name')->label('Nom')->searchable(),
+            TextColumn::make('category.name')->label('Catégorie'),
+            TextColumn::make('base_price')
+                ->label('Prix de base')
+                ->formatStateUsing(fn ($state) => number_format((float) $state, 2, ',', ' ') . ' MAD'),
+        ])
+            ->emptyStateHeading('Aucun produit pour le moment')
+            ->emptyStateDescription('Cliquez sur « Nouveau produit » pour ajouter le premier article du catalogue.')
+            ->emptyStateIcon('heroicon-o-cube');
     }
 
     public static function getPages(): array

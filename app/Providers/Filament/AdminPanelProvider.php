@@ -71,8 +71,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
+                // Accueil utiles pour un nouvel ADMIN : compte, résumé chiffré
+                // de la boutique et cartes d'accès rapide.
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                \App\Filament\Widgets\StorefrontBriefing::class,
+                \App\Filament\Widgets\StorefrontQuickLinks::class,
             ])
             ->middleware([
                 EncryptCookies::class,

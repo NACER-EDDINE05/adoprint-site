@@ -18,6 +18,9 @@ class PriceGridResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-table-cells';
         protected static ?string $navigationGroup = 'Administration';
 
+    protected static ?string $modelLabel = 'grille tarifaire';
+    protected static ?string $pluralModelLabel = 'grilles tarifaires';
+
         public static function getNavigationGroup(): ?string
         {
             return __('filament.navigation.administration');
@@ -31,24 +34,30 @@ class PriceGridResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Select::make('product_id')->relationship('product','name')->required(),
-            TextInput::make('name')->required()->maxLength(191),
-            TextInput::make('min_qty')->label('Min qty')->numeric()->required()->rules(['integer','min:0']),
-            TextInput::make('max_qty')->label('Max qty')->numeric()->required()->rules(['integer','min:0']),
-            TextInput::make('price')->numeric()->required()->minValue(0),
+            Select::make('product_id')->relationship('product','name')->required()
+                ->label('Produit')->searchable()->preload(),
+            TextInput::make('name')->label('Nom du palier')->required()->maxLength(191),
+            TextInput::make('min_qty')->label('Qté min')->numeric()->required()->rules(['integer','min:0']),
+            TextInput::make('max_qty')->label('Qté max')->numeric()->required()->rules(['integer','min:0']),
+            TextInput::make('price')->label('Prix (MAD)')->numeric()->required()->minValue(0),
         ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table->columns([
-            TextColumn::make('id'),
-            TextColumn::make('product.name')->label('Product'),
-            TextColumn::make('name'),
-            TextColumn::make('min_qty')->label('Min qty'),
-            TextColumn::make('max_qty')->label('Max qty'),
-            TextColumn::make('price')->formatStateUsing(fn ($state) => number_format((float) $state, 2, ',', ' ') . ' MAD'),
-        ]);
+            TextColumn::make('id')->label('ID'),
+            TextColumn::make('product.name')->label('Produit'),
+            TextColumn::make('name')->label('Palier'),
+            TextColumn::make('min_qty')->label('Qté min'),
+            TextColumn::make('max_qty')->label('Qté max'),
+            TextColumn::make('price')
+                ->label('Prix')
+                ->formatStateUsing(fn ($state) => number_format((float) $state, 2, ',', ' ') . ' MAD'),
+        ])
+            ->emptyStateHeading('Aucune grille tarifaire pour le moment')
+            ->emptyStateDescription('Les grilles définissent le prix par quantité pour chaque produit.')
+            ->emptyStateIcon('heroicon-o-table-cells');
     }
 
     public static function getPages(): array

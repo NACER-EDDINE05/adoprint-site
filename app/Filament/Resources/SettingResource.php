@@ -17,6 +17,9 @@ class SettingResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-cog';
     protected static ?string $navigationGroup = 'Administration';
 
+    protected static ?string $modelLabel = 'réglage';
+    protected static ?string $pluralModelLabel = 'réglages';
+
     public static function getNavigationGroup(): ?string
     {
         return __('filament.navigation.administration');
@@ -30,17 +33,20 @@ class SettingResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            TextInput::make('key')->required(),
-            TextInput::make('value'),
+            TextInput::make('key')->label('Clé')->required(),
+            TextInput::make('value')->label('Valeur'),
         ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table->columns([
-            TextColumn::make('key'),
-            TextColumn::make('value'),
-        ]);
+            TextColumn::make('key')->label('Clé'),
+            TextColumn::make('value')->label('Valeur'),
+        ])
+            ->emptyStateHeading('Aucun réglage pour le moment')
+            ->emptyStateDescription('Les réglages techniques du site (clé → valeur) apparaîtront ici.')
+            ->emptyStateIcon('heroicon-o-cog');
     }
 
     public static function getPages(): array

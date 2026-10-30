@@ -15,13 +15,19 @@ class MediaResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-photo';
     protected static ?string $navigationGroup = 'Administration';
 
+    protected static ?string $modelLabel = 'fichier média';
+    protected static ?string $pluralModelLabel = 'fichiers média';
+
     public static function table(Table $table): Table
     {
         return $table->columns([
-            TextColumn::make('id'),
-            TextColumn::make('filename'),
-            TextColumn::make('path'),
-        ]);
+            TextColumn::make('id')->label('ID'),
+            TextColumn::make('filename')->label('Fichier'),
+            TextColumn::make('path')->label('Chemin'),
+        ])
+            ->emptyStateHeading('Aucun média pour le moment')
+            ->emptyStateDescription('Les images du site se gèrent dans « Apparence du site » et dans la photo de chaque produit.')
+            ->emptyStateIcon('heroicon-o-photo');
     }
 
     public static function getPages(): array

@@ -19,6 +19,9 @@ class CategoryResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Administration';
 
+    protected static ?string $modelLabel = 'catégorie';
+    protected static ?string $pluralModelLabel = 'catégories';
+
     public static function getNavigationGroup(): ?string
     {
         return __('filament.navigation.administration');
@@ -33,9 +36,9 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')->required(),
-                TextInput::make('slug')->required(),
-                Textarea::make('description'),
+                TextInput::make('name')->label('Nom')->required(),
+                TextInput::make('slug')->label('Slug (URL)')->required(),
+                Textarea::make('description')->label('Description')->rows(3),
             ]);
     }
 
@@ -44,10 +47,12 @@ class CategoryResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id')->label('ID')->sortable(),
-                TextColumn::make('name')->searchable(),
+                TextColumn::make('name')->label('Nom')->searchable(),
                 TextColumn::make('slug'),
-                IconColumn::make('active')->boolean(),
-            ]);
+                IconColumn::make('active')->boolean()->label('Active'),
+            ])
+            ->emptyStateHeading('Aucune catégorie pour le moment')
+            ->emptyStateDescription('Cliquez sur « Nouvelle catégorie » pour organiser le catalogue.');
     }
 
     public static function getPages(): array

@@ -15,6 +15,9 @@ class OrderResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-receipt-percent';
         protected static ?string $navigationGroup = 'Administration';
 
+    protected static ?string $modelLabel = 'commande';
+    protected static ?string $pluralModelLabel = 'commandes';
+
         public static function getNavigationGroup(): ?string
         {
             return __('filament.navigation.administration');
@@ -28,11 +31,16 @@ class OrderResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->columns([
-            TextColumn::make('id'),
+            TextColumn::make('id')->label('N°'),
             TextColumn::make('user.email')->label('Client'),
-            TextColumn::make('status'),
-            TextColumn::make('total')->formatStateUsing(fn ($state) => number_format((float) $state, 2, ',', ' ') . ' MAD'),
-        ]);
+            TextColumn::make('status')->label('Statut')->badge(),
+            TextColumn::make('total')
+                ->label('Total')
+                ->formatStateUsing(fn ($state) => number_format((float) $state, 2, ',', ' ') . ' MAD'),
+        ])
+            ->emptyStateHeading('Aucune commande pour le moment')
+            ->emptyStateDescription('Les commandes passées depuis la boutique apparaîtront ici.')
+            ->emptyStateIcon('heroicon-o-receipt-percent');
     }
 
     public static function getPages(): array

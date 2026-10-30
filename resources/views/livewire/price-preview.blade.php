@@ -18,7 +18,6 @@
             </svg>
             <div>
                 <div>L'aperçu en direct s'affichera une fois le produit enregistré.</div>
-                <div dir="rtl" class="text-sm text-gray-500 mt-0.5">ستظهر المعاينة المباشرة بعد حفظ المنتج.</div>
             </div>
         </div>
     @endif
