@@ -32,6 +32,10 @@
             "dest": "/public/$1/$2"
         },
         {
+            "src": "/reference/(.*)",
+            "dest": "/public/reference/$1"
+        },
+        {
             "src": "/(favicon\\.ico|robots\\.txt)",
             "dest": "/public/$1"
         },
