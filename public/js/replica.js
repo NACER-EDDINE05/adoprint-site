@@ -142,15 +142,26 @@
         'use strict';
         var $navbarText = $('#navbarText');
         var $toggler = $('.navbar-toggler[data-target="#navbarText"]');
+        var $body = $('body');
 
         function isOpen() {
             return $navbarText.length && $navbarText.hasClass('show');
         }
 
+        function setOpen(state) {
+            if (state) $body.addClass('navbar-open');
+            else $body.removeClass('navbar-open');
+        }
+
         function closeMenu() {
             if (!isOpen()) return;
+            setOpen(false);
             $toggler.trigger('click'); // Bootstrap bascule le panneau et met a jour aria-expanded
         }
+
+        // Synchronise la classe body.navbar-open avec les evenements Bootstrap
+        $navbarText.on('show.bs.collapse', function () { setOpen(true); });
+        $navbarText.on('hide.bs.collapse', function () { setOpen(false); });
 
         // Fermer quand on clique sur un lien du panneau mobile
         $navbarText.on('click.collapseMobile', '.nav-link', function () {
@@ -162,7 +173,7 @@
             if (e.key === 'Escape') closeMenu();
         });
 
-        // Fermer en cliquant a l'exterieur (panneau et bouton exclus)
+        // Fermer en cliquant a l'exterieur (panneau, fond et bouton exclus)
         $(document).on('click.collapseMobile', function (e) {
             if (isDesktopNav() || !isOpen()) return;
             if (!$navbarText.is(e.target) && $navbarText.has(e.target).length === 0 &&

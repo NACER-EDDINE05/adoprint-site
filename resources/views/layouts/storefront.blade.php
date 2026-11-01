@@ -59,12 +59,26 @@
         .search-icon .twitter-typeahead::after { content: none; }
         /* ========================================================================
            Menu mobile (hamburger) — ADO PRINT
-           Tailwind v4 définit l'utilitaire .collapse { visibility: collapse },
-           qui masque le panneau Bootstrap même quand il est ouvert
-           (display: block mais visibility: collapse => invisible).
-           On force donc la visibilité sur #navbarText et on soigne l'affichage.
+           Le panneau s'ouvre en drawer latéral couvrant la moitié gauche de l'écran,
+           pleine hauteur. Pas de transition d'ouverture/étrange, pas d'effet de côté
+           à la fermeture.
            ======================================================================== */
         .navbar-collapse { visibility: visible !important; }
+
+        /* Fond obscur quand le menu est ouvert (visuel uniquement, les clics passent
+           au travers et sont gérés par le handler JS de fermeture hors-panneau). */
+        body.navbar-open::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, .4);
+            z-index: 1150;
+            backdrop-filter: blur(3px);
+            pointer-events: none;
+            opacity: 1;
+            transition: opacity .25s ease;
+        }
+        body:not(.navbar-open)::after { display: none; }
 
         @media (max-width: 991px) {
             /* Bouton hamburger : toujours visible, bien dimensionné, facile à viser au doigt */
@@ -79,6 +93,8 @@
                 box-shadow: 0 3px 10px rgba(0,0,0,.08);
                 align-items: center;
                 justify-content: center;
+                position: relative;
+                z-index: 1300;
             }
             .top-header .navbar-toggler[aria-expanded="true"] {
                 border-color: #00aeef;
@@ -90,22 +106,23 @@
                 background-size: 100% 100%;
             }
 
-            /* Panneau ouvert : plein largeur, propre, surélevé sous la barre */
+            /* Panneau mobile : demi-écran (drawer latéral gauche), pleine hauteur */
             #navbarText.navbar-collapse.show {
                 display: block !important;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
+                visibility: visible !important;
+                position: fixed;
+                inset: 0 auto 0 0;
+                width: 50vw;
+                max-width: 340px;
+                height: 100dvh;
                 background: #ffffff;
-                border: 1px solid #e5e7eb;
-                border-top: none;
-                border-radius: 0 0 14px 14px;
-                box-shadow: 0 12px 28px rgba(0,0,0,.08);
-                z-index: 1100;
-                padding: 24px 20px 32px;
-                max-height: 75vh;
+                border-right: 1px solid #e5e7eb;
+                box-shadow: 6px 0 24px rgba(0,0,0,.14);
+                z-index: 1200;
+                padding: 24px 20px 40px;
                 overflow-y: auto;
+                transform: none !important;
+                transition: none !important;
             }
 
             /* Liens de navigation mobile */
