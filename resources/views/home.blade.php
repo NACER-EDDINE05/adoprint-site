@@ -107,10 +107,13 @@
 .hp24-slide .btn-info:hover, .hp24-slide .btn-info:focus { background:var(--slide-ink); color:var(--slide-bg); border-color:var(--slide-ink); }
 .hp24-slide__img img { max-height:300px; max-width:min(46vw,460px); width:100%; height:auto; object-fit:contain; border-radius:16px; box-shadow:0 18px 44px rgba(0,0,0,.22); }
 @media (max-width:820px) {
-  .hp24-slide { flex-direction:column; text-align:center; padding:24px 16px 20px; min-height:0; gap:16px; align-items:stretch; justify-content:flex-start; }
-  .hp24-slide__text { max-width:none; width:100%; }
-  .hp24-slide__img { width:100%; display:flex; align-items:center; justify-content:center; margin-top:8px; }
-  .hp24-slide__img img { max-width:95vw; width:100%; height:auto; max-height:200px; object-fit:contain; display:block; margin:0 auto; }
+  .hp24-slide { flex-direction:row; align-items:center; justify-content:space-between; text-align:left; padding:16px 14px; min-height:0; gap:12px; }
+  .hp24-slide__text { max-width:55%; width:55%; flex:1 1 55%; }
+  .hp24-slide__title { font-size:clamp(20px,5vw,28px); margin:6px 0 8px; }
+  .hp24-slide__text { font-size:13px; margin-bottom:12px; }
+  .hp24-slide .btn-info { font-size:12px; padding:8px 16px; }
+  .hp24-slide__img { width:40%; flex:1 1 40%; display:flex; align-items:center; justify-content:center; }
+  .hp24-slide__img img { max-width:100%; width:100%; height:auto; max-height:140px; object-fit:contain; display:block; }
   .carousel-item, .hp24-banner, .hp24-slide { width:100%; }
 }
 @media (max-width:1100px) { .hp24-promos, .hp24-grid { grid-template-columns:repeat(3,1fr); } }
