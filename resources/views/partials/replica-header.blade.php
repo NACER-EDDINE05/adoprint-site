@@ -34,8 +34,13 @@
 </style>
 <div class="navbar py-1 top-header navbar-expand-lg navbar-light">
     <div class="container-fluid justify-content-start">
-        <button class="navbar-toggler mr-1 border-0 text-dark pl-2" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+        <button class="navbar-toggler apm-toggle mr-1" id="apm-toggle" type="button"
+                aria-controls="apm-drawer" aria-expanded="false" aria-label="Ouvrir le menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <line x1="3" y1="12" x2="21" y2="12"/>
+                <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
         </button>
 
         <a class="navbar-brand mr-0 mr-lg-3" href="{{ route('home') }}" style="display:flex; align-items:center;">
@@ -207,3 +212,135 @@
         </div>
     </div>
 </nav>
+
+{{-- ==========================================================================
+     Drawer mobile : recherche + familles en accordéon + raccourcis
+     ========================================================================== --}}
+<div class="apm-backdrop" id="apm-backdrop" aria-hidden="true"></div>
+<aside class="apm-drawer" id="apm-drawer" role="dialog" aria-label="Menu de navigation" aria-hidden="true">
+    <div class="apm-drawer__head">
+        <a href="{{ route('home') }}" class="apm-drawer__brand" aria-label="ADO PRINT — Accueil">
+            <img src="{{ $siteSettings->get('brand.logo') ? '/storage/'.$siteSettings->get('brand.logo') : '/images/logo.png' }}" alt="ADO PRINT">
+        </a>
+        <button class="apm-drawer__close" id="apm-close" aria-label="Fermer le menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </button>
+    </div>
+
+    <form class="apm-drawer__search" action="{{ route('products.index') }}" method="get" role="search">
+        <div class="apm-search-wrap">
+            <svg class="apm-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="search" name="q" value="{{ request('q') }}" placeholder="Rechercher un produit…" aria-label="Rechercher un produit">
+            <button type="submit">OK</button>
+        </div>
+    </form>
+
+    <nav class="apm-drawer__nav" aria-label="Familles de produits">
+        <ul>
+            @foreach ($navCategories as $family)
+                @php
+                    $fIcon = $navIcons[$family->slug] ?? 'far fa-file-alt';
+                    $fLines = array_filter((array) (method_exists($family, 'navLines') ? $family->navLines() : [$family->navLabel()]));
+                @endphp
+                <li class="apm-acc apm-acc__item">
+                    <div class="apm-acc__head">
+                        <a href="{{ route('category.show', $family->slug) }}" class="apm-acc__link">
+                            <i class="{{ $fIcon }}" aria-hidden="true"></i>
+                            <span>{{ implode(' ', $fLines) }}</span>
+                        </a>
+                        <button class="apm-acc__btn" type="button" aria-expanded="false" aria-label="Sous-catégories de {{ $family->navLabel() }}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                    </div>
+                    <div class="apm-acc__panel">
+                        @foreach ($family->children as $child)
+                            <a href="{{ route('category.show', $child->slug) }}" class="apm-acc__sub">{{ $child->name }}</a>
+                        @endforeach
+                        <a href="{{ route('category.show', $family->slug) }}" class="apm-acc__all">
+                            Voir toute la catégorie
+                            <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                        </a>
+                    </div>
+                </li>
+            @endforeach
+        </ul>
+    </nav>
+
+    <div class="apm-drawer__quick">
+        <a href="https://wa.me/{{ $whatsapp }}" target="_blank" rel="noopener" class="apm-quick apm-quick--wa">
+            <i class="fab fa-whatsapp" aria-hidden="true"></i> WhatsApp
+        </a>
+        <a href="{{ route('devis') }}" class="apm-quick apm-quick--devis">
+            <i class="fas fa-file-invoice" aria-hidden="true"></i> Devis
+        </a>
+        <a href="{{ route('cart') }}" class="apm-quick apm-quick--cart">
+            <i class="fas fa-shopping-cart" aria-hidden="true"></i> Panier
+            @if ($cartCount) <span class="apm-quick__count">{{ $cartCount }}</span> @endif
+        </a>
+        <a href="{{ route('aide') }}" class="apm-quick apm-quick--aide">
+            <i class="fas fa-question-circle" aria-hidden="true"></i> Aide
+        </a>
+    </div>
+</aside>
+
+<script>
+(function () {
+    function initApmDrawer() {
+        var toggle = document.getElementById('apm-toggle');
+        var drawer = document.getElementById('apm-drawer');
+        var backdrop = document.getElementById('apm-backdrop');
+        var closeBtn = document.getElementById('apm-close');
+        if (!toggle || !drawer || drawer.dataset.apmReady) return;
+        drawer.dataset.apmReady = '1';
+
+        function open() {
+            drawer.classList.add('is-open');
+            backdrop.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+            toggle.setAttribute('aria-expanded', 'true');
+            drawer.setAttribute('aria-hidden', 'false');
+        }
+        function close() {
+            drawer.classList.remove('is-open');
+            backdrop.classList.remove('is-open');
+            document.body.style.overflow = '';
+            toggle.setAttribute('aria-expanded', 'false');
+            drawer.setAttribute('aria-hidden', 'true');
+        }
+
+        toggle.addEventListener('click', open);
+        if (closeBtn) closeBtn.addEventListener('click', close);
+        if (backdrop) backdrop.addEventListener('click', close);
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && drawer.classList.contains('is-open')) close();
+        });
+
+        // Accordéon des familles : le chevron ouvre/ferme les sous-catégories.
+        drawer.querySelectorAll('.apm-acc__item').forEach(function (item) {
+            var btn = item.querySelector('.apm-acc__btn');
+            var panel = item.querySelector('.apm-acc__panel');
+            if (!btn || !panel) return;
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                var isOpen = item.classList.toggle('is-open');
+                btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                panel.style.maxHeight = isOpen ? panel.scrollHeight + 'px' : '0px';
+            });
+        });
+
+        // Naviguer depuis le drawer ferme le panneau (comportement naturel).
+        drawer.querySelectorAll('a').forEach(function (link) {
+            link.addEventListener('click', function () { close(); });
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initApmDrawer);
+    } else {
+        initApmDrawer();
+    }
+})();
+</script>

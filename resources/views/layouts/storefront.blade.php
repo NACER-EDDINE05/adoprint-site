@@ -58,137 +58,12 @@
         .search-icon .twitter-typeahead::before { content: "\f002"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; left: 1.35rem; top: 50%; transform: translateY(-50%); color: #0b0b0b; font-size: 20px; line-height: 1; z-index: 4; pointer-events: none; }
         .search-icon .twitter-typeahead::after { content: none; }
         /* ========================================================================
-           Menu mobile (hamburger) — ADO PRINT
-           Le panneau s'ouvre en drawer latéral couvrant la moitié gauche de l'écran,
-           pleine hauteur. Pas de transition d'ouverture/étrange, pas d'effet de côté
-           à la fermeture.
+           Menu mobile (hamburger) — drawer ADO PRINT
+géré par le partiel header (classes .apm-*)
            ======================================================================== */
-        .navbar-collapse { visibility: visible !important; }
-
-        /* Fond dimmed quand le menu est ouvert (sans flou, pour ne pas brouiller le menu) */
-        body.navbar-open::after {
-            content: "";
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, .35);
-            z-index: 1150;
-            pointer-events: auto;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity .35s ease, visibility .35s ease;
-        }
-        body.navbar-open::after {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        @media (max-width: 991px) {
-            /* Bouton hamburger : toujours visible, bien dimensionné, facile à viser au doigt */
-            .top-header .navbar-toggler {
-                display: block !important;
-                width: 56px;
-                height: 56px;
-                padding: 0;
-                border: 2px solid #cbd5e1;
-                border-radius: 12px;
-                background: #fff;
-                box-shadow: 0 3px 10px rgba(0,0,0,.08);
-                align-items: center;
-                justify-content: center;
-                position: relative;
-                z-index: 1300;
-            }
-            .top-header .navbar-toggler[aria-expanded="true"] {
-                border-color: #00aeef;
-                background: #eefbff;
-            }
-            .top-header .navbar-toggler-icon {
-                width: 30px;
-                height: 30px;
-                background-size: 100% 100%;
-            }
-
-            /* Panneau fermé : hors écran à gauche, invisible, prêt à glisser */
-            #navbarText {
-                position: fixed !important;
-                inset: 0 auto 0 0;
-                width: 50vw;
-                max-width: 340px;
-                height: 100dvh;
-                background: #ffffff;
-                border-right: 1px solid #e5e7eb;
-                box-shadow: 6px 0 24px rgba(0,0,0,.14);
-                z-index: 1200;
-                padding: 24px 20px 40px;
-                overflow-y: auto;
-                transform: translateX(-100%);
-                opacity: 0;
-                visibility: hidden;
-                transition: transform .4s cubic-bezier(0.2, 0, 0, 1), opacity .4s ease, visibility .4s ease;
-            }
-
-            /* Panneau ouvert : glisse depuis la gauche, couvre la moitié de l'écran */
-            #navbarText.nav-open,
-            #navbarText.show {
-                transform: translateX(0) !important;
-                opacity: 1 !important;
-                visibility: visible !important;
-            }
-
-            /* Liens de navigation mobile */
-            #navbarText .navbar-nav {
-                display: block !important;
-                flex-direction: column;
-                gap: 8px;
-            }
-            #navbarText .nav-item { width: 100%; margin: 0; }
-            #navbarText .nav-link {
-                display: block;
-                padding: 14px 18px;
-                border-radius: 12px;
-                color: #111827;
-                font-weight: 700;
-                font-size: 17px;
-                border: 1px solid transparent;
-                text-decoration: none;
-            }
-            #navbarText .nav-link:hover,
-            #navbarText .nav-link:focus,
-            #navbarText .nav-item.show > .nav-link,
-            #navbarText .nav-item.active > .nav-link {
-                background: #eff6ff;
-                color: #00aeef;
-                border-color: #dbeafe;
-            }
-
-            /* Sous-menus du méga-menu sur mobile */
-            #navbarText .dropdown-menu.show {
-                display: block !important;
-                position: static;
-                border: none;
-                box-shadow: none;
-                background: #f8fafc;
-                margin: 10px 0 -8px 0;
-                border-radius: 10px;
-                padding: 12px 4px;
-            }
-            #navbarText .dropdown-menu.show .dropdown-item {
-                display: block;
-                width: 100%;
-                padding: 10px 14px;
-                border-radius: 10px;
-                color: #374151;
-                font-size: 16px;
-                font-weight: 500;
-                text-decoration: none;
-            }
-            #navbarText .dropdown-menu.show .dropdown-item:hover,
-            #navbarText .dropdown-menu.show .dropdown-item:focus {
-                background: #dbeafe;
-                color: #00aeef;
-            }
-            /* Aperçu image du méga-menu inutile sur mobile */
-            #navbarText .megamenu-image-container { display: none !important; }
+        /* Sur mobile, l'ancien collapse Bootstrap est remplacé par le drawer .apm- */
+        @media (max-width: 991.98px) {
+            #navbarText { display: none !important; }
         }
 
         @media (min-width: 992px) {
@@ -197,6 +72,267 @@
                 visibility: visible !important;
                 position: static !important;
             }
+        }
+
+        /* Bouton hamburger */
+        .apm-toggle {
+            display: inline-grid;
+            place-items: center;
+            width: 52px;
+            height: 52px;
+            flex-shrink: 0;
+            padding: 0;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            background: #fff;
+            color: #0f172a;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, .08);
+            cursor: pointer;
+            transition: border-color .15s ease, color .15s ease, background-color .15s ease;
+        }
+        .apm-toggle:hover, .apm-toggle:focus-visible {
+            border-color: #00aeef;
+            color: #0089c1;
+            background: #f5fcff;
+        }
+        .apm-toggle svg { width: 24px; height: 24px; }
+        @media (min-width: 992px) {
+            .apm-toggle { display: none !important; }
+        }
+
+        /* Voile sombre derrière le drawer */
+        .apm-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 1240;
+            background: rgba(15, 23, 42, .45);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .25s ease, visibility .25s ease;
+        }
+        .apm-backdrop.is-open { opacity: 1; visibility: visible; }
+
+        /* Le drawer lui-même : glisse depuis la gauche, pleine hauteur */
+        .apm-drawer {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1250;
+            width: min(86vw, 340px);
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            border-radius: 0 18px 18px 0;
+            box-shadow: 8px 0 32px rgba(15, 23, 42, .18);
+            transform: translateX(-100%);
+            transition: transform .3s cubic-bezier(.2, 0, 0, 1);
+        }
+        .apm-drawer.is-open { transform: translateX(0); }
+
+        .apm-drawer__head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 14px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            flex-shrink: 0;
+        }
+        .apm-drawer__brand img {
+            height: 40px;
+            width: auto;
+            max-width: 130px;
+            object-fit: contain;
+            display: block;
+        }
+        .apm-drawer__close {
+            display: grid;
+            place-items: center;
+            width: 40px;
+            height: 40px;
+            border: 1px solid #e2e8f0;
+            border-radius: 999px;
+            background: #fff;
+            color: #0f172a;
+            cursor: pointer;
+            transition: border-color .15s ease, color .15s ease, background-color .15s ease;
+        }
+        .apm-drawer__close:hover {
+            border-color: #00aeef;
+            color: #0089c1;
+            background: #f5fcff;
+        }
+        .apm-drawer__close svg { width: 18px; height: 18px; }
+
+        .apm-drawer__search {
+            padding: 14px 16px 4px;
+            flex-shrink: 0;
+        }
+        .apm-drawer__search .apm-search-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .apm-drawer__search svg.apm-search-icon {
+            position: absolute;
+            left: 12px;
+            width: 16px;
+            height: 16px;
+            color: #94a3b8;
+            pointer-events: none;
+        }
+        .apm-drawer__search input {
+            width: 100%;
+            padding: 11px 40px 11px 36px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 14.5px;
+            color: #0f172a;
+            background: #f8fafc;
+            outline: none;
+            transition: border-color .15s ease, box-shadow .15s ease;
+        }
+        .apm-drawer__search input:focus {
+            border-color: #00aeef;
+            box-shadow: 0 0 0 3px rgba(0, 174, 239, .12);
+            background: #fff;
+        }
+        .apm-drawer__search button {
+            position: absolute;
+            right: 6px;
+            padding: 7px 11px;
+            border: none;
+            border-radius: 9px;
+            background: #00aeef;
+            color: #fff;
+            font-size: 12.5px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* Liste des familles en accordéon */
+        .apm-drawer__nav {
+            flex: 1;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            padding: 10px 12px;
+            -webkit-overflow-scrolling: touch;
+        }
+        .apm-drawer__nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .apm-acc { border-bottom: 1px solid #f1f5f9; }
+        .apm-acc:last-child { border-bottom: none; }
+        .apm-acc__head {
+            display: flex;
+            align-items: stretch;
+            gap: 2px;
+        }
+        .apm-acc__link {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 8px 13px 12px;
+            border-radius: 12px;
+            color: #0f172a;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background-color .15s ease, color .15s ease;
+        }
+        .apm-acc__link i { color: #00aeef; width: 20px; text-align: center; font-size: 15px; }
+        .apm-acc__link:active, .apm-acc__link:hover { background: #f0faff; color: #0089c1; }
+        .apm-acc__btn {
+            display: grid;
+            place-items: center;
+            width: 40px;
+            flex-shrink: 0;
+            border: none;
+            background: transparent;
+            color: #94a3b8;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: transform .2s ease, color .15s ease;
+        }
+        .apm-acc__btn svg { width: 16px; height: 16px; transition: transform .2s ease; }
+        .apm-acc__item.is-open .apm-acc__btn svg { transform: rotate(180deg); color: #00aeef; }
+
+        .apm-acc__panel {
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height .3s ease;
+        }
+        .apm-acc__sub {
+            display: block;
+            padding: 10px 12px 10px 42px;
+            color: #475569;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: background-color .15s ease, color .15s ease;
+        }
+        .apm-acc__sub:hover, .apm-acc__sub:active { background: #f0faff; color: #0089c1; }
+        .apm-acc__all {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 12px;
+            margin: 2px 6px 8px 30px;
+            background: #f0faff;
+            border-radius: 10px;
+            color: #0089c1;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        /* Raccourcis bas du drawer */
+        .apm-drawer__quick {
+            flex-shrink: 0;
+            padding: 12px;
+            border-top: 1px solid #e2e8f0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .apm-quick {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 8px;
+            border-radius: 12px;
+            font-size: 13.5px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background-color .15s ease, color .15s ease;
+        }
+        .apm-quick svg { width: 16px; height: 16px; flex-shrink: 0; }
+        .apm-quick--wa { background: #e8fbf1; color: #128c56; }
+        .apm-quick--wa:hover { background: #25D366; color: #fff; }
+        .apm-quick--devis { background: #e6f7fe; color: #0089c1; }
+        .apm-quick--devis:hover { background: #00aeef; color: #fff; }
+        .apm-quick--cart { background: #fff7e0; color: #a16207; }
+        .apm-quick--cart:hover { background: #f59e0b; color: #fff; }
+        .apm-quick--aide { background: #f1f5f9; color: #0f172a; }
+        .apm-quick--aide:hover { background: #0f172a; color: #fff; }
+        .apm-quick__count {
+            display: inline-grid;
+            place-items: center;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            border-radius: 999px;
+            background: #f59e0b;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 800;
         }
     </style>
 </head>
