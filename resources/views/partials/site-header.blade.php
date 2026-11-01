@@ -193,49 +193,55 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    var btn = document.getElementById('ap24-menu-btn');
-    var overlay = document.getElementById('ap24-menu-overlay');
-    var closeBtn = document.getElementById('ap24-menu-close');
-    var body = document.getElementById('ap24-menu-overlay-body');
+(function(){
+    function initMenu(){
+        var btn = document.getElementById('ap24-menu-btn');
+        var overlay = document.getElementById('ap24-menu-overlay');
+        var closeBtn = document.getElementById('ap24-menu-close');
+        var bodyEl = document.getElementById('ap24-menu-overlay-body');
 
-    function openMenu() {
-        if (!overlay) return;
-        overlay.style.display = 'block';
-        overlay.setAttribute('aria-hidden', 'false');
-        if (btn) btn.setAttribute('aria-expanded', 'true');
-        document.body.style.overflow = 'hidden';
-        if (body && !body.innerHTML.trim()) {
-            var nav = document.querySelector('.ap24-nav');
-            if (nav) {
-                var clone = nav.cloneNode(true);
-                clone.classList.remove('ap24-nav');
-                clone.classList.add('ap24-nav--mobile');
-                clone.querySelectorAll('.ap24-menu').forEach(function(m) { m.style.display = 'none'; });
-                body.appendChild(clone);
+        function openMenu(e){
+            if(e) e.preventDefault();
+            if(!overlay) return;
+            overlay.style.display = 'block';
+            overlay.setAttribute('aria-hidden', 'false');
+            if(btn) btn.setAttribute('aria-expanded', 'true');
+            document.body.style.overflow = 'hidden';
+            if(bodyEl && !bodyEl.innerHTML.trim()){
+                var nav = document.querySelector('.ap24-nav');
+                if(nav){
+                    var clone = nav.cloneNode(true);
+                    clone.classList.remove('ap24-nav');
+                    clone.classList.add('ap24-nav--mobile');
+                    clone.querySelectorAll('.ap24-menu').forEach(function(m){ m.style.display='none'; });
+                    bodyEl.appendChild(clone);
+                }
             }
         }
-    }
 
-    function closeMenu() {
-        if (!overlay) return;
-        overlay.style.display = 'none';
-        overlay.setAttribute('aria-hidden', 'true');
-        if (btn) btn.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-    }
+        function closeMenu(e){
+            if(e) e.preventDefault();
+            if(!overlay) return;
+            overlay.style.display = 'none';
+            overlay.setAttribute('aria-hidden', 'true');
+            if(btn) btn.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+        }
 
-    if (btn) btn.addEventListener('click', openMenu);
-    if (closeBtn) closeBtn.addEventListener('click', closeMenu);
-    if (overlay) {
-        overlay.addEventListener('click', function(e) {
-            if (e.target === overlay) closeMenu();
-        });
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && overlay.style.display === 'block') {
-                closeMenu();
-            }
+        if(btn){ btn.onclick = openMenu; btn.addEventListener('click', openMenu); }
+        if(closeBtn){ closeBtn.onclick = closeMenu; closeBtn.addEventListener('click', closeMenu); }
+        if(overlay){
+            overlay.onclick = function(e){ if(e.target === overlay) closeMenu(e); };
+            overlay.addEventListener('click', function(e){ if(e.target === overlay) closeMenu(e); });
+        }
+        document.addEventListener('keydown', function(e){
+            if(e.key === 'Escape' && overlay && overlay.style.display === 'block'){ closeMenu(e); }
         });
     }
-});
+    if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', initMenu);
+    }else{
+        initMenu();
+    }
+})();
 </script>
