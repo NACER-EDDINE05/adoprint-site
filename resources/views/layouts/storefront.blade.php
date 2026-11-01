@@ -67,16 +67,16 @@
         .navbar-collapse { visibility: visible !important; }
 
         @media (max-width: 991px) {
-            /* Bouton hamburger : toujours visible, bien dimensionné */
+            /* Bouton hamburger : toujours visible, bien dimensionné, facile à viser au doigt */
             .top-header .navbar-toggler {
                 display: block !important;
-                width: 44px;
-                height: 44px;
+                width: 56px;
+                height: 56px;
                 padding: 0;
-                border: 1.5px solid #cbd5e1;
-                border-radius: 10px;
+                border: 2px solid #cbd5e1;
+                border-radius: 12px;
                 background: #fff;
-                box-shadow: 0 2px 7px rgba(0,0,0,.06);
+                box-shadow: 0 3px 10px rgba(0,0,0,.08);
                 align-items: center;
                 justify-content: center;
             }
@@ -85,8 +85,8 @@
                 background: #eefbff;
             }
             .top-header .navbar-toggler-icon {
-                width: 22px;
-                height: 22px;
+                width: 30px;
+                height: 30px;
                 background-size: 100% 100%;
             }
 
@@ -103,8 +103,8 @@
                 border-radius: 0 0 14px 14px;
                 box-shadow: 0 12px 28px rgba(0,0,0,.08);
                 z-index: 1100;
-                padding: 18px 16px 24px;
-                max-height: 72vh;
+                padding: 24px 20px 32px;
+                max-height: 75vh;
                 overflow-y: auto;
             }
 
@@ -112,16 +112,16 @@
             #navbarText .navbar-nav {
                 display: block !important;
                 flex-direction: column;
-                gap: 4px;
+                gap: 8px;
             }
             #navbarText .nav-item { width: 100%; margin: 0; }
             #navbarText .nav-link {
                 display: block;
-                padding: 11px 14px;
-                border-radius: 10px;
+                padding: 14px 18px;
+                border-radius: 12px;
                 color: #111827;
-                font-weight: 600;
-                font-size: 15px;
+                font-weight: 700;
+                font-size: 17px;
                 border: 1px solid transparent;
                 text-decoration: none;
             }
@@ -148,10 +148,10 @@
             #navbarText .dropdown-menu.show .dropdown-item {
                 display: block;
                 width: 100%;
-                padding: 8px 12px;
-                border-radius: 8px;
+                padding: 10px 14px;
+                border-radius: 10px;
                 color: #374151;
-                font-size: 14px;
+                font-size: 16px;
                 font-weight: 500;
                 text-decoration: none;
             }
