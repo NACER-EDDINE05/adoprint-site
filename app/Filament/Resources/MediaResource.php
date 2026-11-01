@@ -5,8 +5,10 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\MediaResource\Pages;
 use App\Models\Media;
 use Filament\Resources\Resource;
-use Filament\Tables\Table;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 
 class MediaResource extends Resource
 {
@@ -21,10 +23,26 @@ class MediaResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->columns([
-            TextColumn::make('id')->label('ID'),
+            ImageColumn::make('aperçu')
+                ->label('Aperçu')
+                ->getStateUsing(fn (Media $record) => blank($record->path) ? null : '/storage/'.$record->path),
             TextColumn::make('filename')->label('Fichier'),
             TextColumn::make('path')->label('Chemin'),
         ])
+            ->actions([
+                Action::make('voir')
+                    ->label('Voir')
+                    ->icon('heroicon-m-eye')
+                    ->color('gray')
+                    ->visible(fn (Media $record) => ! blank($record->path))
+                    ->url(fn (Media $record) => route('admin.media.show', $record), shouldOpenInNewTab: true),
+                Action::make('télécharger')
+                    ->label('Télécharger')
+                    ->icon('heroicon-m-arrow-down-tray')
+                    ->color('success')
+                    ->visible(fn (Media $record) => ! blank($record->path))
+                    ->url(fn (Media $record) => route('admin.media.download', $record)),
+            ])
             ->emptyStateHeading('Aucun média pour le moment')
             ->emptyStateDescription('Les images du site se gèrent dans « Apparence du site » et dans la photo de chaque produit.')
             ->emptyStateIcon('heroicon-o-photo');

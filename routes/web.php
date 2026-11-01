@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\MediaFileController;
 use App\Http\Controllers\DevisController;
 use App\Http\Controllers\GuidesController;
 use App\Http\Controllers\StorefrontController;
@@ -39,6 +40,14 @@ Route::get('/commande/{order}/confirmation', [CheckoutController::class, 'confir
 // ------------------------------------------------------------------
 // Documents d'expédition
 // ------------------------------------------------------------------
+
+Route::middleware(['web', 'auth'])
+    ->prefix('admin/medias')
+    ->name('admin.media.')
+    ->group(function () {
+        Route::get('/{media}/telecharger', [MediaFileController::class, 'download'])->name('download');
+        Route::get('/{media}/voir', [MediaFileController::class, 'show'])->name('show');
+    });
 
 Route::middleware(['web', 'auth'])
     ->prefix('admin/orders')

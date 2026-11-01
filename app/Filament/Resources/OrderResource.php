@@ -301,18 +301,30 @@ class OrderResource extends Resource
                                     ->where('model_id', $record->id)
                                     ->get();
                             } catch (\Throwable) {
-                                return 'Fichiers indisponibles pour le moment.';
+                                return ['Fichiers indisponibles pour le moment.'];
                             }
 
                             if ($files->isEmpty()) {
-                                return 'Aucun fichier joint à cette commande.';
+                                return ['Aucun fichier joint à cette commande.'];
                             }
 
-                            return $files->map(fn (Media $f) => '📎 '.$f->filename
-                                .(blank($f->path)
-                                    ? ' — ⚠ stockage indisponible (fichier à récupérer par email)'
-                                    : ' — '.number_format(((int) $f->size) / 1024, 0, ',', ' ').' Ko'))
-                                ->implode("\n");
+                            // Un lien par fichier : prévisualisation (s'ouvre dans
+                            // un onglet) + téléchargement avec le nom d'origine.
+                            return $files->map(fn (Media $f) => blank($f->path)
+                                ? new \Illuminate\Support\HtmlString(
+                                    '<span class="⚠">📎 '.e($f->filename)
+                                    .' — stockage indisponible (fichier à récupérer par email)</span>'
+                                )
+                                : new \Illuminate\Support\HtmlString(
+                                    '<a href="'.e(route('admin.media.show', $f))
+                                    .'" target="_blank" rel="noopener" class="font-bold text-primary-600 hover:underline">'
+                                    .'📎 '.e($f->filename).'</a>'
+                                    .' <span class="text-sm text-gray-500">'
+                                    .number_format(((int) $f->size) / 1024, 0, ',', ' ').' Ko</span>'
+                                    .' <a href="'.e(route('admin.media.download', $f))
+                                    .'" class="font-bold text-primary-600 hover:underline">⬇ Télécharger</a>'
+                                ))
+                                ->all();
                         })
                         ->listWithLineBreaks(),
                 ]),
