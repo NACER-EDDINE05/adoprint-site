@@ -133,52 +133,71 @@
     };
 
     /* ------------------------------------------------------------------
-     * 5. Menu mobile (hamburger) : fermeture propre du panneau #navbarText
-     *    - clic sur un lien du panneau -> le menu se ferme
-     *    - touche Echap -> le menu se ferme
-     *    - clic a l'exterieur du panneau et du bouton hamburger -> ferme
+     * 5. Menu mobile (hamburger) : drawer latéral gauche (moitié écran)
+     *    Ouverture/fermeture fluide (glissement), fond dimmed sans flou.
+     *    - clic sur le bouton hamburger -> ouvre/ferme
+     *    - clic sur un lien du panneau -> ferme
+     *    - touche Echap -> ferme
+     *    - clic sur le fond dimmed ou à l'extérieur du panneau -> ferme
      * ------------------------------------------------------------------ */
     (function () {
         'use strict';
-        var $navbarText = $('#navbarText');
         var $toggler = $('.navbar-toggler[data-target="#navbarText"]');
+        var $navbarText = $('#navbarText');
         var $body = $('body');
+        var isOpen = false;
+        var closeTimer = null;
 
-        function isOpen() {
-            return $navbarText.length && $navbarText.hasClass('show');
+        // On désactive le collapse Bootstrap natif pour piloter le glissement nous-mêmes
+        $toggler.removeAttr('data-toggle');
+
+        function setState(open) {
+            isOpen = open;
+            $toggler.attr('aria-expanded', open ? 'true' : 'false');
+            if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+
+            if (open) {
+                $body.addClass('navbar-open');
+                $navbarText.addClass('nav-open');
+                $navbarText.css({ display: 'block', transform: 'translateX(0)', opacity: '1', visibility: 'visible' });
+            } else {
+                $body.removeClass('navbar-open');
+                $navbarText.removeClass('nav-open');
+                $navbarText.css({ transform: 'translateX(-100%)', opacity: '0', visibility: 'hidden' });
+                closeTimer = setTimeout(function () {
+                    $navbarText.css('display', 'none');
+                    closeTimer = null;
+                }, 420);
+            }
         }
 
-        function setOpen(state) {
-            if (state) $body.addClass('navbar-open');
-            else $body.removeClass('navbar-open');
+        function toggle() {
+            setState(!isOpen);
         }
 
-        function closeMenu() {
-            if (!isOpen()) return;
-            setOpen(false);
-            $toggler.trigger('click'); // Bootstrap bascule le panneau et met a jour aria-expanded
-        }
-
-        // Synchronise la classe body.navbar-open avec les evenements Bootstrap
-        $navbarText.on('show.bs.collapse', function () { setOpen(true); });
-        $navbarText.on('hide.bs.collapse', function () { setOpen(false); });
-
-        // Fermer quand on clique sur un lien du panneau mobile
-        $navbarText.on('click.collapseMobile', '.nav-link', function () {
-            if (!isDesktopNav()) closeMenu();
+        // Clic sur le bouton hamburger
+        $toggler.on('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggle();
         });
 
-        // Fermer a la touche Echap
-        $(document).on('keydown.collapseMobile', function (e) {
-            if (e.key === 'Escape') closeMenu();
+        // Fermer sur un lien du panneau
+        $navbarText.on('click', '.nav-link', function () {
+            if (!isDesktopNav()) setState(false);
         });
 
-        // Fermer en cliquant a l'exterieur (panneau, fond et bouton exclus)
-        $(document).on('click.collapseMobile', function (e) {
-            if (isDesktopNav() || !isOpen()) return;
+        // Fermer à Echap
+        $(document).on('keydown', function (e) {
+            if (e.key === 'Escape') setState(false);
+        });
+
+        // Fermer en cliquant sur le fond dimmed ou à l'extérieur du panneau
+        $(document).on('click', function (e) {
+            if (!isOpen || isDesktopNav()) return;
             if (!$navbarText.is(e.target) && $navbarText.has(e.target).length === 0 &&
                 !$toggler.is(e.target) && $toggler.has(e.target).length === 0) {
-                closeMenu();
+                setState(false);
             }
         });
     })();

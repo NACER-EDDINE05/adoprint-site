@@ -36,7 +36,7 @@
     <style>
         /* Conflit Tailwind × Bootstrap : Tailwind définit .collapse { visibility: collapse }
            ce qui masque tout le contenu du navbar Bootstrap. On restaure Bootstrap correctement. */
-        .navbar .collapse:not(.show) { display: none !important; }
+        .navbar-collapse:not(#navbarText):not(.show) { display: none !important; }
         .navbar .collapse.show { display: block !important; }
         /* Tailwind v4 met ses utilitaires en @layer, prioritaires sur la feuille Bootstrap :
            .sr-only était donc visible. On le ré-implémente hors layer. */
@@ -65,20 +65,22 @@
            ======================================================================== */
         .navbar-collapse { visibility: visible !important; }
 
-        /* Fond obscur quand le menu est ouvert (visuel uniquement, les clics passent
-           au travers et sont gérés par le handler JS de fermeture hors-panneau). */
+        /* Fond dimmed quand le menu est ouvert (sans flou, pour ne pas brouiller le menu) */
         body.navbar-open::after {
             content: "";
             position: fixed;
             inset: 0;
-            background: rgba(15, 23, 42, .4);
+            background: rgba(15, 23, 42, .35);
             z-index: 1150;
-            backdrop-filter: blur(3px);
-            pointer-events: none;
-            opacity: 1;
-            transition: opacity .25s ease;
+            pointer-events: auto;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .35s ease, visibility .35s ease;
         }
-        body:not(.navbar-open)::after { display: none; }
+        body.navbar-open::after {
+            opacity: 1;
+            visibility: visible;
+        }
 
         @media (max-width: 991px) {
             /* Bouton hamburger : toujours visible, bien dimensionné, facile à viser au doigt */
@@ -106,11 +108,9 @@
                 background-size: 100% 100%;
             }
 
-            /* Panneau mobile : demi-écran (drawer latéral gauche), pleine hauteur */
-            #navbarText.navbar-collapse.show {
-                display: block !important;
-                visibility: visible !important;
-                position: fixed;
+            /* Panneau fermé : hors écran à gauche, invisible, prêt à glisser */
+            #navbarText {
+                position: fixed !important;
                 inset: 0 auto 0 0;
                 width: 50vw;
                 max-width: 340px;
@@ -121,8 +121,18 @@
                 z-index: 1200;
                 padding: 24px 20px 40px;
                 overflow-y: auto;
-                transform: none !important;
-                transition: none !important;
+                transform: translateX(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: transform .4s cubic-bezier(0.2, 0, 0, 1), opacity .4s ease, visibility .4s ease;
+            }
+
+            /* Panneau ouvert : glisse depuis la gauche, couvre la moitié de l'écran */
+            #navbarText.nav-open,
+            #navbarText.show {
+                transform: translateX(0) !important;
+                opacity: 1 !important;
+                visibility: visible !important;
             }
 
             /* Liens de navigation mobile */
