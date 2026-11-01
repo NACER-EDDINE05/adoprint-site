@@ -22,14 +22,19 @@
 {{-- ==========================================================================
      En-tête principal : logo + recherche + boutons action + panier
      ========================================================================== --}}
+<style>
+@media (max-width: 576px) {
+    .navbar-brand img { height: 42px !important; max-height: 42px !important; max-width: 120px !important; }
+}
+</style>
 <div class="navbar py-1 top-header navbar-expand-lg navbar-light">
     <div class="container-fluid justify-content-start">
         <button class="navbar-toggler mr-1 border-0 text-dark pl-2" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <a class="navbar-brand mr-0 mr-lg-3" href="{{ route('home') }}">
-            <img style="height: 55px; width: auto; max-width: 160px; object-fit: contain;" alt="ADO PRINT" src="{{ $siteSettings->get('brand.logo') ? '/storage/'.$siteSettings->get('brand.logo') : '/images/logo.png' }}">
+        <a class="navbar-brand mr-0 mr-lg-3" href="{{ route('home') }}" style="display:flex; align-items:center;">
+            <img style="height: 48px; max-height: 48px; width: auto; max-width: 140px; object-fit: contain; display:block;" alt="ADO PRINT" src="{{ $siteSettings->get('brand.logo') ? '/storage/'.$siteSettings->get('brand.logo') : '/images/logo.png' }}">
         </a>
 
         <div class="mb-cart-search ml-auto col-lg w-auto">

@@ -49,9 +49,14 @@
         <div class="ap24-header__main">
             <div class="ap24-header__logo">
                 <a href="{{ route('home') }}" aria-label="ADO PRINT — Accueil">
-                    <img src="{{ isset($siteSettings) && $siteSettings->get('brand.logo') ? '/storage/'.$siteSettings->get('brand.logo') : '/images/logo.png' }}" alt="ADO PRINT" class="ap24-logo-img" style="height: 50px; width: auto; max-width: 200px; object-fit: contain;">
+                    <img src="{{ isset($siteSettings) && $siteSettings->get('brand.logo') ? '/storage/'.$siteSettings->get('brand.logo') : '/images/logo.png' }}" alt="ADO PRINT" class="ap24-logo-img" style="height: 44px; max-height: 44px; width: auto; max-width: 160px; object-fit: contain; display:block;">
                 </a>
             </div>
+            <style>
+            @media (max-width: 640px) {
+                .ap24-logo-img { height: 38px !important; max-height: 38px !important; max-width: 130px !important; }
+            }
+            </style>
 
             <div class="ap24-header__search">
                 <form method="GET" action="{{ route('products.index') }}" class="ap24-search-form">
