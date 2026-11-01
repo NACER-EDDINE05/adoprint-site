@@ -200,11 +200,12 @@ document.addEventListener('DOMContentLoaded', function() {
     var body = document.getElementById('ap24-menu-overlay-body');
 
     function openMenu() {
+        if (!overlay) return;
         overlay.style.display = 'block';
         overlay.setAttribute('aria-hidden', 'false');
-        btn.setAttribute('aria-expanded', 'true');
+        if (btn) btn.setAttribute('aria-expanded', 'true');
         document.body.style.overflow = 'hidden';
-        if (!body.innerHTML) {
+        if (body && !body.innerHTML.trim()) {
             var nav = document.querySelector('.ap24-nav');
             if (nav) {
                 var clone = nav.cloneNode(true);
@@ -217,16 +218,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function closeMenu() {
+        if (!overlay) return;
         overlay.style.display = 'none';
         overlay.setAttribute('aria-hidden', 'true');
-        btn.setAttribute('aria-expanded', 'false');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
         document.body.style.overflow = '';
     }
 
-    btn.addEventListener('click', openMenu);
-    closeBtn.addEventListener('click', closeMenu);
-    overlay.addEventListener('click', function(e) {
-        if (e.target === overlay) closeMenu();
-    });
+    if (btn) btn.addEventListener('click', openMenu);
+    if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+    if (overlay) {
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) closeMenu();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && overlay.style.display === 'block') {
+                closeMenu();
+            }
+        });
+    }
 });
 </script>

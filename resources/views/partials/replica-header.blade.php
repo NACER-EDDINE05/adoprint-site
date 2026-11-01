@@ -23,8 +23,13 @@
      En-tête principal : logo + recherche + boutons action + panier
      ========================================================================== --}}
 <style>
+.navbar-brand { padding: 0.25rem 0.5rem; }
+.navbar-brand img { height: 48px !important; max-height: 48px !important; width: auto !important; max-width: 150px !important; object-fit: contain !important; display: block !important; }
 @media (max-width: 576px) {
-    .navbar-brand img { height: 42px !important; max-height: 42px !important; max-width: 120px !important; }
+    .navbar-brand img { height: 40px !important; max-height: 40px !important; max-width: 110px !important; }
+}
+@media (max-width: 360px) {
+    .navbar-brand img { height: 36px !important; max-height: 36px !important; max-width: 95px !important; }
 }
 </style>
 <div class="navbar py-1 top-header navbar-expand-lg navbar-light">
