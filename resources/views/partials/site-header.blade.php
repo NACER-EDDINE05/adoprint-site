@@ -49,12 +49,13 @@
         <div class="ap24-header__main">
             <div class="ap24-header__logo">
                 <a href="{{ route('home') }}" aria-label="ADO PRINT — Accueil">
-                    <img src="{{ isset($siteSettings) && $siteSettings->get('brand.logo') ? '/storage/'.$siteSettings->get('brand.logo') : '/images/logo.png' }}" alt="ADO PRINT" class="ap24-logo-img" style="height: 44px; max-height: 44px; width: auto; max-width: 160px; object-fit: contain; display:block;">
+                    <img src="{{ isset($siteSettings) && $siteSettings->get('brand.logo') ? '/storage/'.$siteSettings->get('brand.logo') : '/images/logo.png' }}" alt="ADO PRINT" class="ap24-logo-img" style="height: 44px !important; max-height: 44px !important; width: auto !important; max-width: 160px !important; object-fit: contain !important; display:block !important; aspect-ratio: auto !important;">
                 </a>
             </div>
             <style>
+            .ap24-logo-img { height: 44px !important; max-height: 44px !important; width: auto !important; max-width: 160px !important; object-fit: contain !important; display: block !important; aspect-ratio: auto !important; }
             @media (max-width: 640px) {
-                .ap24-logo-img { height: 38px !important; max-height: 38px !important; max-width: 130px !important; }
+                .ap24-logo-img { height: 38px !important; max-height: 38px !important; max-width: 130px !important; width: auto !important; }
             }
             </style>
 

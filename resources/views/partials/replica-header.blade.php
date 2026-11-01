@@ -24,12 +24,12 @@
      ========================================================================== --}}
 <style>
 .navbar-brand { padding: 0.25rem 0.5rem; }
-.navbar-brand img { height: 48px !important; max-height: 48px !important; width: auto !important; max-width: 150px !important; object-fit: contain !important; display: block !important; }
+.navbar-brand img { height: 48px !important; max-height: 48px !important; width: auto !important; max-width: 150px !important; object-fit: contain !important; display: block !important; aspect-ratio: auto !important; }
 @media (max-width: 576px) {
-    .navbar-brand img { height: 40px !important; max-height: 40px !important; max-width: 110px !important; }
+    .navbar-brand img { height: 40px !important; max-height: 40px !important; max-width: 110px !important; width: auto !important; }
 }
 @media (max-width: 360px) {
-    .navbar-brand img { height: 36px !important; max-height: 36px !important; max-width: 95px !important; }
+    .navbar-brand img { height: 36px !important; max-height: 36px !important; max-width: 95px !important; width: auto !important; }
 }
 </style>
 <div class="navbar py-1 top-header navbar-expand-lg navbar-light">
@@ -39,7 +39,7 @@
         </button>
 
         <a class="navbar-brand mr-0 mr-lg-3" href="{{ route('home') }}" style="display:flex; align-items:center;">
-            <img style="height: 48px; max-height: 48px; width: auto; max-width: 140px; object-fit: contain; display:block;" alt="ADO PRINT" src="{{ $siteSettings->get('brand.logo') ? '/storage/'.$siteSettings->get('brand.logo') : '/images/logo.png' }}">
+            <img style="height: 48px !important; max-height: 48px !important; width: auto !important; max-width: 140px !important; object-fit: contain !important; display:block !important; aspect-ratio: auto !important;" alt="ADO PRINT" src="{{ $siteSettings->get('brand.logo') ? '/storage/'.$siteSettings->get('brand.logo') : '/images/logo.png' }}">
         </a>
 
         <div class="mb-cart-search ml-auto col-lg w-auto">
