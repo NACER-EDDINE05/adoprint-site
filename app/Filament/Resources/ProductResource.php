@@ -48,7 +48,9 @@ class ProductResource extends Resource
                 ->searchable()
                 ->preload(),
             TextInput::make('name')->label('Nom')->required(),
-            TextInput::make('slug')->label('Slug (URL)')->required(),
+            TextInput::make('slug')->label('Slug (URL)')
+                ->helperText('Optionnel — laissez vide pour le générer automatiquement depuis le nom (flyers-a5, flyers-a5-2…).')
+                ->placeholder('Généré automatiquement…'),
             Textarea::make('description')->label('Description')->rows(4),
             FileUpload::make('photo')
                 ->label('Photo du produit')
