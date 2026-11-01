@@ -107,10 +107,10 @@
 .hp24-slide .btn-info:hover, .hp24-slide .btn-info:focus { background:var(--slide-ink); color:var(--slide-bg); border-color:var(--slide-ink); }
 .hp24-slide__img img { max-height:300px; max-width:min(46vw,460px); width:100%; height:auto; object-fit:contain; border-radius:16px; box-shadow:0 18px 44px rgba(0,0,0,.22); }
 @media (max-width:820px) {
-  .hp24-slide { flex-direction:column-reverse; text-align:center; padding:20px 16px 28px; min-height:0; gap:20px; align-items:stretch; }
+  .hp24-slide { flex-direction:column; text-align:center; padding:24px 16px 20px; min-height:0; gap:16px; align-items:stretch; justify-content:flex-start; }
   .hp24-slide__text { max-width:none; width:100%; }
-  .hp24-slide__img { width:100%; display:flex; align-items:center; justify-content:center; }
-  .hp24-slide__img img { max-width:90vw; width:100%; height:auto; max-height:260px; object-fit:contain; display:block; margin:0 auto; }
+  .hp24-slide__img { width:100%; display:flex; align-items:center; justify-content:center; margin-top:8px; }
+  .hp24-slide__img img { max-width:95vw; width:100%; height:auto; max-height:200px; object-fit:contain; display:block; margin:0 auto; }
   .carousel-item, .hp24-banner, .hp24-slide { width:100%; }
 }
 @media (max-width:1100px) { .hp24-promos, .hp24-grid { grid-template-columns:repeat(3,1fr); } }

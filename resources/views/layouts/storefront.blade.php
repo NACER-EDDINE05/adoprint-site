@@ -35,8 +35,9 @@
     <link rel="stylesheet" href="/css/shop-replica.css">
     <style>
         /* Conflit Tailwind × Bootstrap : Tailwind définit .collapse { visibility: collapse }
-           ce qui masque tout le contenu du navbar Bootstrap. On restaure Bootstrap. */
-        .collapse { visibility: visible !important; }
+           ce qui masque tout le contenu du navbar Bootstrap. On restaure Bootstrap correctement. */
+        .navbar .collapse:not(.show) { display: none !important; }
+        .navbar .collapse.show { display: block !important; }
         /* Tailwind v4 met ses utilitaires en @layer, prioritaires sur la feuille Bootstrap :
            .sr-only était donc visible. On le ré-implémente hors layer. */
         .sr-only { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0,0,0,0) !important; white-space: nowrap !important; border: 0 !important; }
@@ -56,6 +57,26 @@
         .search-icon .twitter-typeahead { position: relative; display: block; width: 100%; }
         .search-icon .twitter-typeahead::before { content: "\f002"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; left: 1.35rem; top: 50%; transform: translateY(-50%); color: #0b0b0b; font-size: 20px; line-height: 1; z-index: 4; pointer-events: none; }
         .search-icon .twitter-typeahead::after { content: none; }
+        /* Mobile menu fixes */
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #fff;
+                z-index: 1050;
+                max-height: 80vh;
+                overflow-y: auto;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            }
+            .navbar-collapse.show {
+                display: block !important;
+            }
+            .navbar-collapse:not(.show) {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body class="row-offcanvas-left">
