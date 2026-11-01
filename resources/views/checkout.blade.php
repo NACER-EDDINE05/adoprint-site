@@ -89,7 +89,8 @@
                             <small>ou cliquer pour parcourir</small>
                         </span>
                     </label>
-                    <input id="files" name="files[]" type="file" multiple accept=".pdf,.png,.jpg,.jpeg,.ai,.eps,.zip" class="sr-only">
+                    <input id="files" name="files[]" type="file" multiple accept=".pdf,.png,.jpg,.jpeg,.heic,.heif,.webp,.bmp,.gif,.tif,.tiff,.ai,.eps,.zip" class="sr-only">
+                    <p id="files-list" class="ap24-file__listing mt-2 text-sm text-slate-600" hidden></p>
 
                     @error('files.*')<p class="ap24-error mt-2">{{ $message }}</p>@enderror
 
@@ -141,6 +142,24 @@
             quantity: {{ (int) collect($items)->sum('qty') }},
             total: {{ (float) $total }},
             products: @json(collect($items)->pluck('product.name')->values()),
+        });
+
+        // Affichage immédiat des fichiers sélectionnés à l'étape « confirmer » :
+        // sans ce retour visuel, l'utilisateur ne sait pas si l'upload est pris en compte.
+        const input = document.getElementById('files');
+        const listing = document.getElementById('files-list');
+        input?.addEventListener('change', () => {
+            if (! input.files?.length) {
+                listing.hidden = true;
+                listing.textContent = '';
+                return;
+            }
+            const rows = [...input.files].map((f) => {
+                const ko = f.size > 1024 * 1024 ? (f.size / 1048576).toFixed(1)+' Mo' : Math.round(f.size / 1024)+' Ko';
+                return '📎 ' + f.name + ' — ' + ko;
+            });
+            listing.textContent = rows.join('\n');
+            listing.hidden = false;
         });
     </script>
 @endpush

@@ -134,7 +134,8 @@ class AdminPanelProvider extends PanelProvider
     {
         return <<<'CSS'
         /* Typographie Headings alignée sur la boutique (Outfit). */
-            .fi-logo, .fi-logo img { max-width: 11rem; object-fit: contain; }
+            .fi-logo { display: flex; align-items: center; }
+            .fi-logo img { max-height: 2.1rem; width: auto; max-width: 11rem; object-fit: contain; display: block; }
             .fi-topbar, .fi-sidebar-header, .fi-wi-stats-overview-stat, .fi-wi-widget > .fi-ta, .fi-wi-chart {
                 font-family: 'Outfit', ui-sans-serif, system-ui, sans-serif;
             }

@@ -27,10 +27,11 @@
                                 class="block truncate text-sm font-semibold text-gray-900 no-underline hover:text-primary-700"
                             >
                                 #{{ $order->id }} — {{ $order->meta['customer']['nom'] ?? $order->user?->name ?? 'Client' }}
-                            </a>                            <span class="mt-0.5 block truncate text-xs text-gray-500">
-                                    {{ $order->created_at?->isoFormat('Do MMMM YYYY, HH:mm') ?? '—' }}
-                                    {{ $order->user?->email ?? ($order->meta['customer']['email'] ?? '') }}
-                                </span>
+                            </a>
+                            <span class="mt-0.5 block truncate text-xs text-gray-500">
+                                {{ $order->created_at?->isoFormat('Do MMMM YYYY, HH:mm') ?? '—' }}
+                                {{ $order->user?->email ?? ($order->meta['customer']['email'] ?? '') }}
+                            </span>
                         </div>
 
                         <div class="flex flex-shrink-0 items-center gap-3">

@@ -49,7 +49,7 @@
         <div class="ap24-header__main">
             <div class="ap24-header__logo">
                 <a href="{{ route('home') }}" aria-label="ADO PRINT — Accueil">
-                    <img src="/images/logo.png" alt="ADO PRINT" class="ap24-logo-img" width="200" height="50">
+                    <img src="{{ isset($siteSettings) && $siteSettings->get('brand.logo') ? '/storage/'.$siteSettings->get('brand.logo') : '/images/logo.png' }}" alt="ADO PRINT" class="ap24-logo-img" style="height: 50px; width: auto; max-width: 200px; object-fit: contain;">
                 </a>
             </div>
 

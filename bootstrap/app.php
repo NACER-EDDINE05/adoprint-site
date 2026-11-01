@@ -16,6 +16,11 @@ return Application::configure(basePath: dirname(__DIR__))
         // X-Forwarded-* pour générer des URL https correctes et éviter les
         // boucles de redirection sur la plateforme serverless.
         $middleware->trustProxies(at: '*');
+
+        // Les invités / sessions expirées sont ramenés à la connexion
+        // du panneau Filament (le squelette attend une route « login »
+        // qui n'existe pas dans ce projet).
+        $middleware->redirectGuestsTo('/admin/login');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

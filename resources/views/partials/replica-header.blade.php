@@ -29,7 +29,7 @@
         </button>
 
         <a class="navbar-brand mr-0 mr-lg-3" href="{{ route('home') }}">
-            <img class="img-fluid" width="150" height="71" alt="ADO PRINT" src="{{ $siteSettings->get('brand.logo') ? '/storage/'.$siteSettings->get('brand.logo') : '/images/logo.png' }}">
+            <img style="height: 55px; width: auto; max-width: 160px; object-fit: contain;" alt="ADO PRINT" src="{{ $siteSettings->get('brand.logo') ? '/storage/'.$siteSettings->get('brand.logo') : '/images/logo.png' }}">
         </a>
 
         <div class="mb-cart-search ml-auto col-lg w-auto">

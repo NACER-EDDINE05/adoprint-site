@@ -21,6 +21,9 @@ class CheckoutController extends Controller
     {
     }
 
+    /** Validations squelette communes aux fichiers d'impression acceptés. */
+    public const FILE_RULE = 'file|mimes:pdf,png,jpg,jpeg,heic,heif,webp,bmp,gif,tif,tiff,ai,eps,zip|max:10240';
+
     /** Page panier. */
     public function cart()
     {
@@ -38,13 +41,19 @@ class CheckoutController extends Controller
             'qty'        => 'required|integer|min:1|max:1000000',
             'options'    => 'nullable|array',
             'files'      => 'nullable|array',
-            'files.*'    => 'file|mimes:pdf,png,jpg,jpeg,ai,eps,zip|max:10240',
+            'files.*'    => self::FILE_RULE,
         ]);
 
         $product = Product::findOrFail($validated['product_id']);
 
-        // Upload immédiat des fichiers de la ligne, puis rattachement après création.
-        $uploaded = $this->storeFiles($request);
+        // Upload immédiat des fichiers de la ligne, puis rattachement après création. L'ajout
+        // au panier ne doit jamais échouer à cause d'un souci de stockage.
+        try {
+            $uploaded = $this->storeFiles($request);
+        } catch (\Throwable $e) {
+            Log::warning('Upload produit ignoré : '.$e->getMessage());
+            $uploaded = [];
+        }
 
         $rowId = $cart->add($product, (int) $validated['qty'], $validated['options'] ?? []);
 
@@ -125,7 +134,7 @@ class CheckoutController extends Controller
             'code_postal'=> 'nullable|string|max:20',
             'notes'      => 'nullable|string|max:2000',
             'files'      => 'nullable|array',
-            'files.*'    => 'file|mimes:pdf,png,jpg,jpeg,ai,eps,zip|max:10240',
+            'files.*'    => self::FILE_RULE,
         ]);
 
         $items = $cart->items();
@@ -201,7 +210,20 @@ class CheckoutController extends Controller
                 continue;
             }
 
-            $path = $file->store('commandes', 'public');
+            try {
+                $path = $file->store('commandes', 'public');
+            } catch (\Throwable $e) {
+                // Disque indisponible (lecture seule sur Vercel) : on garde la
+                // trace du fichier mais la commande est créée quand même.
+                Log::warning('Stockage fichier impossible : '.$e->getMessage());
+                $stored[] = [
+                    'path'     => '',
+                    'filename' => $file->getClientOriginalName(),
+                    'mime'     => $file->getClientMimeType(),
+                    'size'     => $file->getSize(),
+                ];
+                continue;
+            }
 
             $stored[] = [
                 'path'     => $path,
