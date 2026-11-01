@@ -132,4 +132,44 @@
         return false;
     };
 
+    /* ------------------------------------------------------------------
+     * 5. Menu mobile (hamburger) : fermeture propre du panneau #navbarText
+     *    - clic sur un lien du panneau -> le menu se ferme
+     *    - touche Echap -> le menu se ferme
+     *    - clic a l'exterieur du panneau et du bouton hamburger -> ferme
+     * ------------------------------------------------------------------ */
+    (function () {
+        'use strict';
+        var $navbarText = $('#navbarText');
+        var $toggler = $('.navbar-toggler[data-target="#navbarText"]');
+
+        function isOpen() {
+            return $navbarText.length && $navbarText.hasClass('show');
+        }
+
+        function closeMenu() {
+            if (!isOpen()) return;
+            $toggler.trigger('click'); // Bootstrap bascule le panneau et met a jour aria-expanded
+        }
+
+        // Fermer quand on clique sur un lien du panneau mobile
+        $navbarText.on('click.collapseMobile', '.nav-link', function () {
+            if (!isDesktopNav()) closeMenu();
+        });
+
+        // Fermer a la touche Echap
+        $(document).on('keydown.collapseMobile', function (e) {
+            if (e.key === 'Escape') closeMenu();
+        });
+
+        // Fermer en cliquant a l'exterieur (panneau et bouton exclus)
+        $(document).on('click.collapseMobile', function (e) {
+            if (isDesktopNav() || !isOpen()) return;
+            if (!$navbarText.is(e.target) && $navbarText.has(e.target).length === 0 &&
+                !$toggler.is(e.target) && $toggler.has(e.target).length === 0) {
+                closeMenu();
+            }
+        });
+    })();
+
 })(jQuery);

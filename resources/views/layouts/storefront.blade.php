@@ -57,24 +57,118 @@
         .search-icon .twitter-typeahead { position: relative; display: block; width: 100%; }
         .search-icon .twitter-typeahead::before { content: "\f002"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; left: 1.35rem; top: 50%; transform: translateY(-50%); color: #0b0b0b; font-size: 20px; line-height: 1; z-index: 4; pointer-events: none; }
         .search-icon .twitter-typeahead::after { content: none; }
-        /* Mobile menu fixes */
+        /* ========================================================================
+           Menu mobile (hamburger) — ADO PRINT
+           Tailwind v4 définit l'utilitaire .collapse { visibility: collapse },
+           qui masque le panneau Bootstrap même quand il est ouvert
+           (display: block mais visibility: collapse => invisible).
+           On force donc la visibilité sur #navbarText et on soigne l'affichage.
+           ======================================================================== */
+        .navbar-collapse { visibility: visible !important; }
+
         @media (max-width: 991px) {
-            .navbar-collapse {
+            /* Bouton hamburger : toujours visible, bien dimensionné */
+            .top-header .navbar-toggler {
+                display: block !important;
+                width: 44px;
+                height: 44px;
+                padding: 0;
+                border: 1.5px solid #cbd5e1;
+                border-radius: 10px;
+                background: #fff;
+                box-shadow: 0 2px 7px rgba(0,0,0,.06);
+                align-items: center;
+                justify-content: center;
+            }
+            .top-header .navbar-toggler[aria-expanded="true"] {
+                border-color: #00aeef;
+                background: #eefbff;
+            }
+            .top-header .navbar-toggler-icon {
+                width: 22px;
+                height: 22px;
+                background-size: 100% 100%;
+            }
+
+            /* Panneau ouvert : plein largeur, propre, surélevé sous la barre */
+            #navbarText.navbar-collapse.show {
+                display: block !important;
                 position: absolute;
                 top: 100%;
                 left: 0;
                 right: 0;
-                background: #fff;
-                z-index: 1050;
-                max-height: 80vh;
+                background: #ffffff;
+                border: 1px solid #e5e7eb;
+                border-top: none;
+                border-radius: 0 0 14px 14px;
+                box-shadow: 0 12px 28px rgba(0,0,0,.08);
+                z-index: 1100;
+                padding: 18px 16px 24px;
+                max-height: 72vh;
                 overflow-y: auto;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             }
-            .navbar-collapse.show {
+
+            /* Liens de navigation mobile */
+            #navbarText .navbar-nav {
                 display: block !important;
+                flex-direction: column;
+                gap: 4px;
             }
-            .navbar-collapse:not(.show) {
-                display: none !important;
+            #navbarText .nav-item { width: 100%; margin: 0; }
+            #navbarText .nav-link {
+                display: block;
+                padding: 11px 14px;
+                border-radius: 10px;
+                color: #111827;
+                font-weight: 600;
+                font-size: 15px;
+                border: 1px solid transparent;
+                text-decoration: none;
+            }
+            #navbarText .nav-link:hover,
+            #navbarText .nav-link:focus,
+            #navbarText .nav-item.show > .nav-link,
+            #navbarText .nav-item.active > .nav-link {
+                background: #eff6ff;
+                color: #00aeef;
+                border-color: #dbeafe;
+            }
+
+            /* Sous-menus du méga-menu sur mobile */
+            #navbarText .dropdown-menu.show {
+                display: block !important;
+                position: static;
+                border: none;
+                box-shadow: none;
+                background: #f8fafc;
+                margin: 10px 0 -8px 0;
+                border-radius: 10px;
+                padding: 12px 4px;
+            }
+            #navbarText .dropdown-menu.show .dropdown-item {
+                display: block;
+                width: 100%;
+                padding: 8px 12px;
+                border-radius: 8px;
+                color: #374151;
+                font-size: 14px;
+                font-weight: 500;
+                text-decoration: none;
+            }
+            #navbarText .dropdown-menu.show .dropdown-item:hover,
+            #navbarText .dropdown-menu.show .dropdown-item:focus {
+                background: #dbeafe;
+                color: #00aeef;
+            }
+            /* Aperçu image du méga-menu inutile sur mobile */
+            #navbarText .megamenu-image-container { display: none !important; }
+        }
+
+        @media (min-width: 992px) {
+            #navbarText {
+                display: block !important;
+                visibility: visible !important;
+                position: static !important;
             }
         }
     </style>
